@@ -1,3 +1,6 @@
+import battle.*;
+import utils.*;
+
 import java.io.*;
 import java.util.*;
 
@@ -44,6 +47,23 @@ public class Main {
             System.out.println("Вы видите перед собой карту и поднимаете её");
             System.out.println("Необходимо преодолеть лабиринт:");
             labyrinth();
+            System.out.println("Ура! Лабиринт пройден! Перед тобой открылись просторы древнего мира!");
+            System.out.println("Перед тобой развилка с путевым знаком, на нём видны вариаинты, выбери дальнейший путь:\n" +
+                    "1. Ривергард\n" +
+                    "2. Литориан\n" +
+                    "3. Зачарованный лес");
+            switch (sc.nextInt()) {
+                case 1:
+                    rivergard(character);
+                    System.out.println("Перед твоим взором расстилаются огромные ворота города Ривергард");
+                    break;
+                case 2:
+                    litorian();
+                    break;
+                case 3:
+                    enchantedForest();
+                    break;
+            }
             System.out.println("Поздравляю! Ты закончил игру. Вот тебе плюшки.");
         } else if (menuChoose2 == 2) {
             System.out.println("Вы умерли, слава герою " + character.getUsername());
@@ -79,7 +99,27 @@ public class Main {
                     break;
             }
         }
-        System.out.println("Ура! Лабиринт пройден! Перед тобой открылись просторы древнего мира!");
+    }
+
+    private static void rivergard(Character character) {
+        System.out.println("На своём пути к Ривергарду, ты видишь одинокого гоблина...");
+        Utils.suspense(1500);
+        System.out.println("Кажется, начинается битва:");
+        Fight fight = new Fight(character, new Goblin());
+        fight.battle();
+        if (character.getCurrentHealth() <=0) {
+            System.out.println("Ты убит гоблином. пресс F");
+        } else {
+            System.out.println("Бой дался тебе не легко, но ты чувствуешь в себе силы двигаться дальше");
+        }
+    }
+
+    private static void litorian() {
+        System.out.println("Ты в литориане, но тут пусто, купи DLC, всего за 49,99$");
+    }
+
+    private static void enchantedForest() {
+        System.out.println("Ты в лесу, но тут пока ничего нет.");
     }
 
     private static char[][] readLabyrinth() {
