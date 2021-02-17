@@ -46,7 +46,7 @@ public class Main {
     x x   x   x x
     x   x x   x x
     x         x x
-    x x x O x x x
+    x x x O x x x  
      */
     private static void labyrinth() { // start: 3 col, 6 row
         char[][] labyrinth = readLabyrinth();
