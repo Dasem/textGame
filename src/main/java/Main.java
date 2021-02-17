@@ -3,19 +3,30 @@ import java.util.*;
 
 public class Main {
     private static Scanner sc = new Scanner(System.in);
+    static final String START_GAME_MENU = "1. Новая игра\n2. Выход";
 
     public static void main(String[] args) {
-        String menu = "1. Новая игра\n2. Выход";
-        System.out.println(menu);
-        int menuChoose = sc.nextInt();
-        switch (menuChoose) {
-            case 1:
-                Character mainCharacter = createCharacter();
-                startGame(mainCharacter);
-                break;
-            case 2:
-                System.out.println("Игра окончена");
-                break;
+        boolean chooseDone = false;
+        while (!chooseDone) {
+            try {
+                chooseDone = true;
+                System.out.println(START_GAME_MENU);
+                int menuChoose = Integer.parseInt(sc.nextLine());
+                switch (menuChoose) {
+                    case 1:
+                        Character mainCharacter = createCharacter();
+                        startGame(mainCharacter);
+                        break;
+                    case 2:
+                        System.out.println("Игра окончена");
+                        break;
+                    default:
+                        chooseDone = false;
+                        throw new NumberFormatException();
+                }
+            } catch (NumberFormatException ex) {
+                System.out.println("Выберите подходящий вариант меню, ПОЖОЖДА");
+            }
         }
     }
 
@@ -35,7 +46,7 @@ public class Main {
             labyrinth();
             System.out.println("Поздравляю! Ты закончил игру. Вот тебе плюшки.");
         } else if (menuChoose2 == 2) {
-            System.out.println("Вы умерли, слава герою " + character.username);
+            System.out.println("Вы умерли, слава герою " + character.getUsername());
         }
     }
 
@@ -46,7 +57,7 @@ public class Main {
     x x   x   x x
     x   x x   x x
     x         x x
-    x x x O x x x  
+    x x x O x x x
      */
     private static void labyrinth() { // start: 3 col, 6 row
         char[][] labyrinth = readLabyrinth();

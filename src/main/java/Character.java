@@ -1,8 +1,12 @@
 public class Character {
 
-    public String username;
+    private final String username;
 
     public Character(String username) {
         this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }
