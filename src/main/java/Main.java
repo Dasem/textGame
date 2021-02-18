@@ -109,6 +109,7 @@ public class Main {
         fight.battle();
         if (character.getCurrentHealth() <=0) {
             System.out.println("Ты убит гоблином. пресс F");
+            System.exit(0);
         } else {
             System.out.println("Бой дался тебе не легко, но ты чувствуешь в себе силы двигаться дальше");
         }

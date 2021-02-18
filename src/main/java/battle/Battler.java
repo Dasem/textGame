@@ -1,15 +1,15 @@
 package battle;
 
 public interface Battler {
-    public abstract int getCurrentHealth();
+     int getCurrentHealth();
 
-    public abstract int getMaxHealth();
+     int getMaxHealth();
 
-    public abstract int getOnHitDamage();
+     int getOnHitDamage();
 
-    public abstract int getAttackModifier();
+     int getAttackModifier();
 
-    public abstract int getArmorClass();
+     int getArmorClass();
 
     /**
      * Возвращает false, если персонаж жив

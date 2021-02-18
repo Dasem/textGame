@@ -56,7 +56,7 @@ public class Fight {
         if (damage == 0) {
             return new AttackResult(false, battlerFrom.getName() + " промахнулся");
         } else {
-            boolean isDead = battlerFrom.takeDamage(damage);
+            boolean isDead = battlerTo.takeDamage(damage);
             return new AttackResult(isDead, battlerFrom.getName() + " нанёс " + damage + " урона");
         }
     }
