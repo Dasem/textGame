@@ -15,25 +15,25 @@ public class Position {
         // col 0, row +1
         String pathMenu="Выберите путь: \n";
         if (checkValid(currentRow + 1, currentColumn, labyrinth)) {
-            pathMenu += "1. Вниз\n";
+            pathMenu += "1. \u2193\n";
         } else {
             pathMenu += "1. Низя\n";
         }
         // col +1, row 0
         if (checkValid(currentRow, currentColumn + 1, labyrinth)) {
-            pathMenu += "2. Вправо\n";
+            pathMenu += "2. \u2192\n";
         } else {
             pathMenu += "2. Низя\n";
         }
         // col -1, row 0
         if (checkValid(currentRow, currentColumn -1, labyrinth)) {
-            pathMenu += "3. Влево\n";
+            pathMenu += "3. \u2190\n";
         } else {
             pathMenu += "3. Низя\n";
         }
         // col 0, row -1
         if (checkValid(currentRow - 1, currentColumn, labyrinth)) {
-            pathMenu += "4. Вверх\n";
+            pathMenu += "4. \u2191\n";
         } else {
             pathMenu += "4. Низя\n";
         }
