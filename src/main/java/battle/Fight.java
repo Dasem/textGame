@@ -18,6 +18,7 @@ public class Fight {
             suspense(1000);
             AttackResult attackResult1 = hitOnBattler2();
             if (attackResult1.isKill) {
+                System.out.println(attackResult1.attackText);
                 System.out.println(battler2.getName() + " умирает");
                 return;
             } else {
@@ -26,6 +27,7 @@ public class Fight {
             suspense(700);
             AttackResult attackResult2 = hitOnBattler1();
             if (attackResult2.isKill) {
+                System.out.println(attackResult2.attackText);
                 System.out.println(battler1.getName() + " умирает");
                 return;
             } else {

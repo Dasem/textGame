@@ -2,7 +2,6 @@ import battle.*;
 import utils.*;
 
 import java.io.*;
-import java.security.PublicKey;
 import java.util.*;
 
 public class Main {
@@ -47,7 +46,7 @@ public class Main {
         if (menuChoose2 == 1) {
             System.out.println("Вы видите перед собой карту и поднимаете её");
             System.out.println("Необходимо преодолеть лабиринт:");
-            Labyrint.labyrinth();
+            Lab.labyrinth();
             System.out.println("Ура! Лабиринт пройден! Перед тобой открылись просторы древнего мира!");
             System.out.println("Перед тобой развилка с путевым знаком, на нём видны вариаинты, выбери дальнейший путь:\n" +
                     "1. Ривергард\n" +
@@ -62,7 +61,7 @@ public class Main {
                     litorian();
                     break;
                 case 3:
-                    enchantedForest();
+                    enchantedForest(character);
                     break;
             }
             System.out.println("Поздравляю! Ты закончил игру. Вот тебе плюшки.");
@@ -85,13 +84,14 @@ public class Main {
     private static void rivergard(Character character) {
         System.out.println("На своём пути к Ривергарду, ты видишь одинокого гоблина...");
         Utils.suspense(1500);
+        System.out.println("Кажется, начинается битва:");
         Fight fight = new Fight(character, new Goblin());
         fight.battle();
         if (character.getCurrentHealth() <=0) {
             System.out.println("Ты убит гоблином. пресс F");
             System.exit(0);
         } else {
-            System.out.println("Бой дался тебе не легко, но ты чувствуешь в себе силы двигаться дальше");
+            System.out.println("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
         }
     }
 
@@ -99,8 +99,31 @@ public class Main {
         System.out.println("Ты в литориане, но тут пусто, купи DLC, всего за 49,99$");
     }
 
-    private static void enchantedForest() {
-        System.out.println("Ты в лесу, но тут пока ничего нет.");
+    private static void enchantedForest(Character character) {
+        System.out.println("Уверенно шагая по лесной тропинке ты чувствуешь на себе чей-то взгляд.\nПо спине пробежал холодок.\nТы решаешь перейти на бег, но коварные корни деревьев цепляются тебе за ноги и ты кубарем катишься вниз, в глубь леса.\nВстав и отряхнувшись ты видишь перед собой развилку...   ");
+        System.out.println("Куда ты отравишься?:\n1.В лево \n2.В право ");
+        switch (sc.nextInt()) {
+            case 1: Lab.labyrinth(); break;
+            case 2:  System.out.println("Перед тобой появляется волк с явно недружелюбными намерениями\n");
+                Fight fight = new Fight(character, new Wolf());
+                fight.battle();
+                if (character.getCurrentHealth() <=0) {
+                    System.out.println("Ты убит волком. пресс F");
+                    System.exit(0);
+                } else {
+                    System.out.println("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
+                }break;
+        }
     }
+
+
+
+
+
+
+
+
+
+
 
 }
