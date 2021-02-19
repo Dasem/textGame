@@ -1,12 +1,10 @@
 import battle.*;
+import menu.*;
 import units.*;
 import units.Character;
 import utils.*;
 
-import java.util.*;
-
 public class Main {
-    private static Scanner sc = new Scanner(System.in);
     static final String START_GAME_MENU = "1. Новая игра\n2. Выход";
 
     public static void main(String[] args) {
@@ -15,7 +13,7 @@ public class Main {
             try {
                 chooseDone = true;
                 System.out.println(START_GAME_MENU);
-                int menuChoose = Integer.parseInt(sc.nextLine());
+                int menuChoose = Integer.parseInt(Utils.sc.nextLine());
                 switch (menuChoose) {
                     case 1:
                         Character mainCharacter = createCharacter();
@@ -25,47 +23,45 @@ public class Main {
                         System.out.println("Игра окончена");
                         break;
                     default:
-                        chooseDone = false;
                         throw new NumberFormatException();
                 }
             } catch (NumberFormatException ex) {
                 System.out.println("Выберите подходящий вариант меню, ПОЖОЖДА");
+                chooseDone = false;
             }
         }
     }
 
     private static Character createCharacter() {
         System.out.print("Введите имя персонажа: ");
-        String username = sc.next();
+        String username = Utils.sc.next();
         return new Character(username);
     }
 
     private static void startGame(Character character) {
         String menu1 = "1. Выжить\n2. Умереть";
         System.out.println(menu1);
-        int menuChoose2 = sc.nextInt();
+        int menuChoose2 = Utils.sc.nextInt();
         if (menuChoose2 == 1) {
             System.out.println("Вы видите перед собой карту и поднимаете её");
             System.out.println("Необходимо преодолеть лабиринт:");
             Labyrinth startLabyrinth = new Labyrinth();
             startLabyrinth.enterLabyrinth();
             System.out.println("Ура! Лабиринт пройден! Перед тобой открылись просторы древнего мира!");
-            System.out.println("Перед тобой развилка с путевым знаком, на нём видны вариаинты, выбери дальнейший путь:\n" +
-                    "1. Ривергард\n" +
-                    "2. Литориан\n" +
-                    "3. Зачарованный лес");
-            switch (sc.nextInt()) {
-                case 1:
-                    rivergard(character);
-                    System.out.println("Перед твоим взором расстилаются огромные ворота города Ривергард");
-                    break;
-                case 2:
-                    litorian();
-                    break;
-                case 3:
-                    enchantedForest(character);
-                    break;
-            }
+
+            Menu menu = new Menu("Перед тобой развилка с путевым знаком, на нём видны варианты, выбери дальнейший путь:");
+            menu.addItem("Ривергард", () -> {
+                rivergard(character);
+                System.out.println("Перед твоим взором расстилаются огромные ворота города Ривергард");
+            });
+            menu.addItem("Литориан", () -> {
+                litorian();
+            });
+            menu.addItem("Зачарованный лес", () -> {
+                enchantedForest(character);
+            });
+            menu.showAndChoose();
+
             System.out.println("Поздравляю! Ты закончил игру. Вот тебе плюшки.");
         } else if (menuChoose2 == 2) {
             System.out.println("Вы умерли, слава герою " + character.getUsername());
@@ -104,7 +100,7 @@ public class Main {
     private static void enchantedForest(Character character) {
         System.out.println("Уверенно шагая по лесной тропинке ты чувствуешь на себе чей-то взгляд.\nПо спине пробежал холодок.\nТы решаешь перейти на бег, но коварные корни деревьев цепляются тебе за ноги и ты кубарем катишься вниз, в глубь леса.\nВстав и отряхнувшись ты видишь перед собой развилку...   ");
         System.out.println("Куда ты отравишься?:\n1.В лево \n2.В право ");
-        switch (sc.nextInt()) {
+        switch (Utils.sc.nextInt()) {
             case 1:
                 Labyrinth labyrinth = new Labyrinth();
                 labyrinth.enterLabyrinth();

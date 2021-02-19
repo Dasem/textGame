@@ -1,17 +1,17 @@
+import utils.*;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Scanner;
 
 public class Labyrinth {
-    private static Scanner sc = new Scanner(System.in);
 
     public void enterLabyrinth() { // start: 3 col, 6 row
         char[][] labyrinth = readLabyrinth();
         Position position = new Position(6, 3, 6, 6);
         while (!position.escaped(labyrinth)) {
             System.out.println(position.pathMenu(labyrinth));
-            switch (sc.nextInt()) {
+            switch (Utils.sc.nextInt()) {
                 case 1:
                     System.out.println(position.goDown(labyrinth));
                     break;

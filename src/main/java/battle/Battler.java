@@ -1,21 +1,21 @@
 package battle;
 
 public interface Battler {
-     int getCurrentHealth();
+    int getCurrentHealth();
 
-     int getMaxHealth();
+    int getMaxHealth();
 
-     int getOnHitDamage();
+    int getOnHitDamage();
 
-     int getAttackModifier();
+    int getAttackModifier();
 
-     int getArmorClass();
+    int getArmorClass();
 
     /**
      * Возвращает false, если персонаж жив
      * true - если убит
      */
-     boolean takeDamage(int damage);
+    boolean takeDamage(int damage);
 
-     String getName();
+    String getName();
 }
