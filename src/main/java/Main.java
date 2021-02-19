@@ -2,6 +2,7 @@ import battle.*;
 import utils.*;
 
 import java.io.*;
+import java.security.PublicKey;
 import java.util.*;
 
 public class Main {
@@ -46,7 +47,7 @@ public class Main {
         if (menuChoose2 == 1) {
             System.out.println("Вы видите перед собой карту и поднимаете её");
             System.out.println("Необходимо преодолеть лабиринт:");
-            labyrinth();
+            Labyrint.labyrinth();
             System.out.println("Ура! Лабиринт пройден! Перед тобой открылись просторы древнего мира!");
             System.out.println("Перед тобой развилка с путевым знаком, на нём видны вариаинты, выбери дальнейший путь:\n" +
                     "1. Ривергард\n" +
@@ -79,32 +80,11 @@ public class Main {
     x         x x
     x x x O x x x
      */
-    private static void labyrinth() { // start: 3 col, 6 row
-        char[][] labyrinth = readLabyrinth();
-        Position position = new Position(6, 3, 6, 6);
-        while (!position.escaped(labyrinth)) {
-            System.out.println(position.pathMenu(labyrinth));
-            switch (sc.nextInt()) {
-                case 1:
-                    System.out.println(position.goDown(labyrinth));
-                    break;
-                case 2:
-                    System.out.println(position.goRight(labyrinth));
-                    break;
-                case 3:
-                    System.out.println(position.goLeft(labyrinth));
-                    break;
-                case 4:
-                    System.out.println(position.goTop(labyrinth));
-                    break;
-            }
-        }
-    }
+
 
     private static void rivergard(Character character) {
         System.out.println("На своём пути к Ривергарду, ты видишь одинокого гоблина...");
         Utils.suspense(1500);
-        System.out.println("Кажется, начинается битва:");
         Fight fight = new Fight(character, new Goblin());
         fight.battle();
         if (character.getCurrentHealth() <=0) {
@@ -123,29 +103,4 @@ public class Main {
         System.out.println("Ты в лесу, но тут пока ничего нет.");
     }
 
-    private static char[][] readLabyrinth() {
-        char[][] labyrinth = new char[7][7]; // 7x7
-        ClassLoader classLoader = Main.class.getClassLoader();
-        File file = new File(classLoader.getResource("map").getFile());
-        try (FileReader reader = new FileReader(file)) {
-            // читаем посимвольно
-            int intSymbol;
-            int currentRow = 0;
-            int currentColumn = 0;
-            while ((intSymbol = reader.read()) != -1) {
-                char currentSymbol = (char) intSymbol;
-                if (currentSymbol == '\n') {
-                    currentRow++;
-                    currentColumn = 0;
-                    continue;
-                }
-
-                labyrinth[currentRow][currentColumn] = currentSymbol;
-                currentColumn++;
-            }
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-        return labyrinth;
-    }
 }

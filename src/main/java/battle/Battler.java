@@ -15,7 +15,7 @@ public interface Battler {
      * Возвращает false, если персонаж жив
      * true - если убит
      */
-    public abstract boolean takeDamage(int damage);
+     boolean takeDamage(int damage);
 
-    public abstract String getName();
+     String getName();
 }

@@ -1,8 +1,8 @@
 public class Position {
     public int currentRow;
     public int currentColumn;
-    private int maxRow=0;
-    private int maxColumn=0;
+    private final int maxRow;
+    private final int maxColumn;
 
     public Position(int currentRow, int currentColumn, int maxRow, int maxColumn) {
         this.currentRow = currentRow;
