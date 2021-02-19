@@ -68,17 +68,6 @@ public class Main {
         }
     }
 
-    /*
-    x   x Z     x
-    x     x x   x
-    x x         x
-    x x   x   x x
-    x   x x   x x
-    x         x x
-    x x x O x x x
-     */
-
-
     private static void rivergard(Character character) {
         System.out.println("На своём пути к Ривергарду, ты видишь одинокого гоблина...");
         Utils.suspense(1500);
