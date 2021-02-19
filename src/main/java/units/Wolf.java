@@ -1,4 +1,4 @@
-package battle;
+package units;
 
 public class Wolf extends Enemy {
     protected int currentHealth = getMaxHealth();

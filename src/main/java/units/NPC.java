@@ -1,4 +1,4 @@
-package battle;
+package units;
 
 public abstract class NPC {
 }

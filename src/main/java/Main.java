@@ -1,7 +1,8 @@
 import battle.*;
+import units.*;
+import units.Character;
 import utils.*;
 
-import java.io.*;
 import java.util.*;
 
 public class Main {
@@ -46,7 +47,8 @@ public class Main {
         if (menuChoose2 == 1) {
             System.out.println("Вы видите перед собой карту и поднимаете её");
             System.out.println("Необходимо преодолеть лабиринт:");
-            Lab.labyrinth();
+            Labyrinth startLabyrinth = new Labyrinth();
+            startLabyrinth.enterLabyrinth();
             System.out.println("Ура! Лабиринт пройден! Перед тобой открылись просторы древнего мира!");
             System.out.println("Перед тобой развилка с путевым знаком, на нём видны вариаинты, выбери дальнейший путь:\n" +
                     "1. Ривергард\n" +
@@ -103,27 +105,26 @@ public class Main {
         System.out.println("Уверенно шагая по лесной тропинке ты чувствуешь на себе чей-то взгляд.\nПо спине пробежал холодок.\nТы решаешь перейти на бег, но коварные корни деревьев цепляются тебе за ноги и ты кубарем катишься вниз, в глубь леса.\nВстав и отряхнувшись ты видишь перед собой развилку...   ");
         System.out.println("Куда ты отравишься?:\n1.В лево \n2.В право ");
         switch (sc.nextInt()) {
-            case 1: Lab.labyrinth(); break;
+            case 1:
+                Labyrinth labyrinth = new Labyrinth();
+                labyrinth.enterLabyrinth();
+                break;
             case 2:  System.out.println("Перед тобой появляется волк с явно недружелюбными намерениями\n");
-                Fight fight = new Fight(character, new Wolf());
-                fight.battle();
-                if (character.getCurrentHealth() <=0) {
-                    System.out.println("Ты убит волком. пресс F");
-                    System.exit(0);
-                } else {
-                    System.out.println("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
-                }break;
+                fightWithWolf(character);
+                break;
         }
     }
 
-
-
-
-
-
-
-
-
+    private static void fightWithWolf(Character character) {
+        Fight fight = new Fight(character, new Wolf());
+        fight.battle();
+        if (character.getCurrentHealth() <=0) {
+            System.out.println("Ты убит волком. пресс F");
+            System.exit(0);
+        } else {
+            System.out.println("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
+        }
+    }
 
 
 }

@@ -1,7 +1,19 @@
-package battle;
+package units;
 
-public class Goblin extends Enemy {
-    protected int currentHealth = getMaxHealth();
+import battle.*;
+
+public class Character implements Battler {
+
+    private final String username;
+    private int currentHealth = getMaxHealth();
+
+    public Character(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
+    }
 
     @Override
     public int getCurrentHealth() {
@@ -15,17 +27,17 @@ public class Goblin extends Enemy {
 
     @Override
     public int getOnHitDamage() {
-        return 3;
+        return 4;
     }
 
     @Override
     public int getAttackModifier() {
-        return 1;
+        return 2;
     }
 
     @Override
     public int getArmorClass() {
-        return 11;
+        return 14;
     }
 
     @Override
@@ -36,6 +48,6 @@ public class Goblin extends Enemy {
 
     @Override
     public String getName() {
-        return "Goblin";
+        return username;
     }
 }
