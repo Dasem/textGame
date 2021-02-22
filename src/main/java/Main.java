@@ -88,16 +88,17 @@ public class Main {
 
     private static void enchantedForest(Character character) {
         System.out.println("Уверенно шагая по лесной тропинке ты чувствуешь на себе чей-то взгляд.\nПо спине пробежал холодок.\nТы решаешь перейти на бег, но коварные корни деревьев цепляются тебе за ноги и ты кубарем катишься вниз, в глубь леса.\nВстав и отряхнувшись ты видишь перед собой развилку...   ");
-        System.out.println("Куда ты отравишься?:\n1.В лево \n2.В право ");
-        switch (Utils.sc.nextInt()) {
-            case 1:
-                Labyrinth labyrinth = new Labyrinth();
-                labyrinth.enterLabyrinth();
-                break;
-            case 2:  System.out.println("Перед тобой появляется волк с явно недружелюбными намерениями\n");
-                fightWithWolf(character);
-                break;
-        }
+        Menu menu = new Menu ("Куда ты отравишься?");
+        menu.addItem("Влево",() -> {
+            Labyrinth labyrinth = new Labyrinth();
+            labyrinth.enterLabyrinth();
+        });
+
+        menu.addItem("Вправо",() -> {
+            System.out.println("Перед тобой появляется волк с явно недружелюбными намерениями\n");
+            fightWithWolf(character);
+        });
+        menu.showAndChoose();
     }
 
     private static void fightWithWolf(Character character) {
