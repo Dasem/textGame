@@ -1,3 +1,5 @@
+import battle.Battler;
+import units.Character;
 import utils.*;
 
 import java.io.File;
@@ -6,11 +8,18 @@ import java.io.IOException;
 
 public class Labyrinth {
 
-    public void enterLabyrinth() { // start: 3 col, 6 row
+
+
+    public void enterLabyrinth(Character character) { // start: 3 col, 6 row
         char[][] labyrinth = readLabyrinth();
         Position position = new Position(6, 3, 6, 6);
         while (!position.escaped(labyrinth)) {
             System.out.println(position.pathMenu(labyrinth));
+            if(labyrinth[position.currentRow][position.currentColumn]=='+') {
+                int heal = 3;
+                character.healing(heal);
+                System.out.println("Ты нашел зелье лечения");
+            }
             switch (Utils.sc.nextInt()) {
                 case 1:
                     System.out.println(position.goDown(labyrinth));

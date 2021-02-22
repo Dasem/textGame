@@ -82,6 +82,7 @@ public class Position {
 
     private boolean checkValid(int row, int col, char[][] labyrinth) {
         return row <= maxRow && col <= maxColumn && row >= 0 && col >= 0
-                && labyrinth[row][col] != 'x';
+                && labyrinth[row][col] != 'x'
+                | labyrinth[row][col] == '+';
     }
 }

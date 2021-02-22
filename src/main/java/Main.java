@@ -46,7 +46,7 @@ public class Main {
             System.out.println("Вы видите перед собой карту и поднимаете её");
             System.out.println("Необходимо преодолеть лабиринт:");
             Labyrinth startLabyrinth = new Labyrinth();
-            startLabyrinth.enterLabyrinth();
+            startLabyrinth.enterLabyrinth(character);
             System.out.println("Ура! Лабиринт пройден! Перед тобой открылись просторы древнего мира!");
 
             Menu menu = new Menu("Перед тобой развилка с путевым знаком, на нём видны варианты, выбери дальнейший путь:");
@@ -91,7 +91,7 @@ public class Main {
         Menu menu = new Menu ("Куда ты отравишься?");
         menu.addItem("Влево",() -> {
             Labyrinth labyrinth = new Labyrinth();
-            labyrinth.enterLabyrinth();
+            labyrinth.enterLabyrinth(character);
         });
 
         menu.addItem("Вправо",() -> {

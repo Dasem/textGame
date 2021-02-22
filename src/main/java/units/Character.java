@@ -45,6 +45,9 @@ public class Character implements Battler {
         currentHealth -= damage;
         return currentHealth <= 0;
     }
+    public void healing(int heal){
+        currentHealth +=heal;
+    }
 
     @Override
     public String getName() {
