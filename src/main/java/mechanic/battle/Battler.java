@@ -1,4 +1,4 @@
-package battle;
+package mechanic.battle;
 
 public interface Battler {
     int getCurrentHealth();

@@ -1,4 +1,4 @@
-package battle;
+package mechanic.battle;
 
 import java.util.*;
 

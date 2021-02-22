@@ -1,6 +1,6 @@
 package menu;
 
-public class MenuItem {
+public class MenuItem implements Executor {
     private final int itemNumber;
     private final String name;
     private final Executor executor;
@@ -19,11 +19,12 @@ public class MenuItem {
         return name;
     }
 
-    public void execute() {
-        executor.execute();
-    }
-
     public int getItemNumber() {
         return itemNumber;
+    }
+
+    @Override
+    public void execute() {
+        executor.execute();
     }
 }

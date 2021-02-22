@@ -1,3 +1,7 @@
+package mechanic.labyrinth;
+
+import java.util.*;
+
 public class Position {
     public int currentRow;
     public int currentColumn;
@@ -11,33 +15,37 @@ public class Position {
         this.maxColumn = maxColumn;
     }
 
-    public String pathMenu(char[][] labyrinth) {
-        // col 0, row +1
+    public List<String> pathMenu(char[][] labyrinth) {
+        List<String> result = new ArrayList<>();
+        String NONE = "Пути нет";
         String pathMenu="Выберите путь: \n";
+
+        // col 0, row +1
         if (checkValid(currentRow + 1, currentColumn, labyrinth)) {
-            pathMenu += "1. \u2193\n";
+            result.add("\u2193");
         } else {
-            pathMenu += "1. Низя\n";
+            result.add(NONE);
         }
+
         // col +1, row 0
         if (checkValid(currentRow, currentColumn + 1, labyrinth)) {
-            pathMenu += "2. \u2192\n";
+            result.add("\u2192");
         } else {
-            pathMenu += "2. Низя\n";
+            result.add(NONE);
         }
         // col -1, row 0
         if (checkValid(currentRow, currentColumn -1, labyrinth)) {
-            pathMenu += "3. \u2190\n";
+            result.add("\u2190");
         } else {
-            pathMenu += "3. Низя\n";
+            result.add(NONE);
         }
         // col 0, row -1
         if (checkValid(currentRow - 1, currentColumn, labyrinth)) {
-            pathMenu += "4. \u2191\n";
+            result.add("\u2191");
         } else {
-            pathMenu += "4. Низя\n";
+            result.add(NONE);
         }
-        return pathMenu;
+        return result;
     }
 
     public String goTop(char[][] labyrinth){
@@ -81,8 +89,9 @@ public class Position {
     }
 
     private boolean checkValid(int row, int col, char[][] labyrinth) {
-        return row <= maxRow && col <= maxColumn && row >= 0 && col >= 0
-                && labyrinth[row][col] != 'x'
-                | labyrinth[row][col] == '+';
+        boolean checkNotOutOfBounds = row <= maxRow && col <= maxColumn && row >= 0 && col >= 0;
+
+        return checkNotOutOfBounds &&
+                (labyrinth[row][col] != 'x');
     }
 }

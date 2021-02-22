@@ -21,7 +21,7 @@ public class Menu {
                 int menuChoose = Integer.parseInt(Utils.sc.nextLine());
                 MenuItem menuItem = menuItems.get(menuChoose - 1);
                 menuItem.execute();
-            } catch (NumberFormatException ex) {
+            } catch (NumberFormatException | IndexOutOfBoundsException ex) {
                 System.out.println("Выберите подходящий вариант меню, ПОЖОЖДА");
                 chooseDone = false;
             }

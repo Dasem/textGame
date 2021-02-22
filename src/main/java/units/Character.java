@@ -1,6 +1,6 @@
 package units;
 
-import battle.*;
+import mechanic.battle.*;
 
 public class Character implements Battler {
 
@@ -45,8 +45,19 @@ public class Character implements Battler {
         currentHealth -= damage;
         return currentHealth <= 0;
     }
-    public void healing(int heal){
-        currentHealth +=heal;
+
+    public void healing(int heal) {
+        setCurrentHealth(getCurrentHealth() + heal);
+    }
+
+    public void setCurrentHealth(int currentHealth) {
+        if (currentHealth < 0) {
+            this.currentHealth = 0;
+        } else if (currentHealth > getMaxHealth()) {
+            this.currentHealth = getMaxHealth();
+        } else {
+            this.currentHealth = currentHealth;
+        }
     }
 
     @Override
