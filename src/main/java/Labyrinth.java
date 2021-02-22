@@ -1,5 +1,6 @@
 import utils.*;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -29,9 +30,23 @@ public class Labyrinth {
     }
 
     private char[][] readLabyrinth() {
-        char[][] labyrinth = new char[7][7]; // 7x7
         ClassLoader classLoader = Main.class.getClassLoader();
         File file = new File(classLoader.getResource("map").getFile());
+        int row = 0, column = 0;
+        try (FileReader fr = new FileReader(file)) {
+            BufferedReader reader = new BufferedReader(fr);
+            String line = reader.readLine();
+            column = line.length();
+            while (line != null) {
+                row++;
+                line = reader.readLine();
+            }
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        System.out.println(row + " " + column);
+        char[][] labyrinth = new char[row][column]; // 7x7
         try (FileReader reader = new FileReader(file)) {
             // читаем посимвольно
             int intSymbol;
@@ -44,9 +59,10 @@ public class Labyrinth {
                     currentColumn = 0;
                     continue;
                 }
-
-                labyrinth[currentRow][currentColumn] = currentSymbol;
-                currentColumn++;
+                //if ( currentColumn < column) {
+                    labyrinth[currentRow][currentColumn] = currentSymbol;
+                    currentColumn++;
+                //}
             }
         } catch (IOException ex) {
             System.out.println(ex.getMessage());

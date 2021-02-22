@@ -48,7 +48,6 @@ public class Main {
             Labyrinth startLabyrinth = new Labyrinth();
             startLabyrinth.enterLabyrinth();
             System.out.println("Ура! Лабиринт пройден! Перед тобой открылись просторы древнего мира!");
-
             Menu menu = new Menu("Перед тобой развилка с путевым знаком, на нём видны варианты, выбери дальнейший путь:");
             menu.addItem("Ривергард", () -> {
                 rivergard(character);
