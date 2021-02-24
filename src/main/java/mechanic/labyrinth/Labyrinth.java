@@ -1,8 +1,11 @@
 package mechanic.labyrinth;
 
 import equipment.Weapon;
+import mechanic.battle.Fight;
 import menu.*;
 import units.Character;
+import units.Goblin;
+import units.Wolf;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,6 +29,17 @@ public class Labyrinth {
                 character.setOnHitDamage();
                 System.out.println("Ты нашел короткий меч");
                 System.out.println("Его урон "+ character.getOnHitDamage());
+            }
+            if (labyrinth[position.currentRow][position.currentColumn] == '@'){
+                System.out.println("Кажется, начинается битва:");
+                Fight fight = new Fight(character, new Wolf());
+                fight.battle();
+                if (character.getCurrentHealth() <=0) {
+                    System.out.println("Ты убит волком. пресс F");
+                    System.exit(0);
+                } else {
+                    System.out.println("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
+                }
             }
 
             Menu labyrinthMenu = new Menu("Необходимо преодолеть лабиринт:");
