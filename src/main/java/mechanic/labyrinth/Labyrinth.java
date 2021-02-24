@@ -80,7 +80,7 @@ public class Labyrinth {
                     labyrinth[currentRow][currentColumn] = currentSymbol;
                     if (currentSymbol == 'O'){
                     }
-                    if (currentSymbol == '+' || currentSymbol == '-') {
+                    if (currentSymbol != 'x' ||  currentSymbol != 'O'||currentSymbol != 'Z') {
                         System.out.print(" ");
                     } else {
                         System.out.print(currentSymbol);
