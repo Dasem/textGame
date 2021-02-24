@@ -1,5 +1,7 @@
 package mechanic.labyrinth;
 
+import equipment.Armor;
+import equipment.ArmorType;
 import equipment.*;
 import mechanic.battle.Fight;
 import menu.*;
@@ -17,13 +19,17 @@ public class Labyrinth {
 
     public void enterLabyrinth(Character character) { // start: 3 col, 6 row
         char[][] labyrinth = readLabyrinth();
-        Position position = new Position(6, 3, 6, 6);
+        Position position = new Position(6 , 3 ,6,6);
         while (!position.escaped(labyrinth)) {
             System.out.println();
             if (labyrinth[position.currentRow][position.currentColumn] == '+') {
                 int heal = Dices.diceD4();
                 character.healing(heal);
                 System.out.println("Ты нашел зелье лечения, твоё текущее здоровье: " + character.getCurrentHealth());
+            }
+            if (labyrinth[position.currentRow][position.currentColumn] == 'A') {
+                character.setArmor(new Armor(ArmorType.LIGHT_ARMOR));
+                System.out.println("Ты подобрал броню, твой текущий класс защиты: " + character.getArmorClass());
             }
             if (labyrinth[position.currentRow][position.currentColumn] == '>') {
                 System.out.println("Ты нашел короткий меч");
@@ -82,8 +88,6 @@ public class Labyrinth {
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
-
-        System.out.println(row + " " + column);
         char[][] labyrinth = new char[row][column]; // 7x7
         try (FileReader reader = new FileReader(file)) {
             // читаем посимвольно
@@ -95,10 +99,18 @@ public class Labyrinth {
                 if (currentSymbol == '\n') {
                     currentRow++;
                     currentColumn = 0;
+                    System.out.print("\n");
                     continue;
                 }
                 if (currentColumn < column) {
                     labyrinth[currentRow][currentColumn] = currentSymbol;
+                    if (currentSymbol == 'O'){
+                    }
+                    if (currentSymbol != 'x' ||  currentSymbol != 'O'||currentSymbol != 'Z') {
+                        System.out.print(" ");
+                    } else {
+                        System.out.print(currentSymbol);
+                    }
                     currentColumn++;
                 }
             }

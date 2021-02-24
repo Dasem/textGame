@@ -1,13 +1,15 @@
 package units;
 
+import equipment.Armor;
 import equipment.Weapon;
 import mechanic.battle.*;
 import utils.*;
 
 public class Character implements Battler {
-
+    private final static int DEFAULT_ARMOR_CLASS = 10;
     private final String username;
     private int currentHealth = getMaxHealth();
+    private Armor armor;
     private Weapon weapon;
 
     public Character(String username) {
@@ -44,8 +46,14 @@ public class Character implements Battler {
 
     @Override
     public int getArmorClass() {
-        return 14;
+        if (armor == null) {
+
+            return DEFAULT_ARMOR_CLASS;
+        } else {
+            return getArmor().getArmorType().getArmorClass();
+        }
     }
+
 
     @Override
     public boolean takeDamage(int damage) {
@@ -65,6 +73,14 @@ public class Character implements Battler {
         } else {
             this.currentHealth = currentHealth;
         }
+    }
+
+    public Armor getArmor() {
+        return armor;
+    }
+
+    public void setArmor(Armor armor) {
+        this.armor = armor;
     }
 
     @Override
