@@ -7,7 +7,7 @@ public class Character implements Battler {
 
     private final String username;
     private int currentHealth = getMaxHealth();
-    private int currentDamage;
+    private int currentDamage=4;
 
     public Character(String username) {
         this.username = username;
@@ -68,7 +68,7 @@ public class Character implements Battler {
         if (newWeaponDamage>getOnHitDamage()) {
             return currentDamage=newWeaponDamage;
         }
-        else return getOnHitDamage();
+        else {return getOnHitDamage();}
 
     }
 

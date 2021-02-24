@@ -39,6 +39,7 @@ public class Labyrinth {
                     System.exit(0);
                 } else {
                     System.out.println("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
+                    labyrinth[position.currentRow][position.currentColumn] = ' ';
                 }
             }
 
