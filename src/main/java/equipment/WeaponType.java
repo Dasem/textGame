@@ -22,7 +22,7 @@ public enum WeaponType {
     SWORD("Меч") {
         @Override
         int getDamage() {
-            return 8;
+            return 6;
         }
     };
 

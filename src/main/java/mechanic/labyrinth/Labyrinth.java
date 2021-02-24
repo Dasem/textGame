@@ -1,5 +1,6 @@
 package mechanic.labyrinth;
 
+import equipment.Weapon;
 import menu.*;
 import units.Character;
 
@@ -20,6 +21,11 @@ public class Labyrinth {
                 int heal = 3;
                 character.healing(heal);
                 System.out.println("Ты нашел зелье лечения, твоё текущее здоровье: " + character.getCurrentHealth());
+            }
+            if (labyrinth[position.currentRow][position.currentColumn] == '>') {
+                character.setOnHitDamage();
+                System.out.println("Ты нашел короткий меч");
+                System.out.println("Его урон "+ character.getOnHitDamage());
             }
 
             Menu labyrinthMenu = new Menu("Необходимо преодолеть лабиринт:");

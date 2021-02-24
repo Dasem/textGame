@@ -1,11 +1,13 @@
 package units;
 
+import equipment.Weapon;
 import mechanic.battle.*;
 
 public class Character implements Battler {
 
     private final String username;
     private int currentHealth = getMaxHealth();
+    private int currentDamage;
 
     public Character(String username) {
         this.username = username;
@@ -27,7 +29,7 @@ public class Character implements Battler {
 
     @Override
     public int getOnHitDamage() {
-        return 4;
+        return currentDamage;
     }
 
     @Override
@@ -58,6 +60,16 @@ public class Character implements Battler {
         } else {
             this.currentHealth = currentHealth;
         }
+    }
+
+    public int setOnHitDamage() {
+        Weapon weapon = new Weapon();
+        int newWeaponDamage = weapon.getWeaponDamage();
+        if (newWeaponDamage>getOnHitDamage()) {
+            return currentDamage=newWeaponDamage;
+        }
+        else return getOnHitDamage();
+
     }
 
     @Override
