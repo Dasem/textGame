@@ -1,5 +1,7 @@
 package equipment;
 
+import utils.dices;
+
 public enum WeaponType {
     TWO_HANDED_SWORD("Двуручный меч") {
         @Override

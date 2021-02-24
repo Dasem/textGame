@@ -6,6 +6,7 @@ import menu.*;
 import units.Character;
 import units.Goblin;
 import units.Wolf;
+import utils.dices;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,7 +22,8 @@ public class Labyrinth {
         while (!position.escaped(labyrinth)) {
             System.out.println();
             if (labyrinth[position.currentRow][position.currentColumn] == '+') {
-                int heal = 3;
+                dices dice = new dices();
+                int heal =dice.diceD4();
                 character.healing(heal);
                 System.out.println("Ты нашел зелье лечения, твоё текущее здоровье: " + character.getCurrentHealth());
             }

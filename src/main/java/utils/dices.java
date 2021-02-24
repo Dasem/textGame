@@ -4,6 +4,9 @@ import java.util.Random;
 
 public class dices {
 
+    public dices() {
+    }
+
     public int diceD4() {
             int min=1;
             int max=4;
