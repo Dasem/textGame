@@ -1,30 +1,50 @@
 package equipment;
 
-import utils.dices;
+import utils.*;
 
 public enum WeaponType {
     TWO_HANDED_SWORD("Двуручный меч") {
         @Override
-        int getDamage() {
+        public int getDamage() {
             return 12;
+        }
+
+        @Override
+        public int getDicedDamage() {
+            return Dices.diceD6() + Dices.diceD6();
         }
     },
     DAGGER("Кинжал") {
         @Override
-        int getDamage() {
+        public int getDamage() {
             return 4;
+        }
+
+        @Override
+        public int getDicedDamage() {
+            return Dices.diceD4();
         }
     },
     STAFF("Посох") {
         @Override
-        int getDamage() {
+        public int getDamage() {
             return 10;
+        }
+
+        @Override
+        public int getDicedDamage() {
+            return Dices.diceD10();
         }
     },
     SWORD("Меч") {
         @Override
-        int getDamage() {
+        public int getDamage() {
             return 6;
+        }
+
+        @Override
+        public int getDicedDamage() {
+            return Dices.diceD6();
         }
     };
 
@@ -38,5 +58,7 @@ public enum WeaponType {
         return title;
     }
 
-    abstract int getDamage();
+    abstract public int getDamage();
+
+    abstract public int getDicedDamage();
 }

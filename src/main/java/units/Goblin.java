@@ -1,6 +1,6 @@
 package units;
 
-import utils.dices;
+import utils.Dices;
 
 public class Goblin extends Enemy {
     protected int currentHealth = getMaxHealth();
@@ -17,8 +17,7 @@ public class Goblin extends Enemy {
 
     @Override
     public int getOnHitDamage() {
-        dices dice = new dices();
-        return dice.diceD4();
+        return Dices.diceD4();
     }
 
     @Override

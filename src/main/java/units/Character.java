@@ -2,12 +2,13 @@ package units;
 
 import equipment.Weapon;
 import mechanic.battle.*;
+import utils.*;
 
 public class Character implements Battler {
 
     private final String username;
     private int currentHealth = getMaxHealth();
-    private int currentDamage=4;
+    private Weapon weapon;
 
     public Character(String username) {
         this.username = username;
@@ -29,7 +30,11 @@ public class Character implements Battler {
 
     @Override
     public int getOnHitDamage() {
-        return currentDamage;
+        if (weapon == null) {
+            return Dices.diceD4();
+        } else {
+            return weapon.getWeaponType().getDicedDamage();
+        }
     }
 
     @Override
@@ -62,18 +67,16 @@ public class Character implements Battler {
         }
     }
 
-    public int setOnHitDamage() {
-        Weapon weapon = new Weapon();
-        int newWeaponDamage = weapon.getWeaponDamage();
-        if (newWeaponDamage>getOnHitDamage()) {
-            return currentDamage=newWeaponDamage;
-        }
-        else {return getOnHitDamage();}
-
-    }
-
     @Override
     public String getName() {
         return username;
+    }
+
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+    public void setWeapon(Weapon weapon) {
+        this.weapon = weapon;
     }
 }

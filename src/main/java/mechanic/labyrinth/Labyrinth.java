@@ -1,12 +1,11 @@
 package mechanic.labyrinth;
 
-import equipment.Weapon;
+import equipment.*;
 import mechanic.battle.Fight;
 import menu.*;
 import units.Character;
-import units.Goblin;
 import units.Wolf;
-import utils.dices;
+import utils.Dices;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,26 +21,26 @@ public class Labyrinth {
         while (!position.escaped(labyrinth)) {
             System.out.println();
             if (labyrinth[position.currentRow][position.currentColumn] == '+') {
-                dices dice = new dices();
-                int heal =dice.diceD4();
+                int heal = Dices.diceD4();
                 character.healing(heal);
                 System.out.println("Ты нашел зелье лечения, твоё текущее здоровье: " + character.getCurrentHealth());
             }
             if (labyrinth[position.currentRow][position.currentColumn] == '>') {
-                character.setOnHitDamage();
                 System.out.println("Ты нашел короткий меч");
-                System.out.println("Его урон "+ character.getOnHitDamage());
+                Weapon weapon = new Weapon(WeaponType.SWORD);
+                System.out.println("Его урон: " + weapon.getWeaponDamage());
+                clearCurrentCell(labyrinth, position);
             }
-            if (labyrinth[position.currentRow][position.currentColumn] == '@'){
+            if (labyrinth[position.currentRow][position.currentColumn] == '@') {
                 System.out.println("Кажется, начинается битва:");
                 Fight fight = new Fight(character, new Wolf());
                 fight.battle();
-                if (character.getCurrentHealth() <=0) {
+                if (character.getCurrentHealth() <= 0) {
                     System.out.println("Ты убит волком. пресс F");
                     System.exit(0);
                 } else {
                     System.out.println("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
-                    labyrinth[position.currentRow][position.currentColumn] = ' ';
+                    clearCurrentCell(labyrinth, position);
                 }
             }
 
@@ -61,6 +60,10 @@ public class Labyrinth {
             });
             labyrinthMenu.showAndChoose();
         }
+    }
+
+    private void clearCurrentCell(char[][] labyrinth, Position position) {
+        labyrinth[position.currentRow][position.currentColumn] = ' ';
     }
 
     private char[][] readLabyrinth() {
