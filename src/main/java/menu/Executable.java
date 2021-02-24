@@ -1,7 +1,7 @@
 package menu;
 
 @FunctionalInterface
-public interface Executor {
+public interface Executable {
 
     void execute();
 }

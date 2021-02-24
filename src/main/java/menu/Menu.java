@@ -1,5 +1,6 @@
 package menu;
 
+import equipment.*;
 import units.Character;
 import utils.*;
 
@@ -30,9 +31,38 @@ public class Menu {
 
     public Menu(String title) {
         this.title = title;
+        addCharacterMenu();
     }
 
-    public void addItem(String name, Executor executor) {
-        menuItems.add(new MenuItem(menuItems.size() + 1, name, executor));
+    public Menu(String title, boolean showCharacterMenu) {
+        this.title = title;
+
+        //TODO: Вынести в персонажа, тут это тупо дикий костыль
+        if (showCharacterMenu) {
+            addCharacterMenu();
+        }
+    }
+
+    private void addCharacterMenu() {
+        addItem("Открыть инвентарь", () -> {
+            if (Character.getInstance().getInventory().getItems().isEmpty()) {
+                System.out.println("Твой инвентарь пуст");
+                return;
+            }
+
+            Menu inventoryMenu = new Menu("Инвентарь:", false);
+            for (Item item : Character.getInstance().getInventory().getItems()) {
+                inventoryMenu.addItem(item);
+            }
+            inventoryMenu.showAndChoose();
+        });
+    }
+
+    public void addItem(String name, Executable executable) {
+        menuItems.add(new MenuItem(menuItems.size() + 1, name, executable));
+    }
+
+    public void addItem(Item item) {
+        menuItems.add(new MenuItem(menuItems.size() + 1, item.getName(), item));
     }
 }

@@ -7,11 +7,11 @@ public class Main {
     static final String START_GAME_MENU = "1. Новая игра\n2. Выход";
 
     public static void main(String[] args) {
-        Menu startMenu = new Menu("Добро пожаловать в игру:");
+        Menu startMenu = new Menu("Добро пожаловать в игру:", false);
         startMenu.addItem("Новая игра", () -> {
-            Character mainCharacter = createCharacter();
-            new Level1().startLevel(mainCharacter);
-            new Level2().startLevel(mainCharacter);
+            createCharacter();
+            new Level1().startLevel();
+            new Level2().startLevel();
         });
         startMenu.addItem("Выход", () -> {
             System.out.println("Игра окончена");
@@ -19,9 +19,9 @@ public class Main {
         startMenu.showAndChoose();
     }
 
-    private static Character createCharacter() {
+    private static void createCharacter() {
         System.out.print("Введите имя персонажа: ");
         String username = Utils.sc.nextLine();
-        return new Character(username);
+        Character.createInstance(username);
     }
 }

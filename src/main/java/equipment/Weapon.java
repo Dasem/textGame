@@ -1,7 +1,5 @@
 package equipment;
 
-import mechanic.labyrinth.Labyrinth;
-
 public class Weapon extends Equipment {
 
     WeaponType weaponType;
@@ -16,5 +14,15 @@ public class Weapon extends Equipment {
 
     public int getWeaponDamage() {
         return weaponType.getDamage();
+    }
+
+    @Override
+    public String getName() {
+        return weaponType.getTitle();
+    }
+
+    @Override
+    public void execute() {
+        // Надеть / нет
     }
 }

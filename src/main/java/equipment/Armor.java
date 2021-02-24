@@ -11,4 +11,14 @@ public class Armor extends Equipment {
     public ArmorType getArmorType() {
         return armorType;
     }
+
+    @Override
+    public String getName() {
+        return armorType.getTitle();
+    }
+
+    @Override
+    public void execute() {
+        // Надеть / нет
+    }
 }

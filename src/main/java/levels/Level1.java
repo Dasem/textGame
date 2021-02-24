@@ -1,5 +1,7 @@
 package levels;
 
+import equipment.*;
+import equipment.items.*;
 import mechanic.battle.*;
 import mechanic.labyrinth.*;
 import menu.*;
@@ -12,45 +14,63 @@ import java.lang.*;
 public class Level1 implements Levelable {
 
     @Override
-    public void startLevel(units.Character character) {
-        Menu startMenu = new Menu("Хочешь ли ты продолжать путешествие?:");
+    public void startLevel() {
+        Menu startMenu = new Menu("Хочешь ли ты продолжать путешествие?:", false);
         startMenu.addItem("Выжить", () -> {
             System.out.println("Вы видите перед собой карту и поднимаете её");
+
+            //------------ Тест
+/*
+
+
+            Character.getInstance().getInventory().addItem(new Weapon(WeaponType.TWO_HANDED_SWORD));
+            Character.getInstance().getInventory().addItem(new Armor(ArmorType.HEAVY_ARMOR));
+            Character.getInstance().getInventory().addItem(new UselessItem("Голова гоблина"));;
+            Character.getInstance().getInventory().addItem(new HealingPotion());
+
+*/
+
+            //------------ Тест
+
+
             Labyrinth startLabyrinth = new Labyrinth();
-            startLabyrinth.enterLabyrinth(character);
+            startLabyrinth.enterLabyrinth();
             System.out.println("Ура! Лабиринт пройден! Перед тобой открылись просторы древнего мира!");
             Menu menu = new Menu("Перед тобой развилка с путевым знаком, на нём видны варианты, выбери дальнейший путь:");
             menu.addItem("Ривергард", () -> {
-                rivergard(character);
+                rivergard();
                 System.out.println("Перед твоим взором расстилаются огромные ворота города Ривергард");
             });
             menu.addItem("Литориан", () -> {
                 litorian();
             });
             menu.addItem("Зачарованный лес", () -> {
-                enchantedForest(character);
+                enchantedForest();
             });
             menu.showAndChoose();
 
             System.out.println("Поздравляю! Ты закончил первый уровень. Вот тебе плюшки.");
         });
         startMenu.addItem("Умереть", () -> {
-            System.out.println("Вы умерли, слава герою " + character.getUsername());
+            System.out.println("Вы умерли, слава герою " + Character.getInstance().getUsername());
         });
         startMenu.showAndChoose();
     }
 
-    private void rivergard(units.Character character) {
+    private void rivergard() {
         System.out.println("На своём пути к Ривергарду, ты видишь одинокого гоблина...");
         Utils.suspense(1500);
         System.out.println("Кажется, начинается битва:");
-        Fight fight = new Fight(character, new Goblin());
+        Fight fight = new Fight(Character.getInstance(), new Goblin());
         fight.battle();
-        if (character.getCurrentHealth() <=0) {
+        if (Character.getInstance().getCurrentHealth() <=0) {
             System.out.println("Ты убит гоблином. пресс F");
             System.exit(0);
         } else {
             System.out.println("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
+            Utils.suspense();
+            System.out.println("После недолгих раздумий ты берёшь с собой голову гоблина");
+            Character.getInstance().getInventory().addItem(new UselessItem("Голова гоблина"));
         }
     }
 
@@ -58,25 +78,25 @@ public class Level1 implements Levelable {
         System.out.println("Ты в литориане, но тут пусто, купи DLC, всего за 49,99$");
     }
 
-    private void enchantedForest(Character character) {
+    private void enchantedForest() {
         System.out.println("Уверенно шагая по лесной тропинке ты чувствуешь на себе чей-то взгляд.\nПо спине пробежал холодок.\nТы решаешь перейти на бег, но коварные корни деревьев цепляются тебе за ноги и ты кубарем катишься вниз, в глубь леса.\nВстав и отряхнувшись ты видишь перед собой развилку...   ");
         Menu menu = new Menu ("Куда ты отравишься?");
         menu.addItem("Влево",() -> {
             Labyrinth labyrinth = new Labyrinth();
-            labyrinth.enterLabyrinth(character);
+            labyrinth.enterLabyrinth();
         });
 
         menu.addItem("Вправо",() -> {
             System.out.println("Перед тобой появляется волк с явно недружелюбными намерениями\n");
-            fightWithWolf(character);
+            fightWithWolf();
         });
         menu.showAndChoose();
     }
 
-    private void fightWithWolf(Character character) {
-        Fight fight = new Fight(character, new Wolf());
+    private void fightWithWolf() {
+        Fight fight = new Fight(Character.getInstance(), new Wolf());
         fight.battle();
-        if (character.getCurrentHealth() <=0) {
+        if (Character.getInstance().getCurrentHealth() <=0) {
             System.out.println("Ты убит волком. пресс F");
             System.exit(0);
         } else {

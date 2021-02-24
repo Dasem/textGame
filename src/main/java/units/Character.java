@@ -1,18 +1,29 @@
 package units;
 
-import equipment.Armor;
-import equipment.Weapon;
+import equipment.*;
 import mechanic.battle.*;
 import utils.*;
 
 public class Character implements Battler {
     private final static int DEFAULT_ARMOR_CLASS = 10;
+
     private final String username;
     private int currentHealth = getMaxHealth();
     private Armor armor;
     private Weapon weapon;
+    private final Inventory inventory = new Inventory();
 
-    public Character(String username) {
+    private static Character character;
+
+    public static void createInstance(String username) {
+        Character.character = new Character(username);
+    }
+
+    public static Character getInstance() {
+        return character;
+    }
+
+    private Character(String username) {
         this.username = username;
     }
 
@@ -94,5 +105,13 @@ public class Character implements Battler {
 
     public void setWeapon(Weapon weapon) {
         this.weapon = weapon;
+    }
+
+    public void printItemsList() {
+        System.out.print(inventory.getNumeratedList());
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 }

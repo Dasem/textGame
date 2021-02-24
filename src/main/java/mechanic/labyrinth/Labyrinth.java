@@ -17,31 +17,31 @@ import java.util.*;
 
 public class Labyrinth {
 
-    public void enterLabyrinth(Character character) { // start: 3 col, 6 row
+    public void enterLabyrinth() { // start: 3 col, 6 row
         char[][] labyrinth = readLabyrinth();
-        Position position = new Position(6 , 3 ,6,6);
+        Position position = new Position(6, 3, 6, 6);
         while (!position.escaped(labyrinth)) {
-            System.out.println();
             if (labyrinth[position.currentRow][position.currentColumn] == '+') {
                 int heal = Dices.diceD4();
-                character.healing(heal);
-                System.out.println("Ты нашел зелье лечения, твоё текущее здоровье: " + character.getCurrentHealth());
+                Character.getInstance().healing(heal);
+                System.out.println("Ты нашел зелье лечения, твоё текущее здоровье: " + Character.getInstance().getCurrentHealth());
             }
             if (labyrinth[position.currentRow][position.currentColumn] == 'A') {
-                character.setArmor(new Armor(ArmorType.LIGHT_ARMOR));
-                System.out.println("Ты подобрал броню, твой текущий класс защиты: " + character.getArmorClass());
+                Character.getInstance().setArmor(new Armor(ArmorType.LIGHT_ARMOR));
+                System.out.println("Ты подобрал броню, твой текущий класс защиты: " + Character.getInstance().getArmorClass());
             }
             if (labyrinth[position.currentRow][position.currentColumn] == '>') {
                 System.out.println("Ты нашел короткий меч");
                 Weapon weapon = new Weapon(WeaponType.SWORD);
                 System.out.println("Его урон: " + weapon.getWeaponDamage());
+                Character.getInstance().setWeapon(weapon);
                 clearCurrentCell(labyrinth, position);
             }
             if (labyrinth[position.currentRow][position.currentColumn] == '@') {
                 System.out.println("Кажется, начинается битва:");
-                Fight fight = new Fight(character, new Wolf());
+                Fight fight = new Fight(Character.getInstance(), new Wolf());
                 fight.battle();
-                if (character.getCurrentHealth() <= 0) {
+                if (Character.getInstance().getCurrentHealth() <= 0) {
                     System.out.println("Ты убит волком. пресс F");
                     System.exit(0);
                 } else {
@@ -74,7 +74,7 @@ public class Labyrinth {
 
     private char[][] readLabyrinth() {
         ClassLoader classLoader = this.getClass().getClassLoader();
-        File file = new File(classLoader.getResource("map").getFile());
+        File file = new File(classLoader.getResource("startLabyrinth").getFile());
 
         int row = 0, column = 0;
         try (FileReader fr = new FileReader(file)) {
@@ -104,9 +104,7 @@ public class Labyrinth {
                 }
                 if (currentColumn < column) {
                     labyrinth[currentRow][currentColumn] = currentSymbol;
-                    if (currentSymbol == 'O'){
-                    }
-                    if (currentSymbol != 'x' ||  currentSymbol != 'O'||currentSymbol != 'Z') {
+                    if (currentSymbol != 'x' && currentSymbol != 'O' && currentSymbol != 'Z') {
                         System.out.print(" ");
                     } else {
                         System.out.print(currentSymbol);

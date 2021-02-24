@@ -1,18 +1,18 @@
 package menu;
 
-public class MenuItem implements Executor {
+public class MenuItem {
     private final int itemNumber;
     private final String name;
-    private final Executor executor;
+    private final Executable executable;
 
     public void show() {
         System.out.println(itemNumber + ". " + name);
     }
 
-    public MenuItem(int itemNumber, String name, Executor executor) {
+    public MenuItem(int itemNumber, String name, Executable executable) {
         this.itemNumber = itemNumber;
         this.name = name;
-        this.executor = executor;
+        this.executable = executable;
     }
 
     public String getName() {
@@ -23,8 +23,7 @@ public class MenuItem implements Executor {
         return itemNumber;
     }
 
-    @Override
     public void execute() {
-        executor.execute();
+        executable.execute();
     }
 }

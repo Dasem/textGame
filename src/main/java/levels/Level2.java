@@ -10,7 +10,7 @@ import utils.*;
 public class Level2 implements Levelable {
 
     @Override
-    public void startLevel(Character character) {
+    public void startLevel() {
         System.out.println("Гц, ты на лвле 2, но он не реализован");
     }
 }
