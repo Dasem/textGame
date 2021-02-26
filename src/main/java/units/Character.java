@@ -2,11 +2,9 @@ package units;
 
 import equipment.*;
 import mechanic.battle.*;
-import utils.*;
 
 public class Character implements Battler {
     private final static int DEFAULT_ARMOR_CLASS = 10;
-
     private final String username;
     private int currentHealth = getMaxHealth();
     private Armor armor;
@@ -58,7 +56,6 @@ public class Character implements Battler {
     @Override
     public int getArmorClass() {
         if (armor == null) {
-
             return DEFAULT_ARMOR_CLASS;
         } else {
             return getArmor().getArmorType().getArmorClass();

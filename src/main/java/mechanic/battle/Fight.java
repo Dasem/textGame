@@ -1,7 +1,11 @@
 package mechanic.battle;
 
+import equipment.AccuracyLevel;
+import utils.*;
+
 import java.util.*;
 
+import static equipment.AccuracyLevel.MISS;
 import static utils.Utils.*;
 
 public class Fight {
@@ -36,15 +40,6 @@ public class Fight {
         }
     }
 
-    private int getD20Result() {
-        return getRandom(1,20);
-    }
-
-    public int getRandom(int min, int max) {
-        Random random = new Random();
-        return random.nextInt(max + 1 - min) + min;
-    }
-
     public AttackResult hitOnBattler2() {
         return getAttackResult(battler1, battler2);
     }
@@ -54,22 +49,35 @@ public class Fight {
     }
 
     private AttackResult getAttackResult(Battler battlerFrom, Battler battlerTo) {
-        int damage = calculateAttack(battlerFrom, battlerTo);
-        if (damage == 0) {
-            return new AttackResult(false, battlerFrom.getName() + " промахнулся");
-        } else {
-            boolean isDead = battlerTo.takeDamage(damage);
-            return new AttackResult(isDead, battlerFrom.getName() + " нанёс " + damage + " урона");
+        AccuracyLevel accuracyLevel = calculateAttack(battlerFrom, battlerTo);
+        int damage = accuracyLevel.getTotalDamage(battlerFrom);
+        switch (accuracyLevel) {
+            case CRITICAL_HIT:
+                boolean isDead = battlerTo.takeDamage(damage);
+                return new AttackResult(isDead, "Критический удар! " + battlerFrom.getName() + " нанёс " + damage + " урона");
+            case NORMAL_HIT:
+                isDead = battlerTo.takeDamage(damage);
+                return new AttackResult(isDead, battlerFrom.getName() + " нанёс " + damage + " урона");
+            case MISS:
+                return new AttackResult(false, battlerFrom.getName() + " промахнулся");
+
         }
+
+        return null;
     }
 
-    public int calculateAttack(Battler battlerFrom, Battler battlerTo) {
-        int fullAttackModifier = getD20Result() + battlerFrom.getAttackModifier();
+    public AccuracyLevel calculateAttack(Battler battlerFrom, Battler battlerTo) {
+        int d20Result = Dices.diceD20();
+        int fullAttackModifier = d20Result + battlerFrom.getAttackModifier();
         int fullArmorClass = battlerTo.getArmorClass();
-        if (fullAttackModifier >= fullArmorClass) {
-            return battlerFrom.getOnHitDamage();
+        if (d20Result == 20) {
+            return AccuracyLevel.CRITICAL_HIT;
+        } else if (fullAttackModifier >= fullArmorClass) {
+            return AccuracyLevel.NORMAL_HIT;
         } else {
-            return 0;
+            return AccuracyLevel.MISS;
         }
+
     }
 }
+
