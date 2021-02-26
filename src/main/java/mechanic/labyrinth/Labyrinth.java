@@ -22,9 +22,10 @@ public class Labyrinth {
         Position position = new Position(6, 3, 6, 6);
         while (!position.escaped(labyrinth)) {
             if (labyrinth[position.currentRow][position.currentColumn] == '+') {
-                int heal = HealingPotionType.LESSER_HEALING_POTION.heal();
+                HealingPotionType potionType = HealingPotionType.LESSER_HEALING_POTION;
+                int heal = potionType.heal();
                 Character.getInstance().healing(heal);
-                System.out.println("Ты нашел малое зелье лечения и восстановил " + heal + " ХП. Твоё текущее здоровье: " + Character.getInstance().getCurrentHealth());
+                System.out.println("Ты нашел '" + potionType.getTitle() + "' и восстановил " + heal + " ХП. Твоё текущее здоровье: " + Character.getInstance().getCurrentHealth());
             }
             if (labyrinth[position.currentRow][position.currentColumn] == 'A') {
                 Character.getInstance().setArmor(new Armor(ArmorType.LIGHT_ARMOR));
