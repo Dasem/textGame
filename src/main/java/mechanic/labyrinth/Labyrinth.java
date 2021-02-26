@@ -4,6 +4,7 @@ import equipment.Armor;
 import equipment.ArmorType;
 import equipment.*;
 import equipment.items.HealingPotion;
+import equipment.items.HealingPotionType;
 import mechanic.battle.*;
 import menu.*;
 import units.Character;

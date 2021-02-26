@@ -1,4 +1,4 @@
-package equipment;
+package equipment.items;
 
 import mechanic.battle.Battler;
 import utils.Dices;
