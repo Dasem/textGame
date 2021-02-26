@@ -97,18 +97,17 @@ public class Labyrinth {
 
     private void findSword(char[][] labyrinth, Position position) {
         if (labyrinth[position.currentRow][position.currentColumn] == '>') {
-            Menu weapPickMenu = new Menu("Ты нашел короткий меч");
             Weapon weapon = new Weapon(WeaponType.SWORD);
-            System.out.println("Его максимальный урон: " + weapon.getWeaponDamage());
-            weapPickMenu.addItem("Взять в руки", () ->{
+            Menu weaponPickMenu = new Menu("Ты нашел '" + weapon.getName() + "', его максимальный урон: " + weapon.getWeaponDamage());
+            weaponPickMenu.addItem("Взять в руки", () ->{
                     Character.getInstance().setWeapon(weapon);
                     clearCurrentCell(labyrinth, position);});
-            weapPickMenu.addItem("Положить в рюкзак", () ->{
+            weaponPickMenu.addItem("Положить в рюкзак", () ->{
                     Character.getInstance().getInventory().addItem(new Weapon(WeaponType.SWORD));
                     clearCurrentCell(labyrinth, position);});
-            weapPickMenu.addItem("Зачем он нужен(Сломать об колено)", () ->{
+            weaponPickMenu.addItem("Зачем он нужен(Сломать об колено)", () ->{
                     clearCurrentCell(labyrinth, position);});
-            weapPickMenu.showAndChoose();
+            weaponPickMenu.showAndChoose();
         }
     }
 
