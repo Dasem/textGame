@@ -61,6 +61,9 @@ public class Menu {
             }
             inventoryMenu.showAndChoose();
         });
+
+
+
     }
 
     public void addItem(String name, Executable executable) {

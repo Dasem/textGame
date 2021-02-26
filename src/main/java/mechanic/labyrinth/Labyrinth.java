@@ -28,7 +28,9 @@ public class Labyrinth {
                 System.out.println("Ты нашел '" + potionType.getTitle() + "' и восстановил " + heal + " ХП. Твоё текущее здоровье: " + Character.getInstance().getCurrentHealth());
             }
             if (labyrinth[position.currentRow][position.currentColumn] == 'A') {
-                Character.getInstance().setArmor(new Armor(ArmorType.LIGHT_ARMOR));
+                Armor armor = new Armor(ArmorType.LIGHT_ARMOR);
+                Character.getInstance().setArmor(armor);
+                Character.getInstance().getInventory().addItem(armor);
                 System.out.println("Ты подобрал броню, твой текущий класс защиты: " + Character.getInstance().getArmorClass());
             }
             if (labyrinth[position.currentRow][position.currentColumn] == '>') {
