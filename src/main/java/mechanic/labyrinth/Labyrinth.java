@@ -22,28 +22,20 @@ public class Labyrinth {
         Position position = new Position(6, 3, 6, 6);
         while (!position.escaped(labyrinth)) {
             if (labyrinth[position.currentRow][position.currentColumn] == '+') {
-                int heal = Dices.diceD4();
+                int heal = HealingPotionType.LESSER_HEALING_POTION.heal();
                 Character.getInstance().healing(heal);
-                System.out.println("Ты нашел зелье лечения, твоё текущее здоровье: " + Character.getInstance().getCurrentHealth());
+                System.out.println("Ты нашел малое зелье лечения и восстановил " + heal + " ХП. Твоё текущее здоровье: " + Character.getInstance().getCurrentHealth());
             }
             if (labyrinth[position.currentRow][position.currentColumn] == 'A') {
                 Character.getInstance().setArmor(new Armor(ArmorType.LIGHT_ARMOR));
                 System.out.println("Ты подобрал броню, твой текущий класс защиты: " + Character.getInstance().getArmorClass());
             }
             if (labyrinth[position.currentRow][position.currentColumn] == '>') {
-                Menu weapPickMenu = new Menu("Ты нашел короткий меч");
+                System.out.println("Ты нашел короткий меч");
                 Weapon weapon = new Weapon(WeaponType.SWORD);
-                System.out.println("Его урон: " + weapon.getWeaponDamage());
-        weapPickMenu.addItem("Взять короткий меч в руки" ,() ->
-                Character.getInstance().getInventory().addItem(new Weapon(WeaponType.SWORD)));
+                System.out.println("Его максимальный урон: " + weapon.getWeaponDamage());
                 Character.getInstance().setWeapon(weapon);
                 clearCurrentCell(labyrinth, position);
-                weapPickMenu.addItem("Сложить в рюкзак",()->
-                        Character.getInstance().getInventory().addItem(new Weapon(WeaponType.SWORD)));
-                clearCurrentCell(labyrinth, position);
-                weapPickMenu.addItem("Да зачем он нужен?(сломать об колено)",() ->
-                        clearCurrentCell(labyrinth, position));
-                weapPickMenu.showAndChoose();
             }
             if (labyrinth[position.currentRow][position.currentColumn] == '@') {
                 System.out.println("Кажется, начинается битва:");
@@ -123,6 +115,7 @@ public class Labyrinth {
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
+        System.out.println();
         return labyrinth;
     }
 }

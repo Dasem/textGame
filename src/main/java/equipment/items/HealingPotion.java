@@ -3,13 +3,15 @@ package equipment.items;
 import equipment.*;
 import menu.*;
 import units.Character;
-import utils.*;
 
 public class HealingPotion implements Item {
 
+    private final HealingPotionType healingPotionType;
+
     Menu menu = new Menu("Меню для зелья", false);
 
-    public HealingPotion() {
+    public HealingPotion(HealingPotionType healingPotionType) {
+        this.healingPotionType = healingPotionType;
         menu.addItem("Выпить", () -> {
             System.out.println("Выпил");
             Character.getInstance().healing(getHeal());
@@ -19,12 +21,12 @@ public class HealingPotion implements Item {
     }
 
     private int getHeal() {
-        return Dices.diceD6();
+        return healingPotionType.heal();
     }
 
     @Override
     public String getName() {
-        return "Зелье лечения";
+        return healingPotionType.getTitle();
     }
 
     @Override

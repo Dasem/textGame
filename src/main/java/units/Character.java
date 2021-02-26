@@ -6,7 +6,7 @@ import utils.*;
 
 public class Character implements Battler {
     private final static int DEFAULT_ARMOR_CLASS = 10;
-
+// Привет
     private final String username;
     private int currentHealth = getMaxHealth();
     private Armor armor;
