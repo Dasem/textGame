@@ -11,13 +11,18 @@ public class Menu {
     List<MenuItem> menuItems = new ArrayList<>();
 
     public void showAndChoose() {
+        Utils.suspense(500);
         boolean chooseDone = false;
         while (!chooseDone) {
             try {
                 chooseDone = true;
+                System.out.println();
+                System.out.println("---------------");
+                System.out.println();
                 System.out.println(title);
                 for (MenuItem menuItem : menuItems) {
                     menuItem.show();
+
                 }
                 int menuChoose = Integer.parseInt(Utils.sc.nextLine());
                 MenuItem menuItem = menuItems.get(menuChoose - 1);

@@ -22,9 +22,9 @@ public class Labyrinth {
         Position position = new Position(6, 3, 6, 6);
         while (!position.escaped(labyrinth)) {
             if (labyrinth[position.currentRow][position.currentColumn] == '+') {
-                int heal = Dices.diceD4();
+                int heal = HealingPotionType.LESSER_HEALING_POTION.heal();
                 Character.getInstance().healing(heal);
-                System.out.println("Ты нашел зелье лечения, твоё текущее здоровье: " + Character.getInstance().getCurrentHealth());
+                System.out.println("Ты нашел малое зелье лечения и восстановил " + heal + " ХП. Твоё текущее здоровье: " + Character.getInstance().getCurrentHealth());
             }
             if (labyrinth[position.currentRow][position.currentColumn] == 'A') {
                 Character.getInstance().setArmor(new Armor(ArmorType.LIGHT_ARMOR));
@@ -33,7 +33,7 @@ public class Labyrinth {
             if (labyrinth[position.currentRow][position.currentColumn] == '>') {
                 System.out.println("Ты нашел короткий меч");
                 Weapon weapon = new Weapon(WeaponType.SWORD);
-                System.out.println("Его урон: " + weapon.getWeaponDamage());
+                System.out.println("Его максимальный урон: " + weapon.getWeaponDamage());
                 Character.getInstance().setWeapon(weapon);
                 clearCurrentCell(labyrinth, position);
             }
@@ -115,6 +115,7 @@ public class Labyrinth {
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
+        System.out.println();
         return labyrinth;
     }
 }
