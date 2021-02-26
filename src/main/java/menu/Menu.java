@@ -52,14 +52,14 @@ public class Menu {
         addItem("Открыть инвентарь", () -> {
             if (Character.getInstance().getInventory().getItems().isEmpty()) {
                 System.out.println("Твой инвентарь пуст");
-                return;
+            } else {
+                Menu inventoryMenu = new Menu("Инвентарь:", false);
+                for (Item item : Character.getInstance().getInventory().getItems()) {
+                    inventoryMenu.addItem(item);
+                }
+                inventoryMenu.showAndChoose();
             }
-
-            Menu inventoryMenu = new Menu("Инвентарь:", false);
-            for (Item item : Character.getInstance().getInventory().getItems()) {
-                inventoryMenu.addItem(item);
-            }
-            inventoryMenu.showAndChoose();
+            this.showAndChoose();
         });
     }
 

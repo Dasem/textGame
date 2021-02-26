@@ -22,46 +22,10 @@ public class Labyrinth {
         char[][] labyrinth = readLabyrinth();
         Position position = new Position(6, 3, 6, 6);
         while (!position.escaped(labyrinth)) {
-            if (labyrinth[position.currentRow][position.currentColumn] == '+') {
-                Menu HealPotMenu = new Menu("Ты нашел малое зелье лечения");
-                int heal = HealingPotionType.LESSER_HEALING_POTION.heal();
-                HealPotMenu.addItem("Положить в рюкзак", () ->{
-                        Character.getInstance().getInventory().addItem(new HealingPotion(HealingPotionType.LESSER_HEALING_POTION));});
-                HealPotMenu.addItem("Использовать", () ->{
-                Character.getInstance().healing(heal);
-                System.out.println("Восстановил " + heal + " ХП. Твоё текущее здоровье: " + Character.getInstance().getCurrentHealth());});
-                HealPotMenu.showAndChoose();
-            }
-            if (labyrinth[position.currentRow][position.currentColumn] == 'A') {
-                Character.getInstance().setArmor(new Armor(ArmorType.LIGHT_ARMOR));
-                System.out.println("Ты подобрал броню, твой текущий класс защиты: " + Character.getInstance().getArmorClass());
-            }
-            if (labyrinth[position.currentRow][position.currentColumn] == '>') {
-                Menu weapPickMenu = new Menu("Ты нашел короткий меч");
-                Weapon weapon = new Weapon(WeaponType.SWORD);
-                System.out.println("Его максимальный урон: " + weapon.getWeaponDamage());
-                weapPickMenu.addItem("Взять в руки", () ->{
-                        Character.getInstance().setWeapon(weapon);
-                        clearCurrentCell(labyrinth, position);});
-                weapPickMenu.addItem("Положить в рюкзак", () ->{
-                        Character.getInstance().getInventory().addItem(new Weapon(WeaponType.SWORD));
-                        clearCurrentCell(labyrinth, position);});
-                weapPickMenu.addItem("Зачем он нужен(Сломать об колено)", () ->{
-                        clearCurrentCell(labyrinth, position);});
-                weapPickMenu.showAndChoose();
-            }
-            if (labyrinth[position.currentRow][position.currentColumn] == '@') {
-                System.out.println("Кажется, начинается битва:");
-                Fight fight = new Fight(Character.getInstance(), new Wolf());
-                fight.battle();
-                if (Character.getInstance().getCurrentHealth() <= 0) {
-                    System.out.println("Ты убит волком. пресс F");
-                    System.exit(0);
-                } else {
-                    System.out.println("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
-                    clearCurrentCell(labyrinth, position);
-                }
-            }
+            findPotion(labyrinth, position);
+            findArmor(labyrinth, position);
+            findSword(labyrinth, position);
+            findFight(labyrinth, position);
 
             Menu labyrinthMenu = new Menu("Необходимо преодолеть лабиринт:");
             List<String> pathOptions = position.pathMenu(labyrinth);
@@ -78,6 +42,60 @@ public class Labyrinth {
                 System.out.println(position.goTop(labyrinth));
             });
             labyrinthMenu.showAndChoose();
+        }
+    }
+
+    private void findFight(char[][] labyrinth, Position position) {
+        if (labyrinth[position.currentRow][position.currentColumn] == '@') {
+            System.out.println("Кажется, начинается битва:");
+            Fight fight = new Fight(Character.getInstance(), new Wolf());
+            fight.battle();
+            if (Character.getInstance().getCurrentHealth() <= 0) {
+                System.out.println("Ты убит волком. пресс F");
+                System.exit(0);
+            } else {
+                System.out.println("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
+                clearCurrentCell(labyrinth, position);
+            }
+        }
+    }
+
+    private void findArmor(char[][] labyrinth, Position position) {
+        if (labyrinth[position.currentRow][position.currentColumn] == 'A') {
+            Character.getInstance().setArmor(new Armor(ArmorType.LIGHT_ARMOR));
+            System.out.println("Ты подобрал броню, твой текущий класс защиты: " + Character.getInstance().getArmorClass());
+        }
+    }
+
+    private void findPotion(char[][] labyrinth, Position position) {
+        if (labyrinth[position.currentRow][position.currentColumn] == '+') {
+            HealingPotion healingPotion = new HealingPotion(HealingPotionType.LESSER_HEALING_POTION);
+            Menu HealPotionMenu = new Menu("Ты нашел '" + healingPotion.getName() + "'");
+            HealPotionMenu.addItem("Положить в рюкзак", () -> {
+                Character.getInstance().getInventory().addItem(healingPotion);
+            });
+            HealPotionMenu.addItem("Использовать", () -> {
+                int heal = healingPotion.use();
+                System.out.println("Ты нашел '" + healingPotion.getName() + "' и восстановил " + heal + " ХП. Твоё текущее здоровье: " + Character.getInstance().getCurrentHealth());
+            });
+            HealPotionMenu.showAndChoose();
+        }
+    }
+
+    private void findSword(char[][] labyrinth, Position position) {
+        if (labyrinth[position.currentRow][position.currentColumn] == '>') {
+            Menu weapPickMenu = new Menu("Ты нашел короткий меч");
+            Weapon weapon = new Weapon(WeaponType.SWORD);
+            System.out.println("Его максимальный урон: " + weapon.getWeaponDamage());
+            weapPickMenu.addItem("Взять в руки", () ->{
+                    Character.getInstance().setWeapon(weapon);
+                    clearCurrentCell(labyrinth, position);});
+            weapPickMenu.addItem("Положить в рюкзак", () ->{
+                    Character.getInstance().getInventory().addItem(new Weapon(WeaponType.SWORD));
+                    clearCurrentCell(labyrinth, position);});
+            weapPickMenu.addItem("Зачем он нужен(Сломать об колено)", () ->{
+                    clearCurrentCell(labyrinth, position);});
+            weapPickMenu.showAndChoose();
         }
     }
 

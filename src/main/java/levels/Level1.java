@@ -63,7 +63,7 @@ public class Level1 implements Levelable {
         System.out.println("Кажется, начинается битва:");
         Fight fight = new Fight(Character.getInstance(), new Goblin());
         fight.battle();
-        if (Character.getInstance().getCurrentHealth() <=0) {
+        if (Character.getInstance().getCurrentHealth() <= 0) {
             System.out.println("Ты убит гоблином. пресс F");
             System.exit(0);
         } else {
@@ -79,23 +79,27 @@ public class Level1 implements Levelable {
     }
 
     private void enchantedForest() {
-        System.out.println("Уверенно шагая по лесной тропинке ты чувствуешь на себе чей-то взгляд.\nПо спине пробежал холодок.\nТы решаешь перейти на бег, но коварные корни деревьев цепляются тебе за ноги и ты кубарем катишься вниз, в глубь леса.\nВстав и отряхнувшись ты видишь перед собой развилку...   ");boolean menuPath=true;
-            Menu menu = new Menu("Куда ты отравишься?");
-            menu.addItem("Влево", () -> {
-                Labyrinth labyrinth = new Labyrinth();
-                labyrinth.enterLabyrinth();
-            });
-            menu.addItem("Вправо", () -> {
-                System.out.println("Перед тобой появляется волк с явно недружелюбными намерениями\n");
-                fightWithWolf();
-            });
-            menu.showAndChoose();
+        System.out.println(
+                "Уверенно шагая по лесной тропинке ты чувствуешь на себе чей-то взгляд.\n" +
+                "По спине пробежал холодок.\n" +
+                "Ты решаешь перейти на бег, но коварные корни деревьев цепляются тебе за ноги и ты кубарем катишься вниз, в глубь леса.\n" +
+                "Встав и отряхнувшись ты видишь перед собой развилку...");
+        Menu menu = new Menu("Куда ты отравишься?");
+        menu.addItem("Влево", () -> {
+            Labyrinth labyrinth = new Labyrinth();
+            labyrinth.enterLabyrinth();
+        });
+        menu.addItem("Вправо", () -> {
+            System.out.println("Перед тобой появляется волк с явно недружелюбными намерениями\n");
+            fightWithWolf();
+        });
+        menu.showAndChoose();
     }
 
     private void fightWithWolf() {
         Fight fight = new Fight(Character.getInstance(), new Wolf());
         fight.battle();
-        if (Character.getInstance().getCurrentHealth() <=0) {
+        if (Character.getInstance().getCurrentHealth() <= 0) {
             System.out.println("Ты убит волком. пресс F");
             System.exit(0);
         } else {
