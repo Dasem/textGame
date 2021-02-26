@@ -31,11 +31,18 @@ public class Labyrinth {
                 System.out.println("Ты подобрал броню, твой текущий класс защиты: " + Character.getInstance().getArmorClass());
             }
             if (labyrinth[position.currentRow][position.currentColumn] == '>') {
-                System.out.println("Ты нашел короткий меч");
+                Menu weapPickMenu = new Menu("Ты нашел короткий меч");
                 Weapon weapon = new Weapon(WeaponType.SWORD);
                 System.out.println("Его максимальный урон: " + weapon.getWeaponDamage());
-                Character.getInstance().setWeapon(weapon);
+                weapPickMenu.addItem("Взять в руки", () ->
+                        Character.getInstance().setWeapon(weapon));
                 clearCurrentCell(labyrinth, position);
+                weapPickMenu.addItem("Положить в рюкзак", () ->
+                        Character.getInstance().getInventory().addItem(new Weapon(WeaponType.TWO_HANDED_SWORD)));
+                clearCurrentCell(labyrinth, position);
+                weapPickMenu.addItem("Зачем он нужен(Сломать об колено)", () ->
+                        clearCurrentCell(labyrinth, position));
+                weapPickMenu.showAndChoose();
             }
             if (labyrinth[position.currentRow][position.currentColumn] == '@') {
                 System.out.println("Кажется, начинается битва:");
