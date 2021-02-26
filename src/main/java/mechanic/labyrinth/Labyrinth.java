@@ -36,10 +36,10 @@ public class Labyrinth {
                 System.out.println("Его максимальный урон: " + weapon.getWeaponDamage());
                 weapPickMenu.addItem("Взять в руки", () ->
                         Character.getInstance().setWeapon(weapon));
-                clearCurrentCell(labyrinth, position);
+                        clearCurrentCell(labyrinth, position);
                 weapPickMenu.addItem("Положить в рюкзак", () ->
-                        Character.getInstance().getInventory().addItem(new Weapon(WeaponType.TWO_HANDED_SWORD)));
-                clearCurrentCell(labyrinth, position);
+                        Character.getInstance().getInventory().addItem(new Weapon(WeaponType.SWORD)));
+                        clearCurrentCell(labyrinth, position);
                 weapPickMenu.addItem("Зачем он нужен(Сломать об колено)", () ->
                         clearCurrentCell(labyrinth, position));
                 weapPickMenu.showAndChoose();
