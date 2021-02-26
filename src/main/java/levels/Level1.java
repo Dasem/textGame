@@ -1,12 +1,11 @@
 package levels;
 
-import equipment.*;
 import equipment.items.*;
 import mechanic.battle.*;
 import mechanic.labyrinth.*;
 import menu.*;
-import units.*;
 import units.Character;
+import units.npcs.*;
 import utils.*;
 
 import java.lang.*;
@@ -51,7 +50,7 @@ public class Level1 implements Levelable {
         fight.battle();
         if (Character.getInstance().getCurrentHealth() <= 0) {
             System.out.println("Ты убит гоблином. пресс F");
-            System.exit(0);
+            Utils.endGame();
         } else {
             System.out.println("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
             Utils.suspense();
@@ -87,7 +86,7 @@ public class Level1 implements Levelable {
         fight.battle();
         if (Character.getInstance().getCurrentHealth() <= 0) {
             System.out.println("Ты убит волком. пресс F");
-            System.exit(0);
+            Utils.endGame();
         } else {
             System.out.println("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
         }

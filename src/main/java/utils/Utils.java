@@ -16,4 +16,8 @@ public class Utils {
         try { Thread.sleep(millis);
         } catch (InterruptedException ignored) {}
     }
+
+    public static void endGame() {
+        System.exit(0);
+    }
 }

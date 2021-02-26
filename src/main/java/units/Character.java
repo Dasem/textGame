@@ -2,6 +2,7 @@ package units;
 
 import equipment.*;
 import mechanic.battle.*;
+import utils.*;
 
 public class Character implements Battler {
     private final static int DEFAULT_ARMOR_CLASS = 10;

@@ -4,11 +4,11 @@ import equipment.Armor;
 import equipment.ArmorType;
 import equipment.*;
 import equipment.items.HealingPotion;
-import mechanic.battle.Fight;
+import mechanic.battle.*;
 import menu.*;
 import units.Character;
-import units.Wolf;
-import utils.Dices;
+import units.npcs.Wolf;
+import utils.*;
 import utils.random.*;
 
 import java.io.BufferedReader;
@@ -48,12 +48,14 @@ public class Labyrinth {
 
     private void findFight(char[][] labyrinth, Position position) {
         if (labyrinth[position.currentRow][position.currentColumn] == '@') {
-            System.out.println("Кажется, начинается битва:");
-            Fight fight = new Fight(Character.getInstance(), new Wolf());
+            System.out.println("Бродя по лабиринту, ты замечаешь...");
+            //TODO: Саня, полечи
+            Battler battler = new Wolf();
+            Fight fight = new Fight(Character.getInstance(), battler);
             fight.battle();
             if (Character.getInstance().getCurrentHealth() <= 0) {
-                System.out.println("Ты убит волком. пресс F");
-                System.exit(0);
+                System.out.println("В глубинах лабиринта ты погиб. Причиной твоей смерти стал '" + battler.getName() + "'");
+                Utils.endGame();
             } else {
                 System.out.println("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
                 clearCurrentCell(labyrinth, position);
