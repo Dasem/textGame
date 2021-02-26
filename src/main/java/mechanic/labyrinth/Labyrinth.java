@@ -21,7 +21,7 @@ public class Labyrinth {
 
     public void enterLabyrinth() { // start: 3 col, 6 row
         char[][] labyrinth = readLabyrinth();
-        Position position = new Position(6, 3, 6, 6);
+        Position position = new Position(6, 3);
         while (!position.escaped(labyrinth)) {
             findPotion(labyrinth, position);
             findArmor(labyrinth, position);
