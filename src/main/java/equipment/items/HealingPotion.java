@@ -3,6 +3,7 @@ package equipment.items;
 import equipment.*;
 import menu.*;
 import units.Character;
+import utils.*;
 
 public class HealingPotion implements Item {
 

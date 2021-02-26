@@ -9,6 +9,7 @@ import menu.*;
 import units.Character;
 import units.Wolf;
 import utils.Dices;
+import utils.random.*;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -62,8 +63,18 @@ public class Labyrinth {
 
     private void findArmor(char[][] labyrinth, Position position) {
         if (labyrinth[position.currentRow][position.currentColumn] == 'A') {
-            Character.getInstance().setArmor(new Armor(ArmorType.LIGHT_ARMOR));
-            System.out.println("Ты подобрал броню, твой текущий класс защиты: " + Character.getInstance().getArmorClass());
+            Armor armor = Randomizer.randomize(
+                    new ObjectWithWeight<>(new Armor(ArmorType.LIGHT_ARMOR), 2),
+                    new ObjectWithWeight<>(new Armor(ArmorType.HEAVY_ARMOR), 1),
+                    new ObjectWithWeight<>(new Armor(ArmorType.MEDIUM_ARMOR), 4),
+                    new ObjectWithWeight<>(null, 7)
+            );
+            if (armor == null) {
+                System.out.println("Тут должна была быть броня, но её украл Саня");
+            } else {
+                Character.getInstance().setArmor(armor);
+                System.out.println("Ты подобрал броню, твой текущий класс защиты: " + Character.getInstance().getArmorClass());
+            }
         }
     }
 

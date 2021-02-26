@@ -19,20 +19,6 @@ public class Level1 implements Levelable {
         startMenu.addItem("Выжить", () -> {
             System.out.println("Вы видите перед собой карту и поднимаете её");
 
-            //------------ Тест
-/*
-
-
-            Character.getInstance().getInventory().addItem(new Weapon(WeaponType.TWO_HANDED_SWORD));
-            Character.getInstance().getInventory().addItem(new Armor(ArmorType.HEAVY_ARMOR));
-            Character.getInstance().getInventory().addItem(new UselessItem("Голова гоблина"));;
-            Character.getInstance().getInventory().addItem(new HealingPotion());
-
-*/
-
-            //------------ Тест
-
-
             Labyrinth startLabyrinth = new Labyrinth();
             startLabyrinth.enterLabyrinth();
             System.out.println("Ура! Лабиринт пройден! Перед тобой открылись просторы древнего мира!");
