@@ -80,9 +80,28 @@ public class Menu {
             }
             this.showAndChooseForNotRepeatAdditionalMenu();
         });
+        addAdditionalItem("Просмотр персонажа", () -> {
+            Menu equipmentMenu = new Menu("______________",false);
+            equipmentMenu.addItem("Информация о персонаже", () -> {
+                Character c = Character.getInstance();
+                System.out.println("Меня зовут " + c.getName());
+                System.out.println(c.getCurrentHealth() + "/" + c.getMaxHealth() + " HP");
+                System.out.println(c.getArmorClass() + " Защиты");
+                if (c.getArmor() != null) {
+                    System.out.println(c.getArmor());
+                } else System.out.println("Нет брони");
+                if (c.getWeapon() != null) {
+                    System.out.println(c.getWeapon().getPrettyName());
+                } else System.out.println("Нет оружия");
+            });
+            equipmentMenu.addItem("Оружие", () -> {
+                Menu equipedWeaponMenu = new Menu("Экипированное оружие:",false);
+                    equipedWeaponMenu.addItem(Character.getInstance().getWeapon());
+                    equipedWeaponMenu.showAndChoose();
+            });
+            equipmentMenu.showAndChoose();
 
-
-
+        });
     }
 
     public void addAdditionalItem(String name, Executable executable) {

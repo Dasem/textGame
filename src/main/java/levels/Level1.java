@@ -37,7 +37,7 @@ public class Level1 implements Levelable {
             System.out.println("Поздравляю! Ты закончил первый уровень. Вот тебе плюшки.");
         });
         startMenu.addItem("Умереть", () -> {
-            System.out.println("Вы умерли, слава герою " + Character.getInstance().getUsername());
+            System.out.println("Вы умерли, слава герою " + Character.getInstance().getName());
         });
         startMenu.showAndChoose();
     }
