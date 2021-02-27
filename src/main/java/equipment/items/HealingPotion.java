@@ -3,6 +3,7 @@ package equipment.items;
 import equipment.*;
 import menu.*;
 import units.Character;
+import utils.*;
 
 public class HealingPotion implements Item {
 
@@ -13,11 +14,17 @@ public class HealingPotion implements Item {
     public HealingPotion(HealingPotionType healingPotionType) {
         this.healingPotionType = healingPotionType;
         menu.addItem("Выпить", () -> {
-            System.out.println("Выпил");
-            Character.getInstance().healing(getHeal());
+            int heal = this.use();
+            System.out.println("Ну выпил и выпил, чё бубнить-то, захилен на " + heal + " ХП.");
             Character.getInstance().getInventory().removeItem(this);
         });
         menu.addItem("Не пить", () -> System.out.println("Не выпил"));
+    }
+
+    public int use() {
+        int heal = getHeal();
+        Character.getInstance().healing(heal);
+        return heal;
     }
 
     private int getHeal() {

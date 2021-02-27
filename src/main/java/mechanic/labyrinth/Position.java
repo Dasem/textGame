@@ -5,14 +5,10 @@ import java.util.*;
 public class Position {
     public int currentRow;
     public int currentColumn;
-    private final int maxRow;
-    private final int maxColumn;
 
-    public Position(int currentRow, int currentColumn, int maxRow, int maxColumn) {
+    public Position(int currentRow, int currentColumn) {
         this.currentRow = currentRow;
         this.currentColumn = currentColumn;
-        this.maxRow = maxRow;
-        this.maxColumn = maxColumn;
     }
 
     public List<String> pathMenu(char[][] labyrinth) {
@@ -89,9 +85,10 @@ public class Position {
     }
 
     private boolean checkValid(int row, int col, char[][] labyrinth) {
-        boolean checkNotOutOfBounds = row <= maxRow && col <= maxColumn && row >= 0 && col >= 0;
-
-        return checkNotOutOfBounds &&
-                (labyrinth[row][col] != 'x');
+        try {
+            return labyrinth[row][col] != 'x';
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            return false;
+        }
     }
 }

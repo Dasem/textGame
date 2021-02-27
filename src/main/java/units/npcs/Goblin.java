@@ -1,8 +1,8 @@
-package units;
+package units.npcs;
 
 import utils.Dices;
 
-public class Wolf extends Enemy {
+public class Goblin extends Enemy {
     protected int currentHealth = getMaxHealth();
 
     @Override
@@ -12,7 +12,7 @@ public class Wolf extends Enemy {
 
     @Override
     public int getMaxHealth() {
-        return 1;
+        return 10;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class Wolf extends Enemy {
 
     @Override
     public int getArmorClass() {
-        return 13;
+        return 11;
     }
 
     @Override
@@ -38,6 +38,6 @@ public class Wolf extends Enemy {
 
     @Override
     public String getName() {
-        return "Wolf";
+        return "Goblin";
     }
 }

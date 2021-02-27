@@ -47,7 +47,6 @@ public class Dices {
     }
 
     public static int randomInRange(int min, int max) {
-        Random random = new Random();
-        return random.nextInt(max + 1 - min) + min;
+        return Utils.random.nextInt(max + 1 - min) + min;
     }
 }

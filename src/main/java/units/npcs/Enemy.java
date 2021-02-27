@@ -1,4 +1,4 @@
-package units;
+package units.npcs;
 
 import mechanic.battle.*;
 

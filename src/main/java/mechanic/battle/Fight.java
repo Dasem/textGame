@@ -1,6 +1,7 @@
 package mechanic.battle;
 
 import equipment.AccuracyLevel;
+import utils.*;
 
 import java.util.*;
 
@@ -39,15 +40,6 @@ public class Fight {
         }
     }
 
-    private int getD20Result() {
-        return getRandom(1, 20);
-    }
-
-    public int getRandom(int min, int max) {
-        Random random = new Random();
-        return random.nextInt(max + 1 - min) + min;
-    }
-
     public AttackResult hitOnBattler2() {
         return getAttackResult(battler1, battler2);
     }
@@ -75,7 +67,7 @@ public class Fight {
     }
 
     public AccuracyLevel calculateAttack(Battler battlerFrom, Battler battlerTo) {
-        int d20Result = getD20Result();
+        int d20Result = Dices.diceD20();
         int fullAttackModifier = d20Result + battlerFrom.getAttackModifier();
         int fullArmorClass = battlerTo.getArmorClass();
         if (d20Result == 20) {
