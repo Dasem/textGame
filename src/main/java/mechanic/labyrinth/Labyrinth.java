@@ -73,32 +73,58 @@ public class Labyrinth {
     private void findArmor(char[][] labyrinth, Position position) {
         if (labyrinth[position.currentRow][position.currentColumn] == 'A') {
             Armor armor = Randomizer.randomize(
-                    new ObjectWithWeight<>(new Armor(ArmorType.LIGHT_ARMOR), 2),
-                    new ObjectWithWeight<>(new Armor(ArmorType.HEAVY_ARMOR), 1),
-                    new ObjectWithWeight<>(new Armor(ArmorType.MEDIUM_ARMOR), 4),
-                    new ObjectWithWeight<>(null, 7)
+                    new ObjectAndProbability<>(new Armor(ArmorType.LIGHT_ARMOR), 3),
+                    new ObjectAndProbability<>(new Armor(ArmorType.HEAVY_ARMOR), 1),
+                    new ObjectAndProbability<>(new Armor(ArmorType.MEDIUM_ARMOR), 2),
+                    new ObjectAndProbability<>(null, 2)
             );
             if (armor == null) {
                 System.out.println("Тут должна была быть броня, но её украл Саня");
+                clearCurrentCell(labyrinth, position);
             } else {
-                Character.getInstance().setArmor(armor);
-                System.out.println("Ты подобрал броню, твой текущий класс защиты: " + Character.getInstance().getArmorClass());
+                Menu armorPickMenu = new Menu("Ты нашел '" + armor.getName() + "', его класс доспеха: " + armor.getArmorClass());
+                armorPickMenu.addItem("Надеть броню", () ->{
+                    Character.getInstance().setArmor(armor);
+                    System.out.println("Ты решил надеть броню. Теперь твой класс доспеха: " + armor.getArmorClass());
+                    clearCurrentCell(labyrinth, position);
+                });
+                armorPickMenu.addItem("Положить в рюкзак", () -> {
+                    Character.getInstance().getInventory().addItem(armor);
+                    System.out.println("Ты решил взять броню с собой");
+                    clearCurrentCell(labyrinth, position);
+                });
+                armorPickMenu.addItem("Сломать", () -> {
+                    System.out.println("Ты решил сломать железяку и идти дальше");
+                    clearCurrentCell(labyrinth, position);
+                });
+                armorPickMenu.showAndChoose();
             }
         }
     }
 
     private void findPotion(char[][] labyrinth, Position position) {
         if (labyrinth[position.currentRow][position.currentColumn] == '+') {
-            HealingPotion healingPotion = new HealingPotion(HealingPotionType.LESSER_HEALING_POTION);
-            Menu HealPotionMenu = new Menu("Ты нашел '" + healingPotion.getName() + "'");
-            HealPotionMenu.addItem("Положить в рюкзак", () -> {
-                Character.getInstance().getInventory().addItem(healingPotion);
-            });
-            HealPotionMenu.addItem("Использовать", () -> {
-                int heal = healingPotion.use();
-                System.out.println("Ты нашел '" + healingPotion.getName() + "' и восстановил " + heal + " ХП. Твоё текущее здоровье: " + Character.getInstance().getCurrentHealth());
-            });
-            HealPotionMenu.showAndChoose();
+            HealingPotion healingPotion = Randomizer.randomize(
+                    new ObjectAndProbability<>(new HealingPotion(HealingPotionType.LESSER_HEALING_POTION), 3),
+                    new ObjectAndProbability<>(new HealingPotion(HealingPotionType.NORMAL_HEALING_POTION), 1),
+                    new ObjectAndProbability<>(null, 1)
+            );
+            if (healingPotion == null) {
+                System.out.println("Вы находите пустой флакон из под зелья. Кажется, его кто-то выпил. Стоп, это что, кудрявый волос?...");
+                clearCurrentCell(labyrinth, position);
+            } else {
+                Menu HealPotionMenu = new Menu("Ты нашел '" + healingPotion.getName() + "'");
+                HealPotionMenu.addItem("Положить в рюкзак", () -> {
+                    Character.getInstance().getInventory().addItem(healingPotion);
+                    clearCurrentCell(labyrinth, position);
+                });
+                HealPotionMenu.addItem("Использовать", () -> {
+                    int heal = healingPotion.use();
+                    clearCurrentCell(labyrinth, position);
+                    System.out.println("Ты нашел '" + healingPotion.getName() + "' и восстановил " + heal + " ХП. Твоё текущее здоровье: " + Character.getInstance().getCurrentHealth());
+                });
+                HealPotionMenu.showAndChoose();
+            }
         }
     }
 
@@ -106,19 +132,20 @@ public class Labyrinth {
         if (labyrinth[position.currentRow][position.currentColumn] == '>') {
             Weapon weapon = new Weapon(WeaponType.SWORD);
             Menu weaponPickMenu = new Menu("Ты нашел '" + weapon.getName() + "', его максимальный урон: " + weapon.getWeaponDamage());
-            weaponPickMenu.addItem("Взять в руки", () -> {
-                Character.getInstance().setWeapon(weapon);
-                clearCurrentCell(labyrinth, position);
-            });
-            weaponPickMenu.addItem("Положить в рюкзак", () -> {
-                Character.getInstance().getInventory().addItem(new Weapon(WeaponType.SWORD));
-                clearCurrentCell(labyrinth, position);
-            });
-            weaponPickMenu.addItem("Зачем он нужен(Сломать об колено)", () -> {
-                clearCurrentCell(labyrinth, position);
-            });
-            weaponPickMenu.showAndChoose();
-        }
+            weaponPickMenu.addItem("Взять в руки", () ->{
+                    Character.getInstance().setWeapon(weapon);
+                    clearCurrentCell(labyrinth, position);
+                });
+                weaponPickMenu.addItem("Положить в рюкзак", () -> {
+                    Character.getInstance().getInventory().addItem(new Weapon(WeaponType.SWORD));
+                    clearCurrentCell(labyrinth, position);
+                });
+                weaponPickMenu.addItem("Зачем он нужен(Сломать об колено)", () -> {
+                    clearCurrentCell(labyrinth, position);
+                });
+                weaponPickMenu.showAndChoose();
+            }
+
     }
 
     private void clearCurrentCell(char[][] labyrinth, Position position) {
@@ -133,7 +160,7 @@ public class Labyrinth {
         try (FileReader fr = new FileReader(file)) {
             BufferedReader reader = new BufferedReader(fr);
             String line = reader.readLine();
-            column = line.length();
+              column = line.length();
             while (line != null) {
                 row++;
                 line = reader.readLine();

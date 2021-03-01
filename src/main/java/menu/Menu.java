@@ -19,14 +19,14 @@ public class Menu {
             try {
                 chooseDone = true;
                 System.out.println();
-                System.out.println("---------------");
+                System.out.println("--------------");
                 System.out.println();
                 System.out.println(title);
                 for (MenuItem menuItem : menuItems) {
                     menuItem.show();
                 }
                 if (!additionalMenuItems.isEmpty()) {
-                    System.out.println("/\\/\\/\\/\\/\\/\\/\\");
+                    System.out.println("*************");
                     for (MenuItem menuItem : additionalMenuItems) {
                         menuItem.show();
                     }
@@ -41,7 +41,7 @@ public class Menu {
                 }
                 menuItem.execute();
             } catch (NumberFormatException | IndexOutOfBoundsException ex) {
-                System.out.println("Выберите подходящий вариант меню, ПОЖОЖДА");
+                System.out.println("\nВыберите подходящий вариант меню, ПОЖОЖДА");
                 chooseDone = false;
             }
         }
@@ -81,7 +81,7 @@ public class Menu {
             this.showAndChooseForNotRepeatAdditionalMenu();
         });
         addAdditionalItem("Просмотр персонажа", () -> {
-            Menu equipmentMenu = new Menu("______________",false);
+            Menu equipmentMenu = new Menu("______________", false);
             equipmentMenu.addItem("Информация о персонаже", () -> {
                 Character c = Character.getInstance();
                 System.out.println("Меня зовут " + c.getName());
@@ -94,13 +94,21 @@ public class Menu {
                     System.out.println(c.getWeapon().getPrettyName());
                 } else System.out.println("Нет оружия");
             });
-            equipmentMenu.addItem("Оружие", () -> {
-                Menu equipedWeaponMenu = new Menu("Экипированное оружие:",false);
-                    equipedWeaponMenu.addItem(Character.getInstance().getWeapon());
-                    equipedWeaponMenu.showAndChoose();
+            equipmentMenu.addItem("Снаряжение", () -> {
+                Menu equippedShmotMenu = new Menu("Экипированное снаряжение:",false);
+                if (Character.getInstance().getWeapon() == null && Character.getInstance().getArmor() == null ) {
+                    System.out.println("Нет надетого снаряжения");
+                    equipmentMenu.showAndChoose();
+                } else {
+                    equippedShmotMenu.addItem(Character.getInstance().getWeapon());
+                    equippedShmotMenu.addItem(Character.getInstance().getArmor());
+                    equippedShmotMenu.showAndChoose();
+                }
             });
             equipmentMenu.showAndChoose();
-
+            equipmentMenu.addItem("Назад", () -> {
+                equipmentMenu.showAndChoose();
+            });
         });
     }
 
