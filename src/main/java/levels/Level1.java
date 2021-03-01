@@ -16,7 +16,8 @@ public class Level1 implements Levelable {
     public void startLevel() {
         Menu startMenu = new Menu("Хочешь ли ты продолжать путешествие?:", false);
         startMenu.addItem("Выжить", () -> {
-            System.out.println("Вы видите перед собой карту и поднимаете её");
+            System.out.println("Вы видите перед собой карту и поднимаете её\n");
+            Character.getInstance().getInventory().addItem(new Map("Карта подземелья"));
 
             Labyrinth startLabyrinth = new Labyrinth();
             startLabyrinth.enterLabyrinth();

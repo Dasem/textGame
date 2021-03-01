@@ -1,6 +1,5 @@
 package equipment;
 
-import equipment.items.HealingPotionType;
 import menu.Menu;
 import units.Character;
 
@@ -35,14 +34,14 @@ public class Weapon extends Equipment {
         if (this == Character.getInstance().getWeapon()) {
             weaponMenu.addItem("Убрать оружие", () -> {
                 this.removeWeapon();
-                System.out.println("Пускай полежит пока");
+                System.out.println("Вы решили сражаться без оружия. Ваш максимальный урон: 4");
                 Character.getInstance().getInventory().addItem(this);
             });
 
         } else {
             weaponMenu.addItem("Использовать это оружие", () -> {
                 this.equipWeapon();
-                System.out.println("Ну теперь точно всем вломлю");
+                System.out.println("Вы взяли '" + this.getName() + "', его максимальный урон: " + this.getWeaponDamage());
                 Character.getInstance().getInventory().removeItem(this);
             });
         }

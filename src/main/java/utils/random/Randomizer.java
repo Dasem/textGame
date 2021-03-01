@@ -5,15 +5,15 @@ import utils.*;
 import java.util.*;
 
 public class Randomizer {
-    public static <T> T randomize(ObjectWithWeight<T> ... objects) {
+    public static <T> T randomize(ObjectAndProbability<T>... objects) {
         int sum = Arrays.stream(objects)
-                .map(ObjectWithWeight::getWeight)
+                .map(ObjectAndProbability::getProbability)
                 .reduce(0, Integer::sum);
         int threshold = Utils.random.nextInt(sum);
 
         int currentSumWeight = 0;
-        for (ObjectWithWeight<T> object : objects) {
-            currentSumWeight += object.getWeight();
+        for (ObjectAndProbability<T> object : objects) {
+            currentSumWeight += object.getProbability();
             if (currentSumWeight > threshold) {
                 return object.getObject();
             }
