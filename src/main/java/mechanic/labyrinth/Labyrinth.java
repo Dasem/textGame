@@ -8,6 +8,8 @@ import equipment.items.HealingPotionType;
 import mechanic.battle.*;
 import menu.*;
 import units.Character;
+import units.npcs.Goblin;
+import units.npcs.Sanya;
 import units.npcs.Wolf;
 import utils.*;
 import utils.random.*;
@@ -51,7 +53,11 @@ public class Labyrinth {
         if (labyrinth[position.currentRow][position.currentColumn] == '@') {
             System.out.println("Бродя по лабиринту, ты замечаешь...");
             //TODO: Саня, полечи
-            Battler battler = new Wolf();
+            Battler battler = Randomizer.randomize(
+                    new ObjectWithWeight<>(new Wolf(),10),
+                    new ObjectWithWeight<>(new Goblin(),30),
+                    new ObjectWithWeight<>(new Sanya(),1)
+            );
             Fight fight = new Fight(Character.getInstance(), battler);
             fight.battle();
             if (Character.getInstance().getCurrentHealth() <= 0) {
