@@ -55,7 +55,7 @@ public class Labyrinth {
             //TODO: Саня, полечи
             Battler battler = Randomizer.randomize(
                     new ObjectWithWeight<>(new Wolf(),10),
-                    new ObjectWithWeight<>(new Goblin(),30),
+                    new ObjectWithWeight<>(new Goblin(),20),
                     new ObjectWithWeight<>(new Sanya(),1)
             );
             Fight fight = new Fight(Character.getInstance(), battler);
