@@ -20,8 +20,9 @@ import java.util.*;
 public class Labyrinth {
 
     public void enterLabyrinth() { // start: 3 col, 6 row
-        char[][] labyrinth = readLabyrinth();
-        Position position = new Position(6, 3);
+        LabyrinthAndPosition labyrinthAndPosition = readLabyrinth();
+        Position position = labyrinthAndPosition.getPosition();
+        char[][] labyrinth = labyrinthAndPosition.getLabyrinth();
         while (!position.escaped(labyrinth)) {
             findPotion(labyrinth, position);
             findArmor(labyrinth, position);
@@ -48,8 +49,7 @@ public class Labyrinth {
 
     private void findFight(char[][] labyrinth, Position position) {
         if (labyrinth[position.currentRow][position.currentColumn] == '@') {
-            System.out.println("Бродя по лабиринту, ты замечаешь...");
-            //TODO: Саня, полечи
+            System.out.println("Бродя по лабиринту, ты находишь враждебное существо...");
             Battler battler = new Wolf();
             Fight fight = new Fight(Character.getInstance(), battler);
             fight.battle();
@@ -99,14 +99,17 @@ public class Labyrinth {
         if (labyrinth[position.currentRow][position.currentColumn] == '>') {
             Weapon weapon = new Weapon(WeaponType.SWORD);
             Menu weaponPickMenu = new Menu("Ты нашел '" + weapon.getName() + "', его максимальный урон: " + weapon.getWeaponDamage());
-            weaponPickMenu.addItem("Взять в руки", () ->{
-                    Character.getInstance().setWeapon(weapon);
-                    clearCurrentCell(labyrinth, position);});
-            weaponPickMenu.addItem("Положить в рюкзак", () ->{
-                    Character.getInstance().getInventory().addItem(new Weapon(WeaponType.SWORD));
-                    clearCurrentCell(labyrinth, position);});
-            weaponPickMenu.addItem("Зачем он нужен(Сломать об колено)", () ->{
-                    clearCurrentCell(labyrinth, position);});
+            weaponPickMenu.addItem("Взять в руки", () -> {
+                Character.getInstance().setWeapon(weapon);
+                clearCurrentCell(labyrinth, position);
+            });
+            weaponPickMenu.addItem("Положить в рюкзак", () -> {
+                Character.getInstance().getInventory().addItem(new Weapon(WeaponType.SWORD));
+                clearCurrentCell(labyrinth, position);
+            });
+            weaponPickMenu.addItem("Зачем он нужен(Сломать об колено)", () -> {
+                clearCurrentCell(labyrinth, position);
+            });
             weaponPickMenu.showAndChoose();
         }
     }
@@ -115,10 +118,10 @@ public class Labyrinth {
         labyrinth[position.currentRow][position.currentColumn] = ' ';
     }
 
-    private char[][] readLabyrinth() {
+    private LabyrinthAndPosition readLabyrinth() {
         ClassLoader classLoader = this.getClass().getClassLoader();
         File file = new File(classLoader.getResource("startLabyrinth").getFile());
-
+        Position position = null;
         int row = 0, column = 0;
         try (FileReader fr = new FileReader(file)) {
             BufferedReader reader = new BufferedReader(fr);
@@ -147,6 +150,11 @@ public class Labyrinth {
                 }
                 if (currentColumn < column) {
                     labyrinth[currentRow][currentColumn] = currentSymbol;
+                    if (currentSymbol == 'O') {
+                        int xx = currentRow;
+                        int xy = currentColumn;
+                        position = new Position(xx, xy);
+                    }
                     if (currentSymbol != 'x' && currentSymbol != 'O' && currentSymbol != 'Z') {
                         System.out.print(" ");
                     } else {
@@ -159,6 +167,26 @@ public class Labyrinth {
             System.out.println(ex.getMessage());
         }
         System.out.println();
-        return labyrinth;
+        return new LabyrinthAndPosition(labyrinth,position);
+
+    }
+
+    class LabyrinthAndPosition {
+        private char[][] labyrinth;
+        private Position position;
+
+        public LabyrinthAndPosition(char[][] labyrinth, Position position) {
+            this.labyrinth = labyrinth;
+            this.position = position;
+        }
+
+        public char[][] getLabyrinth() {
+            return labyrinth;
+        }
+
+        public Position getPosition() {
+            return position;
+        }
     }
 }
+
