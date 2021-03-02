@@ -54,9 +54,9 @@ public class Labyrinth {
         if (labyrinth[position.currentRow][position.currentColumn] == '@') {
             System.out.println("Бродя по лабиринту, ты находишь враждебное существо...");
             Battler battler = Randomizer.randomize(
-                    new ObjectWithWeight<>(new Wolf(),5),
-                    new ObjectWithWeight<>(new Goblin(),10),
-                    new ObjectWithWeight<>(new Sanya(),1)
+                    new ObjectAndProbability<>(new Wolf(),5),
+                    new ObjectAndProbability<>(new Goblin(),5),
+                    new ObjectAndProbability<>(new Sanya(),2)
             );
             Fight fight = new Fight(Character.getInstance(), battler);
             fight.battle();
@@ -206,8 +206,8 @@ public class Labyrinth {
     }
 
     class LabyrinthAndPosition {
-        private char[][] labyrinth;
-        private Position position;
+        private final char[][] labyrinth;
+        private final Position position;
 
         public LabyrinthAndPosition(char[][] labyrinth, Position position) {
             this.labyrinth = labyrinth;

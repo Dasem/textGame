@@ -1,16 +1,11 @@
 package mechanic.battle;
 
 import equipment.*;
-import equipment.items.HealingPotion;
-import equipment.items.UselessItem;
+import equipment.items.*;
 import units.Character;
 import utils.*;
-import utils.random.ObjectWithWeight;
-import utils.random.Randomizer;
-
-import java.util.*;
-
-import static equipment.AccuracyLevel.MISS;
+import utils.random.*;
+import utils.random.ObjectAndProbability;
 import static utils.Utils.*;
 
 public class Fight {
@@ -29,15 +24,7 @@ public class Fight {
             if (attackResult1.isKill) {
                 System.out.println(attackResult1.attackText);
                 System.out.println(battler2.getName() + " умирает");
-                Item item = Randomizer.randomize(
-                        new ObjectWithWeight<>(new HealingPotion(HealingPotionType.LESSER_HEALING_POTION), 2),
-                        new ObjectWithWeight<>(new UselessItem("Кусок чего-нибудь"), 1),
-                        new ObjectWithWeight<>(null, 4));
-                if (item == null) System.out.println("Поздравляю, ты ничего не нашёл");
-                else {
-                    System.out.println("Поздравляю, ты нашёл: " + item.getName());
-                    Character.getInstance().getInventory().addItem(item);
-                }
+                Character.getInstance().loot(battler2.getLoot()); // TODO: мы подразумеваем что battler1 = Character
                 return;
             } else {
                 System.out.println(attackResult1.attackText);
@@ -91,7 +78,6 @@ public class Fight {
         } else {
             return AccuracyLevel.MISS;
         }
-
     }
 }
 

@@ -1,11 +1,15 @@
 package units;
 
 import equipment.*;
+import levels.*;
 import mechanic.battle.*;
+import menu.*;
 import utils.*;
 
+import java.util.*;
+
 public class Character implements Battler {
-    private final static int DEFAULT_ARMOR_CLASS = 100;
+    private final static int DEFAULT_ARMOR_CLASS = 10;
     private final String username;
     private int currentHealth = getMaxHealth();
     private Armor armor;
@@ -28,6 +32,26 @@ public class Character implements Battler {
 
     public String getUsername() {
         return username;
+    }
+
+    public void loot(Collection<Item> itemsFromMob) {
+        while (!itemsFromMob.isEmpty()) {
+            Menu lootMenu = new Menu("Вы нашли предметы:", false);
+            for (Item item : itemsFromMob) {
+                lootMenu.addItem(item.getName(), ()-> {
+                    item.execute();
+                    itemsFromMob.remove(item);
+                });
+            }
+            lootMenu.addAdditionalItem("Забрать всё", () -> {
+                this.getInventory().addItems(itemsFromMob);
+                itemsFromMob.clear();
+            });
+            lootMenu.addAdditionalItem("Закончить лутаться", () -> {
+                itemsFromMob.clear();
+            });
+            lootMenu.showAndChoose();
+        }
     }
 
     @Override
@@ -61,6 +85,11 @@ public class Character implements Battler {
         } else {
             return getArmor().getArmorType().getArmorClass();
         }
+    }
+
+    @Override
+    public Collection<Item> getLoot() {
+        return null;
     }
 
 

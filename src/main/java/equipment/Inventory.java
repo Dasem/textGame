@@ -13,6 +13,10 @@ public class Inventory {
         this.items.add(item);
     }
 
+    public void addItems(Collection<Item> items) {
+        this.items.addAll(items);
+    }
+
     public boolean removeItem(Item item) {
         return items.remove(item);
     }

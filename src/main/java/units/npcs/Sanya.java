@@ -1,7 +1,10 @@
 package units.npcs;
 
+import equipment.*;
 import mechanic.battle.Battler;
 import utils.Dices;
+
+import java.util.*;
 
 public class Sanya extends Enemy {
     protected int currentHealth = getMaxHealth();
@@ -29,6 +32,11 @@ public class Sanya extends Enemy {
     @Override
     public int getArmorClass() {
         return 10;
+    }
+
+    @Override
+    public Collection<Item> getLoot() {
+        return null;
     }
 
     @Override

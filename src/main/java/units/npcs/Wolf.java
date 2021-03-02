@@ -1,6 +1,9 @@
 package units.npcs;
 
+import equipment.*;
 import utils.Dices;
+
+import java.util.*;
 
 public class Wolf extends Enemy {
     protected int currentHealth = getMaxHealth();
@@ -28,6 +31,11 @@ public class Wolf extends Enemy {
     @Override
     public int getArmorClass() {
         return 13;
+    }
+
+    @Override
+    public Collection<Item> getLoot() {
+        return null;
     }
 
     @Override

@@ -1,6 +1,9 @@
 package levels;
 
+import com.google.common.collect.*;
+import equipment.*;
 import equipment.items.*;
+import equipment.items.Map;
 import mechanic.battle.*;
 import mechanic.labyrinth.*;
 import menu.*;
@@ -9,6 +12,7 @@ import units.npcs.*;
 import utils.*;
 
 import java.lang.*;
+import java.util.*;
 
 public class Level1 implements Levelable {
 

@@ -15,7 +15,8 @@ public class Armor extends Equipment {
         this.armorType = armorType;
     }
 
-    public int getArmorClass() { return armorType.getArmorClass();
+    public int getArmorClass() {
+        return armorType.getArmorClass();
     }
 
     @Override
@@ -29,14 +30,13 @@ public class Armor extends Equipment {
     }
 
     private Menu armorMenu() {
-        Menu armorMenu = new Menu("Меню для брони");
+        Menu armorMenu = new Menu("Меню для брони", false);
         if (this == Character.getInstance().getArmor()) {
             armorMenu.addItem("Снять броню", () -> {
                 this.removeArmor();
                 System.out.println("Сняв броню, вы чувствует облегчение");
                 Character.getInstance().getInventory().addItem(this);
             });
-
         } else {
             armorMenu.addItem("Надеть эту броню", () -> {
                 this.equipArmor();
