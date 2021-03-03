@@ -1,6 +1,6 @@
 package units.npcs;
 
-import equipment.*;
+import equipment.Item;
 import equipment.items.HealingPotion;
 import equipment.items.HealingPotionType;
 import equipment.items.UselessItem;
@@ -8,10 +8,12 @@ import utils.Dices;
 import utils.random.ObjectAndProbability;
 import utils.random.Randomizer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class Goblin extends Enemy {
+public class Spider extends Enemy {
     protected int currentHealth = getMaxHealth();
 
     @Override
@@ -21,7 +23,7 @@ public class Goblin extends Enemy {
 
     @Override
     public int getMaxHealth() {
-        return 10;
+        return 1;
     }
 
     @Override
@@ -31,12 +33,12 @@ public class Goblin extends Enemy {
 
     @Override
     public int getAttackModifier() {
-        return 1;
+        return 4;
     }
 
     @Override
     public int getArmorClass() {
-        return 11;
+        return 12;
     }
 
     @Override
@@ -49,7 +51,7 @@ public class Goblin extends Enemy {
         for ( int i=0;i<countItem;i++) {
             Item itemMob = Randomizer.randomize(
                     new ObjectAndProbability<>(new HealingPotion(HealingPotionType.LESSER_HEALING_POTION), 3),
-                    new ObjectAndProbability<>(new UselessItem("Ухо гоблина"), 1),
+                    new ObjectAndProbability<>(new UselessItem("Паучий клык"), 1),
                     new ObjectAndProbability<>(null, 1)
             );
             colItem.add(itemMob);
@@ -65,7 +67,7 @@ public class Goblin extends Enemy {
 
     @Override
     public String getName() {
-        return "Goblin";
+        return "Spider";
     }
 
 
