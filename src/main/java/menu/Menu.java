@@ -91,7 +91,7 @@ public class Menu {
                 System.out.println(c.getCurrentHealth() + "/" + c.getMaxHealth() + " HP");
                 System.out.println(c.getArmorClass() + " Защиты");
                 if (c.getArmor() != null) {
-                    System.out.println(c.getArmor());
+                    System.out.println(c.getArmor().getPrettyName());
                 } else System.out.println("Нет брони");
                 if (c.getWeapon() != null) {
                     System.out.println(c.getWeapon().getPrettyName());

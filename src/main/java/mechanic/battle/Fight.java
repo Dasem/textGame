@@ -17,7 +17,7 @@ public class Fight {
     public void battle() {
         boolean firstHit = firstHitBattler1();
         boolean battleEnd = false;
-        Battler deadButtler = null;
+        Battler deadBattler = null;
         while (!battleEnd) {
             AttackResult attackResult = hitOnBattler(firstHit);
             System.out.println(attackResult.getAttackText());
@@ -28,34 +28,28 @@ public class Fight {
                 Utils.suspense(700);
                 if (counterAttack.isKill()) {
                     battleEnd = true;
-                    deadButtler = attackResult.getOffencer();
+                    deadBattler = attackResult.getDefender();
                 }
             } else {
                 battleEnd = true;
-                deadButtler = battler2;
+                deadBattler = attackResult.getDefender();
             }
         }
-            System.out.println(deadButtler.getName()+" мёртв ☠");
-        if (Character.getInstance().isDead()){
+        System.out.println(deadBattler.getName() + " мёртв ☠");
+        if (Character.getInstance().isDead()) {
             Utils.endGame();
         }
-        if(deadButtler instanceof Lootable){
-            Character.getInstance().loot(((Lootable) deadButtler).getLoot());
+        if (deadBattler instanceof Lootable) {
+            Character.getInstance().loot(((Lootable) deadBattler).getLoot());
         }
     }
 
     private AttackResult hitOnBattler(boolean firstHit) {
         if (firstHit) {
             return getAttackResult(battler1, battler2);
-        } else return getAttackResult(battler2, battler1);
-    }
-
-    public AttackResult hitOnBattler2() {
-        return getAttackResult(battler1, battler2);
-    }
-
-    public AttackResult hitOnBattler1() {
-        return getAttackResult(battler2, battler1);
+        } else {
+            return getAttackResult(battler2, battler1);
+        }
     }
 
     private AttackResult getAttackResult(Battler battlerFrom, Battler battlerTo) {
@@ -64,12 +58,12 @@ public class Fight {
         switch (accuracyLevel) {
             case CRITICAL_HIT:
                 boolean isDead = battlerTo.takeDamage(damage);
-                return new AttackResult(isDead, "Критический удар! \uD83D\uDD25 " + battlerFrom.getName() + " нанёс " + damage + " урона ⚔",battlerFrom,battlerTo);
+                return new AttackResult(isDead, "Критический удар! \uD83D\uDD25 " + battlerFrom.getName() + " нанёс " + damage + " урона ⚔", battlerFrom, battlerTo);
             case NORMAL_HIT:
                 isDead = battlerTo.takeDamage(damage);
-                return new AttackResult(isDead, battlerFrom.getName() + " нанёс " + damage + " урона ⚔",battlerFrom,battlerTo);
+                return new AttackResult(isDead, battlerFrom.getName() + " нанёс " + damage + " урона ⚔", battlerFrom, battlerTo);
             case MISS:
-                return new AttackResult(false, battlerFrom.getName() + " промахнулся",battlerFrom,battlerTo);
+                return new AttackResult(false, battlerFrom.getName() + " промахнулся", battlerFrom, battlerTo);
 
         }
 

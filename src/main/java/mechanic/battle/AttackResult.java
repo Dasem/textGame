@@ -1,24 +1,24 @@
 package mechanic.battle;
 
 public class AttackResult {
-  private final   boolean isKill;
-   private final String attackText;
-   private final Battler attaker;
-   private final Battler offencer;
+    private final boolean isKill;
+    private final String attackText;
+    private final Battler attacker;
+    private final Battler defender;
 
-    public AttackResult(boolean isKill, String attackText, Battler attaker, Battler offencer) {
+    public AttackResult(boolean isKill, String attackText, Battler attacker, Battler defender) {
         this.isKill = isKill;
         this.attackText = attackText;
-        this.attaker = attaker;
-        this.offencer = offencer;
+        this.attacker = attacker;
+        this.defender = defender;
     }
 
-    public Battler getAttaker() {
-        return attaker;
+    public Battler getAttacker() {
+        return attacker;
     }
 
-    public Battler getOffencer() {
-        return offencer;
+    public Battler getDefender() {
+        return defender;
     }
 
     public boolean isKill() {

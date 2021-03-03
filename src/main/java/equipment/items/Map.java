@@ -27,7 +27,7 @@ public class Map implements Item {
             System.out.println("Вы смотрите карту^ \n");
             readLabyrinth();
         });
-        mapMenu.addItem("Назад", () ->{
+        mapMenu.addItem("Назад", () -> {
             System.out.println("Вы решили что и так хорошо помните карту");
         });
         return mapMenu;

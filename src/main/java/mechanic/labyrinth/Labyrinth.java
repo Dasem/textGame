@@ -21,7 +21,7 @@ import java.util.*;
 
 public class Labyrinth {
 
-    public void enterLabyrinth() { // start: 3 col, 6 row
+    public void enterLabyrinth() {
         LabyrinthAndPosition labyrinthAndPosition = readLabyrinth();
         Position position = labyrinthAndPosition.getPosition();
         char[][] labyrinth = labyrinthAndPosition.getLabyrinth();
@@ -130,7 +130,7 @@ public class Labyrinth {
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
-        char[][] labyrinth = new char[row][column]; // 7x7
+        char[][] labyrinth = new char[row][column];
         try (FileReader reader = new FileReader(file)) {
             // читаем посимвольно
             int intSymbol;
@@ -147,9 +147,7 @@ public class Labyrinth {
                 if (currentColumn < column) {
                     labyrinth[currentRow][currentColumn] = currentSymbol;
                     if (currentSymbol == 'O') {
-                        int xx = currentRow;
-                        int xy = currentColumn;
-                        position = new Position(xx, xy);
+                        position = new Position(currentRow, currentColumn);
                     }
                     if (currentSymbol != 'x' && currentSymbol != 'O' && currentSymbol != 'Z') {
                         System.out.print(" ");

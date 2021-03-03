@@ -57,7 +57,7 @@ public class Armor extends Equipment {
 
     }
 
-    public String getArmorName() {
+    public String getPrettyName() {
         return "Ваша броня: " + getArmorType().getTitle() + "\nКласс Доспеха: " + armorType.getArmorClass();
 
     }
