@@ -15,24 +15,22 @@ public class Fight {
     }
 
     public void battle() {
-        boolean firstHit = firstHitBattler1();
-        boolean battleEnd = false;
-        Battler deadBattler = null;
-        while (!battleEnd) {
-            AttackResult attackResult = hitOnBattler(firstHit);
-            System.out.println(attackResult.getAttackText());
+        boolean hitOnBattler2 = hitBattler1();
+        Battler deadBattler;
+        while (true) {
+            AttackResult attack = hitOnBattler(hitOnBattler2);
+            System.out.println(attack.getAttackText());
             Utils.suspense();
-            if (!attackResult.isKill()) {
-                AttackResult counterAttack = hitOnBattler(!firstHit);
-                System.out.println(counterAttack.getAttackText());
-                Utils.suspense(700);
-                if (counterAttack.isKill()) {
-                    battleEnd = true;
-                    deadBattler = attackResult.getDefender();
-                }
-            } else {
-                battleEnd = true;
-                deadBattler = attackResult.getDefender();
+            if (attack.isKill()) {
+                deadBattler = attack.getDefender();
+                break;
+            }
+            AttackResult counterAttack = hitOnBattler(!hitOnBattler2);
+            System.out.println(counterAttack.getAttackText());
+            Utils.suspense(700);
+            if (counterAttack.isKill()) {
+                deadBattler = counterAttack.getDefender();
+                break;
             }
         }
         System.out.println(deadBattler.getName() + " мёртв ☠");
@@ -44,8 +42,8 @@ public class Fight {
         }
     }
 
-    private AttackResult hitOnBattler(boolean firstHit) {
-        if (firstHit) {
+    private AttackResult hitOnBattler(boolean hitOnBattler2) {
+        if (hitOnBattler2) {
             return getAttackResult(battler1, battler2);
         } else {
             return getAttackResult(battler2, battler1);
@@ -70,10 +68,11 @@ public class Fight {
         return null;
     }
 
-    private boolean firstHitBattler1() {
+    private boolean hitBattler1() {
         int initiativBattler1 = battler1.initiativThrow();
         int initiativBattler2 = battler2.initiativThrow();
         while (initiativBattler1 == initiativBattler2) {
+            System.out.println("Реролл...");
             initiativBattler1 = battler1.initiativThrow();
             initiativBattler2 = battler2.initiativThrow();
         }

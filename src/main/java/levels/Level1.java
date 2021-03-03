@@ -18,7 +18,7 @@ public class Level1 implements Levelable {
 
     @Override
     public void startLevel() {
-        Menu startMenu = new Menu("Хочешь ли ты продолжать путешествие?:", false);
+        Menu startMenu = new Menu("Хочешь ли ты продолжать путешествие?:", MenuSetting.HIDE_CHARACTER_MENU);
         startMenu.addItem("Выжить", () -> {
             System.out.println("Вы видите перед собой карту и поднимаете её\n");
             Character.getInstance().getInventory().addItem(new Map("Карта подземелья"));

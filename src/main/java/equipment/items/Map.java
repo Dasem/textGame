@@ -1,6 +1,6 @@
 package equipment.items;
 
-import menu.Menu;
+import menu.*;
 import equipment.*;
 import units.Character;
 
@@ -10,11 +10,12 @@ import java.io.FileReader;
 import java.io.IOException;
 
 
-public class Map implements Item {
+public class Map extends Item {
     String itemName;
 
     public Map(String itemName) {
         this.itemName = itemName;
+        postInitialize();
     }
 
     public String getItemName() {
@@ -22,13 +23,10 @@ public class Map implements Item {
     }
 
     private Menu mapMenu() {
-        Menu mapMenu = new Menu("Карта:", false);
+        Menu mapMenu = new Menu("Карта:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
         mapMenu.addItem("Посмотреть карту", () -> {
             System.out.println("Вы смотрите карту^ \n");
             readLabyrinth();
-        });
-        mapMenu.addItem("Назад", () -> {
-            System.out.println("Вы решили что и так хорошо помните карту");
         });
         return mapMenu;
     }

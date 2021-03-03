@@ -1,6 +1,6 @@
 package equipment;
 
-import menu.Menu;
+import menu.*;
 import units.Character;
 
 public class Weapon extends Equipment {
@@ -9,6 +9,8 @@ public class Weapon extends Equipment {
 
     public Weapon(WeaponType weaponType) {
         this.weaponType = weaponType;
+        postInitialize();
+        addWeaponMenu();
     }
 
     public WeaponType getWeaponType() {
@@ -26,26 +28,23 @@ public class Weapon extends Equipment {
 
     @Override
     public void execute() {
-        weaponMenu().showAndChoose();
+        itemMenu.showAndChoose();
     }
 
-    private Menu weaponMenu() {
-        Menu weaponMenu = new Menu("Меню для оружия", false);
+    private void addWeaponMenu() {
         if (this == Character.getInstance().getWeapon()) {
-            weaponMenu.addItem("Убрать оружие", () -> {
+            itemMenu.addItem("Убрать оружие", () -> {
                 this.removeWeapon();
                 System.out.println("Вы решили сражаться без оружия. Ваш максимальный урон: 4");
                 Character.getInstance().getInventory().addItem(this);
             });
         } else {
-            weaponMenu.addItem("Использовать это оружие", () -> {
+            itemMenu.addItem("Использовать это оружие", () -> {
                 this.equipWeapon();
                 System.out.println("Вы взяли '" + this.getName() + "', его максимальный урон: " + this.getWeaponDamage());
                 Character.getInstance().getInventory().removeItem(this);
             });
         }
-        weaponMenu.addItem("Оставить как есть", () -> System.out.println("Моя пушка получше будет"));
-        return weaponMenu;
     }
 
     public void equipWeapon() {

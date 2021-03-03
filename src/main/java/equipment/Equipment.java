@@ -1,4 +1,4 @@
 package equipment;
 
-public abstract class Equipment implements Item {
+public abstract class Equipment extends Item {
 }

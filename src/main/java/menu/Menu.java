@@ -1,5 +1,6 @@
 package menu;
 
+import com.google.common.collect.*;
 import equipment.*;
 import units.Character;
 import utils.*;
@@ -10,10 +11,9 @@ public class Menu {
     String title;
     List<MenuItem> menuItems = new ArrayList<>();
     List<MenuItem> additionalMenuItems = new ArrayList<>();
-    boolean showCharacterMenu = true;
+    Set<MenuSetting> menuSettings;
 
     private void showAndChooseForBack() {
-        Utils.suspense(500);
         boolean chooseDone = false;
         while (!chooseDone) {
             try {
@@ -23,12 +23,12 @@ public class Menu {
                 System.out.println();
                 System.out.println(title);
                 for (MenuItem menuItem : menuItems) {
-                    menuItem.show();
+                    menuItem.show(menuItems.indexOf(menuItem) + 1);
                 }
                 if (!additionalMenuItems.isEmpty()) {
                     System.out.println("*************"); // разделение между доп. меню и основным
                     for (MenuItem menuItem : additionalMenuItems) {
-                        menuItem.show();
+                        menuItem.show(menuItems.size() + additionalMenuItems.indexOf(menuItem) + 1);
                     }
                 }
 
@@ -48,23 +48,24 @@ public class Menu {
     }
 
     public void showAndChoose() {
-        addAdditionalMenu();
         showAndChooseForBack();
     }
 
     private void addAdditionalMenu() {
-        if (showCharacterMenu) {
+        if (!menuSettings.contains(MenuSetting.HIDE_CHARACTER_MENU)) {
             addCharacterMenu();
+        }
+        if (menuSettings.contains(MenuSetting.ADD_BACK_BUTTON)) {
+            addAdditionalItem("Назад", () -> {
+                // do nothing (в конце метода возвращается)
+            });
         }
     }
 
-    public Menu(String title) {
+    public Menu(String title, MenuSetting ... menuSettings) {
         this.title = title;
-    }
-
-    public Menu(String title, boolean showCharacterMenu) {
-        this.title = title;
-        this.showCharacterMenu = showCharacterMenu;
+        this.menuSettings = Sets.newHashSet(menuSettings);
+        addAdditionalMenu();
     }
 
     private void addCharacterMenu() {
@@ -72,19 +73,16 @@ public class Menu {
             if (Character.getInstance().getInventory().getItems().isEmpty()) {
                 System.out.println("Твой инвентарь пуст");
             } else {
-                Menu inventoryMenu = new Menu("Инвентарь:", false);
+                Menu inventoryMenu = new Menu("Инвентарь:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
                 for (Item item : Character.getInstance().getInventory().getItems()) {
                     inventoryMenu.addItem(item);
                 }
-                inventoryMenu.addItem("Назад", () -> {
-                    // do nothing (в конце метода возвращается)
-                });
                 inventoryMenu.showAndChoose();
             }
             this.showAndChooseForBack();
         });
         addAdditionalItem("Просмотр персонажа", () -> {
-            Menu characterMenu = new Menu("Персонаж:", false);
+            Menu characterMenu = new Menu("Персонаж:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
             characterMenu.addItem("Информация о персонаже", () -> {
                 Character c = Character.getInstance();
                 System.out.println("Меня зовут " + c.getName());
@@ -100,7 +98,7 @@ public class Menu {
                 characterMenu.showAndChooseForBack(); // после закрытия инвентаря, возвращаемся а меню персонажа
             });
             characterMenu.addItem("Снаряжение", () -> {
-                Menu equippedMenu = new Menu("Экипированное снаряжение:",false);
+                Menu equippedMenu = new Menu("Экипированное снаряжение:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
                 if (Character.getInstance().getWeapon() == null && Character.getInstance().getArmor() == null ) {
                     System.out.println("Нет надетого снаряжения");
                 } else {
@@ -114,23 +112,20 @@ public class Menu {
                 }
                 characterMenu.showAndChooseForBack();
             });
-            characterMenu.addItem("Назад", () -> {
-                // do nothing (в конце метода возвращается)
-            });
             characterMenu.showAndChoose();
             this.showAndChooseForBack();
         });
     }
 
     public void addAdditionalItem(String name, Executable executable) {
-        additionalMenuItems.add(new MenuItem(additionalMenuItems.size() + menuItems.size() + 1, name, executable));
+        additionalMenuItems.add(new MenuItem(name, executable));
     }
 
     public void addItem(String name, Executable executable) {
-        menuItems.add(new MenuItem(menuItems.size() + 1, name, executable));
+        menuItems.add(new MenuItem(name, executable));
     }
 
     public void addItem(Item item) {
-        menuItems.add(new MenuItem(menuItems.size() + 1, item.getName(), item));
+        menuItems.add(new MenuItem(item.getName(), item));
     }
 }

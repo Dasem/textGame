@@ -1,26 +1,20 @@
 package menu;
 
 public class MenuItem {
-    private final int itemNumber;
     private final String name;
     private final Executable executable;
 
-    public void show() {
+    public void show(int itemNumber) {
         System.out.println(itemNumber + ". " + name);
     }
 
-    public MenuItem(int itemNumber, String name, Executable executable) {
-        this.itemNumber = itemNumber;
+    public MenuItem(String name, Executable executable) {
         this.name = name;
         this.executable = executable;
     }
 
     public String getName() {
         return name;
-    }
-
-    public int getItemNumber() {
-        return itemNumber;
     }
 
     public void execute() {

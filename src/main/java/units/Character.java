@@ -39,7 +39,7 @@ public class Character implements Battler {
             return;
         }
         while (!itemsFromMob.isEmpty()) {
-            Menu lootMenu = new Menu("Вы нашли предметы:", false);
+            Menu lootMenu = new Menu("Вы нашли предметы:", MenuSetting.HIDE_CHARACTER_MENU);
             for (Item item : itemsFromMob) {
                 lootMenu.addItem(item.getName(), ()-> {
                     item.execute();

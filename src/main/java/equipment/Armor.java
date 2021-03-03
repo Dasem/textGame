@@ -1,6 +1,6 @@
 package equipment;
 
-import menu.Menu;
+import menu.*;
 import units.Character;
 
 public class Armor extends Equipment {
@@ -13,6 +13,8 @@ public class Armor extends Equipment {
 
     public Armor(ArmorType armorType) {
         this.armorType = armorType;
+        postInitialize();
+        addArmorMenu();
     }
 
     public int getArmorClass() {
@@ -26,26 +28,23 @@ public class Armor extends Equipment {
 
     @Override
     public void execute() {
-        armorMenu().showAndChoose();
+        itemMenu.showAndChoose();
     }
 
-    private Menu armorMenu() {
-        Menu armorMenu = new Menu("Меню для брони", false);
+    private void addArmorMenu() {
         if (this == Character.getInstance().getArmor()) {
-            armorMenu.addItem("Снять броню", () -> {
+            itemMenu.addItem("Снять броню", () -> {
                 this.removeArmor();
                 System.out.println("Сняв броню, вы чувствует облегчение");
                 Character.getInstance().getInventory().addItem(this);
             });
         } else {
-            armorMenu.addItem("Надеть эту броню", () -> {
+            itemMenu.addItem("Надеть эту броню", () -> {
                 this.equipArmor();
                 System.out.println("Вы надеваете доспех. Ваш класс доспеха теперь равен: " + this.getArmorClass());
                 Character.getInstance().getInventory().removeItem(this);
             });
         }
-        armorMenu.addItem("Оставить как есть", () -> System.out.println("Вы решили не менять броню"));
-        return armorMenu;
     }
 
     public void equipArmor() {

@@ -7,7 +7,7 @@ public class Main {
     static final String START_GAME_MENU = "1. Новая игра\n2. Выход";
 
     public static void main(String[] args) {
-        Menu startMenu = new Menu("Добро пожаловать в игру:", false);
+        Menu startMenu = new Menu("Добро пожаловать в игру:", MenuSetting.HIDE_CHARACTER_MENU);
         startMenu.addItem("Новая игра", () -> {
             createCharacter();
             new Level1().startLevel();
