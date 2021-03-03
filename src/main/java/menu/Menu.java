@@ -93,6 +93,7 @@ public class Menu {
                 if (c.getWeapon() != null) {
                     System.out.println(c.getWeapon().getPrettyName());
                 } else System.out.println("Нет оружия");
+                this.showAndChoose();
             });
             equipmentMenu.addItem("Снаряжение", () -> {
                 Menu equippedShmotMenu = new Menu("Экипированное снаряжение:",false);

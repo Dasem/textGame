@@ -25,7 +25,7 @@ public class Fight {
                 System.out.println(attackResult1.attackText);
                 System.out.println(battler2.getName() + " умирает");
                 Character.getInstance().loot(battler2.getLoot()); // TODO: мы подразумеваем что battler1 = Character
-                return;
+                return; 
             } else {
                 System.out.println(attackResult1.attackText);
             }

@@ -1,5 +1,6 @@
 package mechanic.labyrinth;
 
+import com.google.common.collect.Lists;
 import equipment.Armor;
 import equipment.ArmorType;
 import equipment.*;
@@ -8,9 +9,7 @@ import equipment.items.HealingPotionType;
 import mechanic.battle.*;
 import menu.*;
 import units.Character;
-import units.npcs.Goblin;
-import units.npcs.Sanya;
-import units.npcs.Wolf;
+import units.npcs.*;
 import utils.*;
 import utils.random.*;
 
@@ -29,7 +28,7 @@ public class Labyrinth {
         while (!position.escaped(labyrinth)) {
             findPotion(labyrinth, position);
             findArmor(labyrinth, position);
-            findSword(labyrinth, position);
+            findWeapon(labyrinth, position);
             findFight(labyrinth, position);
 
             Menu labyrinthMenu = new Menu("Необходимо преодолеть лабиринт:");
@@ -55,8 +54,11 @@ public class Labyrinth {
             System.out.println("Бродя по лабиринту, ты находишь враждебное существо...");
             Battler battler = Randomizer.randomize(
                     new ObjectAndProbability<>(new Wolf(),5),
-                    new ObjectAndProbability<>(new Goblin(),5),
-                    new ObjectAndProbability<>(new Sanya(),2)
+                    new ObjectAndProbability<>(new Goblin(),500),
+                    new ObjectAndProbability<>(new Sanya(),1),
+                    new ObjectAndProbability<>(new Spider(),3),
+                    new ObjectAndProbability<>(new Skeleton(),3),
+                    new ObjectAndProbability<>(new Gnoll(),1)
             );
             Fight fight = new Fight(Character.getInstance(), battler);
             fight.battle();
@@ -80,25 +82,10 @@ public class Labyrinth {
             );
             if (armor == null) {
                 System.out.println("Тут должна была быть броня, но её украл Саня");
-                clearCurrentCell(labyrinth, position);
             } else {
-                Menu armorPickMenu = new Menu("Ты нашел '" + armor.getName() + "', его класс доспеха: " + armor.getArmorClass());
-                armorPickMenu.addItem("Надеть броню", () ->{
-                    Character.getInstance().setArmor(armor);
-                    System.out.println("Ты решил надеть броню. Теперь твой класс доспеха: " + armor.getArmorClass());
-                    clearCurrentCell(labyrinth, position);
-                });
-                armorPickMenu.addItem("Положить в рюкзак", () -> {
-                    Character.getInstance().getInventory().addItem(armor);
-                    System.out.println("Ты решил взять броню с собой");
-                    clearCurrentCell(labyrinth, position);
-                });
-                armorPickMenu.addItem("Сломать", () -> {
-                    System.out.println("Ты решил сломать железяку и идти дальше");
-                    clearCurrentCell(labyrinth, position);
-                });
-                armorPickMenu.showAndChoose();
+                Character.getInstance().loot(Lists.newArrayList(armor));
             }
+            clearCurrentCell(labyrinth, position);
         }
     }
 
@@ -109,45 +96,20 @@ public class Labyrinth {
                     new ObjectAndProbability<>(new HealingPotion(HealingPotionType.NORMAL_HEALING_POTION), 1),
                     new ObjectAndProbability<>(null, 1)
             );
-            if (healingPotion == null) {
-                System.out.println("Вы находите пустой флакон из под зелья. Кажется, его кто-то выпил. Стоп, это что, кудрявый волос?...");
-                clearCurrentCell(labyrinth, position);
-            } else {
-                Menu HealPotionMenu = new Menu("Ты нашел '" + healingPotion.getName() + "'");
-                HealPotionMenu.addItem("Положить в рюкзак", () -> {
-                    Character.getInstance().getInventory().addItem(healingPotion);
-                    clearCurrentCell(labyrinth, position);
-                });
-                HealPotionMenu.addItem("Использовать", () -> {
-                    int heal = healingPotion.use();
-                    clearCurrentCell(labyrinth, position);
-                    System.out.println("Ты нашел '" + healingPotion.getName() + "' и восстановил " + heal + " ХП. Твоё текущее здоровье: " + Character.getInstance().getCurrentHealth());
-                });
-                HealPotionMenu.showAndChoose();
-            }
+            Character.getInstance().loot(Lists.newArrayList(healingPotion));
         }
     }
 
-    private void findSword(char[][] labyrinth, Position position) {
+    private void findWeapon(char[][] labyrinth, Position position) {
         if (labyrinth[position.currentRow][position.currentColumn] == '>') {
-            Weapon weapon = new Weapon(WeaponType.SWORD);
-            Menu weaponPickMenu = new Menu("Ты нашел '" + weapon.getName() + "', его максимальный урон: " + weapon.getWeaponDamage());
-            weaponPickMenu.addItem("Взять в руки", () ->{
-                    Character.getInstance().setWeapon(weapon);
-                    clearCurrentCell(labyrinth, position);
-                });
-                weaponPickMenu.addItem("Положить в рюкзак", () -> {
-                    Character.getInstance().getInventory().addItem(new Weapon(WeaponType.SWORD));
-                    clearCurrentCell(labyrinth, position);
-                });
-                weaponPickMenu.addItem("Зачем он нужен(Сломать об колено)", () -> {
-                    clearCurrentCell(labyrinth, position);
-                });
-                weaponPickMenu.showAndChoose();
-            }
-
+            Weapon weapon = Randomizer.randomize(
+                    new ObjectAndProbability<>(new Weapon(WeaponType.DAGGER), 3),
+                    new ObjectAndProbability<>(new Weapon(WeaponType.TWO_HANDED_SWORD), 1),
+                    new ObjectAndProbability<>(new Weapon(WeaponType.SWORD), 2));
+            Character.getInstance().loot(Lists.newArrayList(weapon));
+            clearCurrentCell(labyrinth, position);
+        }
     }
-
     private void clearCurrentCell(char[][] labyrinth, Position position) {
         labyrinth[position.currentRow][position.currentColumn] = ' ';
     }
