@@ -35,7 +35,7 @@ public class Fight {
                 deadButtler = battler2;
             }
         }
-            System.out.println(deadButtler.getName()+" Помер");
+            System.out.println(deadButtler.getName()+" мёртв ☠");
         if (Character.getInstance().isDead()){
             Utils.endGame();
         }
@@ -64,10 +64,10 @@ public class Fight {
         switch (accuracyLevel) {
             case CRITICAL_HIT:
                 boolean isDead = battlerTo.takeDamage(damage);
-                return new AttackResult(isDead, "Критический удар! " + battlerFrom.getName() + " нанёс " + damage + " урона",battlerFrom,battlerTo);
+                return new AttackResult(isDead, "Критический удар! \uD83D\uDD25 " + battlerFrom.getName() + " нанёс " + damage + " урона ⚔",battlerFrom,battlerTo);
             case NORMAL_HIT:
                 isDead = battlerTo.takeDamage(damage);
-                return new AttackResult(isDead, battlerFrom.getName() + " нанёс " + damage + " урона",battlerFrom,battlerTo);
+                return new AttackResult(isDead, battlerFrom.getName() + " нанёс " + damage + " урона ⚔",battlerFrom,battlerTo);
             case MISS:
                 return new AttackResult(false, battlerFrom.getName() + " промахнулся",battlerFrom,battlerTo);
 
