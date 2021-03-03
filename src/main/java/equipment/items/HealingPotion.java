@@ -17,7 +17,13 @@ public class HealingPotion implements Item {
             System.out.println("Ну выпил и выпил, чё бубнить-то, захилен на " + heal + " ХП.");
             Character.getInstance().getInventory().removeItem(this);
         });
-        menu.addItem("Не пить", () -> System.out.println("Не выпил"));
+        if (!Character.getInstance().getInventory().getItems().contains(this)) {
+            menu.addItem("Забрать себе", () -> {
+                System.out.println("Потом пригодится.");
+                Character.getInstance().getInventory().addItem(this);
+            });
+        }
+        menu.addItem("Оставить как есть", () -> System.out.println("Не выпил"));
     }
 
     public int use() {

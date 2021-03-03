@@ -19,14 +19,14 @@ public class Menu {
             try {
                 chooseDone = true;
                 System.out.println();
-                System.out.println("--------------");
+                System.out.println("--------------"); // разделение между менюшками
                 System.out.println();
                 System.out.println(title);
                 for (MenuItem menuItem : menuItems) {
                     menuItem.show();
                 }
                 if (!additionalMenuItems.isEmpty()) {
-                    System.out.println("*************");
+                    System.out.println("*************"); // разделение между доп. меню и основным
                     for (MenuItem menuItem : additionalMenuItems) {
                         menuItem.show();
                     }
@@ -76,6 +76,9 @@ public class Menu {
                 for (Item item : Character.getInstance().getInventory().getItems()) {
                     inventoryMenu.addItem(item);
                 }
+                inventoryMenu.addItem("Назад", () -> {
+                    // do nothing (в конце метода возвращается)
+                });
                 inventoryMenu.showAndChoose();
             }
             this.showAndChooseForBack();
@@ -94,7 +97,7 @@ public class Menu {
                     System.out.println(c.getWeapon().getPrettyName());
                 } else System.out.println("Нет оружия");
 
-                this.showAndChooseForBack();
+                characterMenu.showAndChooseForBack(); // после закрытия инвентаря, возвращаемся а меню персонажа
             });
             characterMenu.addItem("Снаряжение", () -> {
                 Menu equippedMenu = new Menu("Экипированное снаряжение:",false);
@@ -112,9 +115,10 @@ public class Menu {
                 characterMenu.showAndChooseForBack();
             });
             characterMenu.addItem("Назад", () -> {
-                this.showAndChooseForBack();
+                // do nothing (в конце метода возвращается)
             });
             characterMenu.showAndChoose();
+            this.showAndChooseForBack();
         });
     }
 

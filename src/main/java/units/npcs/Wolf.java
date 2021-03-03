@@ -67,18 +67,4 @@ public class Wolf extends Enemy {
     public String getName() {
         return "Wolf";
     }
-
-
-    public Collection itemsFromMob() {
-        Collection colItem = new ArrayList();
-        Item itemMob = Randomizer.randomize(
-                new ObjectAndProbability<>(new HealingPotion(HealingPotionType.LESSER_HEALING_POTION), 3),
-                new ObjectAndProbability<>(new UselessItem("Ухо гоблина"), 1),
-                new ObjectAndProbability<>(null, 1)
-        );
-        colItem.add(itemMob);
-        return colItem;
-
-
-    }
 }
