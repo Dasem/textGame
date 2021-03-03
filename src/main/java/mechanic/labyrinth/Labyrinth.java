@@ -1,5 +1,6 @@
 package mechanic.labyrinth;
 
+import com.google.common.collect.*;
 import equipment.Armor;
 import equipment.ArmorType;
 import equipment.*;

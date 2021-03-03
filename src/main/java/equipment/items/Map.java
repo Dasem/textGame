@@ -22,7 +22,7 @@ public class Map implements Item {
     }
 
     private Menu mapMenu() {
-        Menu mapMenu = new Menu("Карта:");
+        Menu mapMenu = new Menu("Карта:", false);
         mapMenu.addItem("Посмотреть карту", () -> {
             System.out.println("Вы смотрите карту^ \n");
             readLabyrinth();

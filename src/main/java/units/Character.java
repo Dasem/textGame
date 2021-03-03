@@ -35,6 +35,9 @@ public class Character implements Battler {
     }
 
     public void loot(Collection<Item> itemsFromMob) {
+        if (itemsFromMob == null) {
+            return;
+        }
         while (!itemsFromMob.isEmpty()) {
             Menu lootMenu = new Menu("Вы нашли предметы:", false);
             for (Item item : itemsFromMob) {
