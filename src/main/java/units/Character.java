@@ -90,10 +90,6 @@ public class Character implements Battler {
         }
     }
 
-    @Override
-    public Collection<Item> getLoot() {
-        return null;
-    }
 
 
     @Override
@@ -143,5 +139,9 @@ public class Character implements Battler {
 
     public Inventory getInventory() {
         return inventory;
+    }
+
+    public boolean isDead(){
+       return currentHealth==0;
     }
 }

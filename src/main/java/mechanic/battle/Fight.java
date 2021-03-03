@@ -1,12 +1,9 @@
 package mechanic.battle;
 
 import equipment.*;
-import equipment.items.*;
+import menu.Lootable;
 import units.Character;
 import utils.*;
-import utils.random.*;
-import utils.random.ObjectAndProbability;
-import static utils.Utils.*;
 
 public class Fight {
     private final Battler battler1;
@@ -18,27 +15,39 @@ public class Fight {
     }
 
     public void battle() {
-        while (true) {
-            suspense(1000);
-            AttackResult attackResult1 = hitOnBattler2();
-            if (attackResult1.isKill) {
-                System.out.println(attackResult1.attackText);
-                System.out.println(battler2.getName() + " умирает");
-                Character.getInstance().loot(battler2.getLoot()); // TODO: мы подразумеваем что battler1 = Character
-                return; 
+        boolean firstHit = firstHitBattler1();
+        boolean battleEnd = false;
+        Battler deadButtler = null;
+        while (!battleEnd) {
+            AttackResult attackResult = hitOnBattler(firstHit);
+            System.out.println(attackResult.getAttackText());
+            Utils.suspense();
+            if (!attackResult.isKill()) {
+                AttackResult counterAttack = hitOnBattler(!firstHit);
+                System.out.println(counterAttack.getAttackText());
+                Utils.suspense(700);
+                if (counterAttack.isKill()) {
+                    battleEnd = true;
+                    deadButtler = attackResult.getOffencer();
+                }
             } else {
-                System.out.println(attackResult1.attackText);
-            }
-            suspense(700);
-            AttackResult attackResult2 = hitOnBattler1();
-            if (attackResult2.isKill) {
-                System.out.println(attackResult2.attackText);
-                System.out.println(battler1.getName() + " умирает");
-                return;
-            } else {
-                System.out.println(attackResult2.attackText);
+                battleEnd = true;
+                deadButtler = battler2;
             }
         }
+            System.out.println(deadButtler.getName()+" Помер");
+        if (Character.getInstance().isDead()){
+            Utils.endGame();
+        }
+        if(deadButtler instanceof Lootable){
+            Character.getInstance().loot(((Lootable) deadButtler).getLoot());
+        }
+    }
+
+    private AttackResult hitOnBattler(boolean firstHit) {
+        if (firstHit) {
+            return getAttackResult(battler1, battler2);
+        } else return getAttackResult(battler2, battler1);
     }
 
     public AttackResult hitOnBattler2() {
@@ -55,16 +64,26 @@ public class Fight {
         switch (accuracyLevel) {
             case CRITICAL_HIT:
                 boolean isDead = battlerTo.takeDamage(damage);
-                return new AttackResult(isDead, "Критический удар! " + battlerFrom.getName() + " нанёс " + damage + " урона");
+                return new AttackResult(isDead, "Критический удар! " + battlerFrom.getName() + " нанёс " + damage + " урона",battlerFrom,battlerTo);
             case NORMAL_HIT:
                 isDead = battlerTo.takeDamage(damage);
-                return new AttackResult(isDead, battlerFrom.getName() + " нанёс " + damage + " урона");
+                return new AttackResult(isDead, battlerFrom.getName() + " нанёс " + damage + " урона",battlerFrom,battlerTo);
             case MISS:
-                return new AttackResult(false, battlerFrom.getName() + " промахнулся");
+                return new AttackResult(false, battlerFrom.getName() + " промахнулся",battlerFrom,battlerTo);
 
         }
 
         return null;
+    }
+
+    private boolean firstHitBattler1() {
+        int initiativBattler1 = battler1.initiativThrow();
+        int initiativBattler2 = battler2.initiativThrow();
+        while (initiativBattler1 == initiativBattler2) {
+            initiativBattler1 = battler1.initiativThrow();
+            initiativBattler2 = battler2.initiativThrow();
+        }
+        return initiativBattler1 > initiativBattler2;
     }
 
     public AccuracyLevel calculateAttack(Battler battlerFrom, Battler battlerTo) {
