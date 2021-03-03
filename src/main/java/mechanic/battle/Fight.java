@@ -23,7 +23,7 @@ public class Fight {
             AttackResult attackResult1 = hitOnBattler2();
             if (attackResult1.isKill) {
                 System.out.println(attackResult1.attackText);
-                System.out.println(battler2.getName() + " умирает");
+                System.out.println(battler2.getName() + " умирает ☠");
                 Character.getInstance().loot(battler2.getLoot()); // TODO: мы подразумеваем что battler1 = Character
                 return;
             } else {
@@ -33,7 +33,7 @@ public class Fight {
             AttackResult attackResult2 = hitOnBattler1();
             if (attackResult2.isKill) {
                 System.out.println(attackResult2.attackText);
-                System.out.println(battler1.getName() + " умирает");
+                System.out.println(battler1.getName() + " умирает ☠");
                 return;
             } else {
                 System.out.println(attackResult2.attackText);
@@ -55,10 +55,10 @@ public class Fight {
         switch (accuracyLevel) {
             case CRITICAL_HIT:
                 boolean isDead = battlerTo.takeDamage(damage);
-                return new AttackResult(isDead, "Критический удар! " + battlerFrom.getName() + " нанёс " + damage + " урона");
+                return new AttackResult(isDead, "Критический удар \uD83D\uDD25 " + battlerFrom.getName() + " нанёс " + damage + " урона ⚔");
             case NORMAL_HIT:
                 isDead = battlerTo.takeDamage(damage);
-                return new AttackResult(isDead, battlerFrom.getName() + " нанёс " + damage + " урона");
+                return new AttackResult(isDead, battlerFrom.getName() + " нанёс " + damage + " урона ⚔");
             case MISS:
                 return new AttackResult(false, battlerFrom.getName() + " промахнулся");
 

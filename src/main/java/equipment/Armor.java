@@ -40,7 +40,7 @@ public class Armor extends Equipment {
         } else {
             armorMenu.addItem("Надеть эту броню", () -> {
                 this.equipArmor();
-                System.out.println("Надев доспех, вы чувствуете себя защищённее");
+                System.out.println("Вы надеваете доспех. Ваш класс доспеха теперь равен: " + this.getArmorClass());
                 Character.getInstance().getInventory().removeItem(this);
             });
         }
