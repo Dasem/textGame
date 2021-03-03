@@ -15,7 +15,7 @@ public class Wolf extends Enemy {
 
     @Override
     public int getMaxHealth() {
-        return 1;
+        return 13;
     }
 
     @Override
