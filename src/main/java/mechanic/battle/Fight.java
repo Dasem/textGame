@@ -34,9 +34,7 @@ public class Fight {
             }
         }
         System.out.println(deadBattler.getName() + " мёртв ☠");
-        if (Character.getInstance().isDead()) {
-            Utils.endGame();
-        }
+
         if (deadBattler instanceof Lootable) {
             Character.getInstance().loot(((Lootable) deadBattler).getLoot());
         }
