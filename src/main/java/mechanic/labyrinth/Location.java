@@ -1,17 +1,6 @@
 package mechanic.labyrinth;
 
-import com.google.common.collect.*;
-import equipment.Armor;
-import equipment.ArmorType;
-import equipment.*;
-import equipment.items.HealingPotion;
-import equipment.items.HealingPotionType;
-import mechanic.battle.*;
 import menu.*;
-import units.Character;
-import units.npcs.*;
-import utils.*;
-import utils.random.*;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,7 +9,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class Location {
-    List<Event> eventList;
+    List<Event> eventList = new ArrayList<>();
     String locationName;
 
     public Location(List<Event> eventList, String locationName) {
@@ -28,34 +17,48 @@ public class Location {
         this.locationName = locationName;
     }
 
-    public void enterLabyrinth() {
-        LabyrinthAndPosition labyrinthAndPosition = readLabyrinth();
-        Position position = labyrinthAndPosition.getPosition();
-        char[][] labyrinth = labyrinthAndPosition.getLabyrinth();
-        while (!position.escaped(labyrinth)) {
-            for(Event el : eventList){
-                el.checkPositionAndRunEvent(position);
+    public Location(String locationName) {
+        this.locationName = locationName;
+    }
+
+    public EscapeEvent enterLocation() {
+        LocationAndPosition locationAndPosition = readLocation();
+        Position position = locationAndPosition.getPosition();
+        char[][] location = locationAndPosition.getLocation();
+        while (true) {
+            List<Event> forDelete = new LinkedList<>();
+            for(Event event : eventList){
+                if (event instanceof EscapeEvent && event.checkPosition(position)) {
+                    return (EscapeEvent) event;
+                }
+
+                boolean runned = event.checkPositionAndRunEvent(position);
+                if (event.isSingleTime() && runned) {
+                    forDelete.add(event);
+                }
             }
-            Menu labyrinthMenu = new Menu("Необходимо преодолеть лабиринт:");
-            List<String> pathOptions = position.pathMenu(labyrinth);
-            labyrinthMenu.addItem(pathOptions.get(0), () -> {
-                System.out.println(position.goDown(labyrinth));
+            eventList.removeAll(forDelete);
+
+            Menu locationMenu = new Menu("Выбор пути:");
+            List<String> pathOptions = position.pathMenu(location);
+            locationMenu.addItem(pathOptions.get(0), () -> {
+                System.out.println(position.goDown(location));
             });
-            labyrinthMenu.addItem(pathOptions.get(1), () -> {
-                System.out.println(position.goRight(labyrinth));
+            locationMenu.addItem(pathOptions.get(1), () -> {
+                System.out.println(position.goRight(location));
             });
-            labyrinthMenu.addItem(pathOptions.get(2), () -> {
-                System.out.println(position.goLeft(labyrinth));
+            locationMenu.addItem(pathOptions.get(2), () -> {
+                System.out.println(position.goLeft(location));
             });
-            labyrinthMenu.addItem(pathOptions.get(3), () -> {
-                System.out.println(position.goTop(labyrinth));
+            locationMenu.addItem(pathOptions.get(3), () -> {
+                System.out.println(position.goTop(location));
             });
-            labyrinthMenu.showAndChoose();
+            locationMenu.showAndChoose();
         }
     }
 
 
-    private LabyrinthAndPosition readLabyrinth() {
+    private LocationAndPosition readLocation() {
         ClassLoader classLoader = this.getClass().getClassLoader();
         File file = new File(classLoader.getResource(locationName).getFile());
         Position position = null;
@@ -102,21 +105,29 @@ public class Location {
             System.out.println(ex.getMessage());
         }
         System.out.println();
-        return new LabyrinthAndPosition(labyrinth, position);
+        return new LocationAndPosition(labyrinth, position);
 
     }
 
-    class LabyrinthAndPosition {
-        private final char[][] labyrinth;
+    public void addAction(int row, int column, Executable event) {
+        eventList.add(new Event(row, column, event));
+    }
+
+    public void addActions(Collection<Event> events) {
+        eventList.addAll(events);
+    }
+
+    class LocationAndPosition {
+        private final char[][] location;
         private final Position position;
 
-        public LabyrinthAndPosition(char[][] labyrinth, Position position) {
-            this.labyrinth = labyrinth;
+        public LocationAndPosition(char[][] location, Position position) {
+            this.location = location;
             this.position = position;
         }
 
-        public char[][] getLabyrinth() {
-            return labyrinth;
+        public char[][] getLocation() {
+            return location;
         }
 
         public Position getPosition() {

@@ -17,9 +17,10 @@ import utils.random.ObjectAndProbability;
 import utils.random.Randomizer;
 
 public class Event {
-    int row;
-    int column;
-    Executable action;
+    private int row;
+    private int column;
+    protected Executable action;
+    private boolean singleTime = true;
 
     public Event(int row, int column, Executable action) {
         this.row = row;
@@ -27,9 +28,26 @@ public class Event {
         this.action = action;
     }
 
-   public void checkPositionAndRunEvent(Position position){
-       if(position.currentRow==row && position.currentColumn==column){
+    public Event(int row, int column, Executable action, boolean singleTime) {
+        this.row = row;
+        this.column = column;
+        this.action = action;
+        this.singleTime = singleTime;
+    }
+
+    public boolean isSingleTime() {
+        return singleTime;
+    }
+
+    public boolean checkPosition(Position position) {
+        return position.currentRow==row && position.currentColumn==column;
+    }
+
+    public boolean checkPositionAndRunEvent(Position position){
+       if(checkPosition(position)){
            action.execute();
+           return true;
        }
+       return false;
     }
 }

@@ -8,6 +8,7 @@ import menu.*;
 import utils.*;
 
 import java.util.*;
+import java.util.stream.*;
 
 public class Character implements Battler {
     private final static int DEFAULT_ARMOR_CLASS = 10;
@@ -35,24 +36,26 @@ public class Character implements Battler {
         return username;
     }
 
-    public void loot(Collection<Item> itemsFromMob) {
-        if (itemsFromMob == null) {
+    public void loot(Collection<Item> lootableItems) {
+        if (lootableItems == null) {
             return;
         }
-        while (!itemsFromMob.isEmpty()) {
+        List<Item> notNullItems = lootableItems.stream().filter(Objects::nonNull).collect(Collectors.toList());
+
+        while (!notNullItems.isEmpty()) {
             Menu lootMenu = new Menu("Вы нашли предметы:", MenuSetting.HIDE_CHARACTER_MENU);
-            for (Item item : itemsFromMob) {
+            for (Item item : notNullItems) {
                 lootMenu.addItem(item.getName(), () -> {
                     item.execute();
-                    itemsFromMob.remove(item);
+                    notNullItems.remove(item);
                 });
             }
             lootMenu.addAdditionalItem("Забрать всё", () -> {
-                this.getInventory().addItems(itemsFromMob);
-                itemsFromMob.clear();
+                this.getInventory().addItems(notNullItems);
+                notNullItems.clear();
             });
             lootMenu.addAdditionalItem("Закончить лутаться", () -> {
-                itemsFromMob.clear();
+                notNullItems.clear();
             });
             lootMenu.showAndChoose();
         }

@@ -17,8 +17,6 @@ import utils.random.ObjectAndProbability;
 import utils.random.Randomizer;
 
 import java.lang.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Level1 implements Levelable {
 
@@ -27,14 +25,22 @@ public class Level1 implements Levelable {
         System.out.println("Вы видите перед собой карту и поднимаете её\n");
 
         Character.getInstance().getInventory().addItem(new Map("Карта подземелья"));
-        List<Event> labyrinthEventList = new ArrayList<>();
-        labyrinthEventList.add(new Event(4,2, this::findPotion));
-        labyrinthEventList.add(new Event(4,5, this::findArmor));
-        labyrinthEventList.add(new Event(5,4, this::findWeapon));
-        labyrinthEventList.add(new Event(4,3, this::findFight));
-        labyrinthEventList.add(new Event(2,3, this::findFight));
-        Location startLabyrinth = new Location(labyrinthEventList,"startLabyrinth");
-        startLabyrinth.enterLabyrinth(); System.out.println("Ура! Лабиринт пройден! Перед тобой открылись просторы древнего мира!");
+        Location startLabyrinth = new Location("startLabyrinth");
+        startLabyrinth.addActions(Lists.newArrayList(
+                new Event(4, 1, this::findStartLabyrinthPotion),
+                new Event(4, 4, this::findStartLabyrinthArmor),
+                new Event(5, 3, this::findStartLabyrinthWeapon),
+                new Event(4, 2, this::findStartLabyrinthFight),
+                new Event(2, 3, this::findStartLabyrinthFight),
+                new EscapeEvent(0, 3, this::crossroad),
+                new EscapeEvent(3, 2, this::enchantedForest)
+        ));
+
+        startLabyrinth.enterLocation().escapeAction();
+    }
+
+    private void crossroad() {
+        System.out.println("Ура! Лабиринт пройден! Перед тобой открылись просторы древнего мира!");
         Menu menu = new Menu("Перед тобой развилка с путевым знаком, на нём видны варианты, выбери дальнейший путь:");
         menu.addItem("Ривергард", () -> {
             rivergard();
@@ -51,8 +57,6 @@ public class Level1 implements Levelable {
         System.out.println("Поздравляю! Ты закончил первый уровень. Вот тебе плюшки.");
     }
 
-
-
     private void rivergard() {
         System.out.println("На своём пути к Ривергарду, ты видишь одинокого гоблина...");
         Utils.suspense(1500);
@@ -68,6 +72,7 @@ public class Level1 implements Levelable {
             System.out.println("После недолгих раздумий ты берёшь с собой голову гоблина");
             Character.getInstance().getInventory().addItem(new UselessItem("Голова гоблина"));
         }
+        Location rivergard = new Location("rivargard");
     }
 
     private void litorian() {
@@ -102,7 +107,7 @@ public class Level1 implements Levelable {
             System.out.println("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
         }
     }
-    public void findFight() {
+    public void findStartLabyrinthFight() {
 
             System.out.println("Бродя по лабиринту, ты находишь враждебное существо...");
             Battler battler = Randomizer.randomize(
@@ -124,7 +129,7 @@ public class Level1 implements Levelable {
             }
 
     }
-    public void findArmor() {
+    public void findStartLabyrinthArmor() {
 
             Armor armor = Randomizer.randomize(
                     new ObjectAndProbability<>(new Armor(ArmorType.LIGHT_ARMOR), 3),
@@ -139,7 +144,7 @@ public class Level1 implements Levelable {
             }
 
     }
-    public void findPotion() {
+    public void findStartLabyrinthPotion() {
             HealingPotion healingPotion = Randomizer.randomize(
                     new ObjectAndProbability<>(new HealingPotion(HealingPotionType.LESSER_HEALING_POTION), 3),
                     new ObjectAndProbability<>(new HealingPotion(HealingPotionType.NORMAL_HEALING_POTION), 1),
@@ -148,7 +153,7 @@ public class Level1 implements Levelable {
             Character.getInstance().loot(Lists.newArrayList(healingPotion));
 
     }
-    public void findWeapon() {
+    public void findStartLabyrinthWeapon() {
             Weapon weapon = Randomizer.randomize(
                     new ObjectAndProbability<>(new Weapon(WeaponType.DAGGER), 3),
                     new ObjectAndProbability<>(new Weapon(WeaponType.TWO_HANDED_SWORD), 1),
