@@ -10,7 +10,6 @@ public class QuestItem extends Item {
     public QuestItem(String itemName, int questId) {
         this.itemName = itemName;
         this.questId = questId;
-        postInitialize();
     }
 
     public int getQuestId() {

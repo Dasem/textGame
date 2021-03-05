@@ -9,7 +9,6 @@ public class Weapon extends Equipment {
 
     public Weapon(WeaponType weaponType) {
         this.weaponType = weaponType;
-        postInitialize();
         addWeaponMenu();
     }
 

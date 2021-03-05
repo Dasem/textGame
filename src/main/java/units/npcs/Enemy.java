@@ -1,7 +1,7 @@
 package units.npcs;
 
 import mechanic.battle.*;
-import menu.Lootable;
+import units.Lootable;
 
 public abstract class Enemy extends NPC implements Battler, Lootable {
 

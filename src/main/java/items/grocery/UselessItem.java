@@ -8,11 +8,6 @@ public class UselessItem extends Item {
 
     public UselessItem(String itemName) {
         this.itemName = itemName;
-        postInitialize();
-    }
-
-    public String getItemName() {
-        return itemName;
     }
 
     @Override

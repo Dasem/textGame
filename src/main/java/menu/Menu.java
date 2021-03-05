@@ -6,10 +6,12 @@ import units.Character;
 import utils.*;
 
 import java.util.*;
+import java.util.function.*;
 import java.util.stream.*;
 
 public class Menu {
     String title;
+    Holder<String> titleHolder;
     List<MenuItem> menuItems = new ArrayList<>();
     List<MenuItem> additionalMenuItems = new ArrayList<>();
     Set<MenuSetting> menuSettings;
@@ -25,6 +27,9 @@ public class Menu {
     }
 
     private MenuItem showAndChoose(List<MenuItem> menuItems, List<MenuItem> additionalMenuItems) {
+        if (title == null) {
+            title = titleHolder.get();
+        }
         while (true) {
             try {
                 System.out.println("\n--------------\n"); // разделение между действиями
@@ -67,6 +72,12 @@ public class Menu {
 
     public Menu(String title, MenuSetting ... menuSettings) {
         this.title = title;
+        this.menuSettings = Sets.newHashSet(menuSettings);
+        addAdditionalMenu();
+    }
+
+    public Menu(Holder<String> titleHolder, MenuSetting ... menuSettings) {
+        this.titleHolder = titleHolder;
         this.menuSettings = Sets.newHashSet(menuSettings);
         addAdditionalMenu();
     }

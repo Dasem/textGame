@@ -1,6 +1,6 @@
 package mechanic.battle;
 
-import menu.Lootable;
+import units.Lootable;
 import units.Character;
 import utils.*;
 

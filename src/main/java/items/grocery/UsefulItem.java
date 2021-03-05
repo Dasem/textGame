@@ -8,7 +8,7 @@ public class UsefulItem extends Item {
 
     public UsefulItem(String itemName) {
         this.itemName = itemName;
-        postInitialize();
+
     }
 
     public String getItemName() {

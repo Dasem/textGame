@@ -1,4 +1,4 @@
-package menu;
+package units;
 
 import items.Item;
 

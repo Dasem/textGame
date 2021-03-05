@@ -10,7 +10,6 @@ public class HealingPotion extends Item {
 
     public HealingPotion(HealingPotionType healingPotionType) {
         this.healingPotionType = healingPotionType;
-        postInitialize();
         addPotionMenu();
     }
 

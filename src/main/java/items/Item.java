@@ -7,10 +7,9 @@ import java.util.function.*;
 
 public abstract class Item implements Usable {
 
-    protected Menu itemMenu;
+    protected Menu itemMenu = new Menu(() -> "Меню для '" + getName() + "'", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
 
-    protected void postInitialize() {
-        itemMenu = new Menu("Меню для '" + getName() + "'", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
+    {
         itemToInventoryMenuItem();
         dropItemMenuItem();
     }

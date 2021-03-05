@@ -8,7 +8,6 @@ public class Utils {
 
     public static void lor(String lor) {
         System.out.println(lor);
-        sc.nextLine();
     }
 
     public static void suspense() {
