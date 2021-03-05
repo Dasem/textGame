@@ -1,6 +1,5 @@
 package mechanic.battle;
 
-import equipment.*;
 import menu.Lootable;
 import units.Character;
 import utils.*;
@@ -60,7 +59,6 @@ public class Fight {
                 return new AttackResult(isDead, battlerFrom.getName() + " нанёс " + damage + " урона ⚔", battlerFrom, battlerTo);
             case MISS:
                 return new AttackResult(false, battlerFrom.getName() + " промахнулся", battlerFrom, battlerTo);
-
         }
 
         return null;

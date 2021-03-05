@@ -1,20 +1,21 @@
 package mechanic.location;
 
-import menu.Executable;
+
+import mechanic.*;
 
 public class Event {
-    private int row;
-    private int column;
-    protected Executable action;
+    private final int row;
+    private final int column;
+    protected Actionable action;
     private boolean singleTime = true;
 
-    public Event(int row, int column, Executable action) {
+    public Event(int row, int column, Actionable action) {
         this.row = row;
         this.column = column;
         this.action = action;
     }
 
-    public Event(int row, int column, Executable action, boolean singleTime) {
+    public Event(int row, int column, Actionable action, boolean singleTime) {
         this.row = row;
         this.column = column;
         this.action = action;
@@ -31,7 +32,7 @@ public class Event {
 
     public boolean checkPositionAndRunEvent(Position position){
        if(checkPosition(position)){
-           action.execute();
+           action.doAction();
            return true;
        }
        return false;

@@ -1,6 +1,7 @@
 package mechanic.location;
 
 import com.google.common.collect.*;
+import mechanic.*;
 import menu.*;
 
 import java.io.BufferedReader;
@@ -109,7 +110,6 @@ public class Location {
             System.out.println(ex.getMessage());
         }
         return location;
-
     }
 
     public void printMap(boolean gps) {
@@ -130,7 +130,7 @@ public class Location {
         return currentPosition;
     }
 
-    public void addAction(int row, int column, Executable event) {
+    public void addAction(int row, int column, Actionable event) {
         eventList.add(new Event(row, column, event));
     }
 

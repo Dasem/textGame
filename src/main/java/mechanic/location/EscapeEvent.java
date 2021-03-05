@@ -1,17 +1,17 @@
 package mechanic.location;
 
-import menu.*;
+import mechanic.*;
 
 public class EscapeEvent extends Event {
-    public EscapeEvent(int row, int column, Executable action) {
+    public EscapeEvent(int row, int column, Actionable action) {
         super(row, column, action);
     }
 
-    public EscapeEvent(int row, int column, Executable action, boolean singleTime) {
+    public EscapeEvent(int row, int column, Actionable action, boolean singleTime) {
         super(row, column, action, singleTime);
     }
 
     public void escapeAction() {
-        action.execute();
+        action.doAction();
     }
 }

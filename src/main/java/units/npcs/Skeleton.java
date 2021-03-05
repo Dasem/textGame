@@ -1,9 +1,9 @@
 package units.npcs;
 
-import equipment.Item;
-import equipment.items.HealingPotion;
-import equipment.items.HealingPotionType;
-import equipment.items.UselessItem;
+import items.Item;
+import items.grocery.HealingPotion;
+import items.grocery.HealingPotionType;
+import items.grocery.UselessItem;
 import utils.Dices;
 import utils.random.ObjectAndProbability;
 import utils.random.Randomizer;

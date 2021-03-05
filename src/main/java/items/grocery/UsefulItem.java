@@ -1,6 +1,7 @@
-package equipment.items;
+package items.grocery;
 
-import equipment.*;
+import items.*;
+import menu.*;
 
 public class UsefulItem extends Item {
     String itemName;
@@ -20,7 +21,7 @@ public class UsefulItem extends Item {
     }
 
     @Override
-    public void execute() {
-        itemMenu.showAndChoose();
+    public MenuItemType use() {
+        return itemMenu.showAndChoose().getMenuItemType();
     }
 }

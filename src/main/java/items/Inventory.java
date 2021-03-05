@@ -1,4 +1,4 @@
-package equipment;
+package items;
 
 import java.util.*;
 

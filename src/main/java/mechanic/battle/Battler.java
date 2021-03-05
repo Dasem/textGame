@@ -1,10 +1,7 @@
 package mechanic.battle;
 
-import equipment.*;
 import utils.Dices;
 import utils.Utils;
-
-import java.util.*;
 
 public interface Battler {
     int getCurrentHealth();

@@ -1,6 +1,6 @@
 package levels;
 
-import equipment.items.QuestItem;
+import items.grocery.QuestItem;
 import mechanic.battle.*;
 import menu.*;
 import units.Character;
@@ -15,24 +15,16 @@ public class Level2 implements Levelable {
     public void startLevel() {
         System.out.println("Идя по тропе ты натыкаешься на одиноко стоящий дом");
         Menu menu = new Menu("Что ты выберешь: ");
-        menu.addItem("Подойти", () -> {
-            aloneHouse();
-        });
-        menu.addItem("Пройти мимо", () -> {
-            track();
-        });
+        menu.addItem("Подойти", this::aloneHouse);
+        menu.addItem("Пройти мимо", this::track);
         menu.showAndChoose();
     }
 
     private void aloneHouse() {
         System.out.println("Ты подходишь к двери и видишь, что дверь приоткрыта");
         Menu housemenu = new Menu("Что ты выберешь: ");
-        housemenu.addItem("Постучать", () -> {
-            roomInside();
-        });
-        housemenu.addItem("Открыть дверь", () -> {
-            roomInside();
-        });
+        housemenu.addItem("Постучать", this::roomInside);
+        housemenu.addItem("Открыть дверь", this::roomInside);
         housemenu.showAndChoose();
 
     }

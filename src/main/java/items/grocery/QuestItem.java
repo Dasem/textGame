@@ -1,7 +1,7 @@
-package equipment.items;
+package items.grocery;
 
-import equipment.*;
-import units.Character;
+import items.*;
+import menu.*;
 
 public class QuestItem extends Item {
     private final int questId;
@@ -23,7 +23,7 @@ public class QuestItem extends Item {
     }
 
     @Override
-    public void execute() {
-        // Чот с ним сделать
+    public MenuItemType use() {
+        return itemMenu.showAndChoose().getMenuItemType();
     }
 }

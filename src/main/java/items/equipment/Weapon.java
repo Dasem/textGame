@@ -1,4 +1,4 @@
-package equipment;
+package items.equipment;
 
 import menu.*;
 import units.Character;
@@ -27,8 +27,8 @@ public class Weapon extends Equipment {
     }
 
     @Override
-    public void execute() {
-        itemMenu.showAndChoose();
+    public MenuItemType use() {
+        return itemMenu.showAndChoose().getMenuItemType();
     }
 
     private void addWeaponMenu() {

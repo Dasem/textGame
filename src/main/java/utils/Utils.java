@@ -1,7 +1,5 @@
 package utils;
 
-import equipment.*;
-
 import java.util.*;
 
 public class Utils {

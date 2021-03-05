@@ -1,6 +1,5 @@
-package equipment.items;
+package items.grocery;
 
-import mechanic.battle.Battler;
 import utils.Dices;
 
 public enum HealingPotionType {

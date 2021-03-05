@@ -1,6 +1,6 @@
 package menu;
 
-import equipment.Item;
+import items.Item;
 
 import java.util.Collection;
 

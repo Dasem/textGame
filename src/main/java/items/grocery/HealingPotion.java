@@ -1,6 +1,6 @@
-package equipment.items;
+package items.grocery;
 
-import equipment.*;
+import items.*;
 import menu.*;
 import units.Character;
 
@@ -17,16 +17,11 @@ public class HealingPotion extends Item {
 
     private void addPotionMenu() {
         itemMenu.addItem("Выпить", () -> {
-            int heal = this.use();
+            int heal = getHeal();
+            Character.getInstance().healing(heal);
             System.out.println("Ну выпил и выпил, чё бубнить-то, захилен на " + heal + " ХП.");
             Character.getInstance().getInventory().removeItem(this);
         });
-    }
-
-    public int use() {
-        int heal = getHeal();
-        Character.getInstance().healing(heal);
-        return heal;
     }
 
     private int getHeal() {
@@ -39,7 +34,7 @@ public class HealingPotion extends Item {
     }
 
     @Override
-    public void execute() {
-        itemMenu.showAndChoose();
+    public MenuItemType use() {
+        return itemMenu.showAndChoose().getMenuItemType();
     }
 }

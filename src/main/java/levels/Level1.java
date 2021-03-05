@@ -1,8 +1,9 @@
 package levels;
 
 import com.google.common.collect.Lists;
-import equipment.*;
-import equipment.items.*;
+import items.*;
+import items.equipment.*;
+import items.grocery.*;
 import mechanic.battle.*;
 import mechanic.location.*;
 import menu.*;
@@ -24,12 +25,13 @@ public class Level1 implements Levelable {
 
         Item map = new UsefulItem("Карта подземелья") {
             final Location location = startLabyrinth;
+
             @Override
-            public void execute() {
+            public MenuItemType use() {
                 itemMenu.addItem("Посмотреть карту", () -> {
                     location.printMap(false);
                 });
-                super.execute();
+                return super.use();
             }
         };
 
@@ -172,7 +174,7 @@ public class Level1 implements Levelable {
             if (armor == null) {
                 System.out.println("Тут должна была быть броня, но её украл Саня");
             } else {
-                Character.getInstance().loot(Lists.newArrayList(armor));
+                Character.getInstance().loot(armor);
             }
 
     }
@@ -182,7 +184,7 @@ public class Level1 implements Levelable {
                     new ObjectAndProbability<>(new HealingPotion(HealingPotionType.NORMAL_HEALING_POTION), 1),
                     new ObjectAndProbability<>(null, 1)
             );
-            Character.getInstance().loot(Lists.newArrayList(healingPotion));
+            Character.getInstance().loot(healingPotion);
 
     }
     public void findStartLabyrinthWeapon() {
@@ -190,7 +192,7 @@ public class Level1 implements Levelable {
                     new ObjectAndProbability<>(new Weapon(WeaponType.DAGGER), 3),
                     new ObjectAndProbability<>(new Weapon(WeaponType.TWO_HANDED_SWORD), 1),
                     new ObjectAndProbability<>(new Weapon(WeaponType.SWORD), 2));
-            Character.getInstance().loot(Lists.newArrayList(weapon));
+            Character.getInstance().loot(weapon);
 
     }
 }

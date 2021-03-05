@@ -1,4 +1,4 @@
-package equipment;
+package mechanic.battle;
 
 import mechanic.battle.Battler;
 

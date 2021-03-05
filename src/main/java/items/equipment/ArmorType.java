@@ -1,4 +1,4 @@
-package equipment;
+package items.equipment;
 
 public enum ArmorType {
     LIGHT_ARMOR("Лёгкая броня") {

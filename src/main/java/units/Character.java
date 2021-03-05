@@ -1,8 +1,9 @@
 package units;
 
-import equipment.*;
-import equipment.items.QuestItem;
-import levels.*;
+import com.google.common.collect.*;
+import items.*;
+import items.equipment.*;
+import items.grocery.*;
 import mechanic.battle.*;
 import menu.*;
 import utils.*;
@@ -12,7 +13,7 @@ import java.util.stream.*;
 
 public class Character implements Battler {
     private final static int DEFAULT_ARMOR_CLASS = 10;
-    private final String username;
+    private String username;
     private int currentHealth = getMaxHealth();
     private Armor armor;
     private Weapon weapon;
@@ -32,8 +33,8 @@ public class Character implements Battler {
         this.username = username;
     }
 
-    public String getUsername() {
-        return username;
+    public void loot(Item... lootableItems) {
+        loot(Lists.newArrayList(lootableItems));
     }
 
     public void loot(Collection<Item> lootableItems) {
@@ -46,8 +47,10 @@ public class Character implements Battler {
             Menu lootMenu = new Menu("Вы нашли предметы:", MenuSetting.HIDE_CHARACTER_MENU);
             for (Item item : notNullItems) {
                 lootMenu.addItem(item.getName(), () -> {
-                    item.execute();
-                    notNullItems.remove(item);
+                    MenuItemType menuItemType = item.use();
+                    if (menuItemType != MenuItemType.BACK) {
+                        notNullItems.remove(item);
+                    }
                 });
             }
             lootMenu.addAdditionalItem("Забрать всё", () -> {
@@ -158,5 +161,56 @@ public class Character implements Battler {
             }
             return false;
         }).findAny().orElse(null);
+    }
+
+    public void addCharacterMenu(Menu menu) {
+        menu.addAdditionalItem("Открыть инвентарь", () -> {
+            if (Character.getInstance().getInventory().getItems().isEmpty()) {
+                System.out.println("Твой инвентарь пуст");
+            } else {
+                Menu inventoryMenu = new Menu("Инвентарь:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
+                for (Item item : Character.getInstance().getInventory().getItems()) {
+                    inventoryMenu.addItem(item);
+                }
+                inventoryMenu.showAndChoose();
+            }
+            menu.showAndChoose();
+        });
+        menu.addAdditionalItem("Просмотр персонажа", () -> {
+            Menu characterMenu = new Menu("Персонаж:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
+            characterMenu.addItem("Информация о персонаже", () -> {
+                Character c = Character.getInstance();
+                System.out.println("Меня зовут " + c.getName());
+                System.out.println(c.getCurrentHealth() + "/" + c.getMaxHealth() + " HP");
+                System.out.println(c.getArmorClass() + " Защиты");
+                if (c.getArmor() != null) {
+                    System.out.println(c.getArmor().getPrettyName());
+                } else System.out.println("Нет брони");
+                if (c.getWeapon() != null) {
+                    System.out.println(c.getWeapon().getPrettyName());
+                } else System.out.println("Нет оружия");
+            });
+            characterMenu.addItem("Снаряжение", () -> {
+                Menu equippedMenu = new Menu("Экипированное снаряжение:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
+                if (Character.getInstance().getWeapon() == null && Character.getInstance().getArmor() == null ) {
+                    System.out.println("Нет надетого снаряжения");
+                } else {
+                    if (Character.getInstance().getWeapon() != null) {
+                        equippedMenu.addItem(Character.getInstance().getWeapon());
+                    }
+                    if (Character.getInstance().getArmor() != null) {
+                        equippedMenu.addItem(Character.getInstance().getArmor());
+                    }
+                    equippedMenu.showAndChoose();
+                }
+            });
+            characterMenu.addItem("Переименовать персонажа", () -> {
+                System.out.print("Введите новое имя персонажа: ");
+                username = Utils.sc.nextLine();
+                System.out.print("Теперь вас зовут: " + username);
+            });
+            characterMenu.showAndChoose();
+            menu.showAndChoose();
+        });
     }
 }

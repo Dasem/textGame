@@ -1,6 +1,5 @@
-package equipment;
+package items.equipment;
 
-import units.Character;
 import utils.*;
 
 public enum WeaponType {
