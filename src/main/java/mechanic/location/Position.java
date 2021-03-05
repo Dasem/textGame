@@ -1,4 +1,4 @@
-package mechanic.labyrinth;
+package mechanic.location;
 
 import java.util.*;
 
@@ -90,5 +90,9 @@ public class Position {
         } catch (ArrayIndexOutOfBoundsException ex) {
             return false;
         }
+    }
+
+    public boolean isSamePosition(int row, int col) {
+        return currentRow == row && currentColumn == col;
     }
 }

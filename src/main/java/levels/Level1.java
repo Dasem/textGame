@@ -1,14 +1,10 @@
 package levels;
 
 import com.google.common.collect.Lists;
-import equipment.Armor;
-import equipment.ArmorType;
-import equipment.Weapon;
-import equipment.WeaponType;
+import equipment.*;
 import equipment.items.*;
-import equipment.items.Map;
 import mechanic.battle.*;
-import mechanic.labyrinth.*;
+import mechanic.location.*;
 import menu.*;
 import units.Character;
 import units.npcs.*;
@@ -24,8 +20,20 @@ public class Level1 implements Levelable {
     public void startLevel() {
         System.out.println("Вы видите перед собой карту и поднимаете её\n");
 
-        Character.getInstance().getInventory().addItem(new Map("Карта подземелья"));
         Location startLabyrinth = new Location("startLabyrinth");
+
+        Item map = new UsefulItem("Карта подземелья") {
+            final Location location = startLabyrinth;
+            @Override
+            public void execute() {
+                itemMenu.addItem("Посмотреть карту", () -> {
+                    location.printMap(false);
+                });
+                super.execute();
+            }
+        };
+
+        Character.getInstance().getInventory().addItem(map);
         startLabyrinth.addActions(Lists.newArrayList(
                 new Event(4, 1, this::findStartLabyrinthPotion),
                 new Event(4, 4, this::findStartLabyrinthArmor),
@@ -36,7 +44,7 @@ public class Level1 implements Levelable {
                 new EscapeEvent(3, 2, this::enchantedForest)
         ));
 
-        startLabyrinth.enterLocation().escapeAction();
+        startLabyrinth.enterLocation(6, 3).escapeAction();
     }
 
     private void crossroad() {
@@ -72,7 +80,31 @@ public class Level1 implements Levelable {
             System.out.println("После недолгих раздумий ты берёшь с собой голову гоблина");
             Character.getInstance().getInventory().addItem(new UselessItem("Голова гоблина"));
         }
-        Location rivergard = new Location("rivargard");
+        Location rivergard = new Location("rivergard", LocationSetting.ENABLE_GPS);
+        rivergard.addActions(Lists.newArrayList(
+                new Event(6, 8, () -> { // фонтан
+                    //TODO: Сане сделать фонтан
+                }),
+                new Event(5, 12, () -> { // кузня
+
+                }),
+                new Event(3, 12, () -> { // квест
+
+                }),
+                new Event(3, 11, () -> { // генг-бенг
+
+                }),
+                new Event(2, 9, () -> { // Магазин
+
+                }),
+                new EscapeEvent(4, 0, () -> { // западный выход
+
+                }),
+                new EscapeEvent(0, 6, () -> { // северный выход
+
+                })
+        ));
+        rivergard.enterLocation(9, 8).escapeAction();
     }
 
     private void litorian() {

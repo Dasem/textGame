@@ -1,12 +1,9 @@
 package levels;
 
-import com.google.common.collect.Lists;
 import equipment.items.QuestItem;
 import mechanic.battle.*;
-import mechanic.labyrinth.*;
 import menu.*;
 import units.Character;
-import units.*;
 import units.npcs.*;
 import utils.*;
 import utils.random.ObjectAndProbability;
