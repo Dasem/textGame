@@ -1,6 +1,7 @@
 package units;
 
 import equipment.*;
+import equipment.items.QuestItem;
 import levels.*;
 import mechanic.battle.*;
 import menu.*;
@@ -41,7 +42,7 @@ public class Character implements Battler {
         while (!itemsFromMob.isEmpty()) {
             Menu lootMenu = new Menu("Вы нашли предметы:", MenuSetting.HIDE_CHARACTER_MENU);
             for (Item item : itemsFromMob) {
-                lootMenu.addItem(item.getName(), ()-> {
+                lootMenu.addItem(item.getName(), () -> {
                     item.execute();
                     itemsFromMob.remove(item);
                 });
@@ -91,10 +92,12 @@ public class Character implements Battler {
     }
 
 
-
     @Override
     public boolean takeDamage(int damage) {
         currentHealth -= damage;
+        if (Character.getInstance().isDead()) {
+            Utils.endGame();
+        }
         return currentHealth <= 0;
     }
 
@@ -141,7 +144,16 @@ public class Character implements Battler {
         return inventory;
     }
 
-    public boolean isDead(){
-       return currentHealth==0;
+    public boolean isDead() {
+        return currentHealth == 0;
+    }
+
+    public QuestItem findQuestItemByInventory(int questId) {
+        return (QuestItem) getInventory().getItems().stream().filter(item -> {
+            if (item instanceof QuestItem) {
+                return ((QuestItem) item).getQuestId() == questId;
+            }
+            return false;
+        }).findAny().orElse(null);
     }
 }

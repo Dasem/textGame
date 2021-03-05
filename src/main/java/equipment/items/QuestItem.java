@@ -1,14 +1,20 @@
 package equipment.items;
 
 import equipment.*;
+import units.Character;
 
 public class QuestItem extends Item {
-    int questId;
-    String itemName;
+    private final int questId;
+    private final String itemName;
 
-    public QuestItem(String itemName) {
+    public QuestItem(String itemName, int questId) {
         this.itemName = itemName;
+        this.questId = questId;
         postInitialize();
+    }
+
+    public int getQuestId() {
+        return questId;
     }
 
     @Override
