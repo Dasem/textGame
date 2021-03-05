@@ -141,7 +141,7 @@ public class Character implements Battler {
         return inventory;
     }
     public boolean isDead(){
-        if (currentHealth<0){
+        if (currentHealth==0){
             return true;
         } else return false;
     }

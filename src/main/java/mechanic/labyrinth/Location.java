@@ -19,19 +19,23 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-public class Labyrinth {
+public class Location {
+    List<Event> eventList;
+    String locationName;
+
+    public Location(List<Event> eventList, String locationName) {
+        this.eventList = eventList;
+        this.locationName = locationName;
+    }
 
     public void enterLabyrinth() {
         LabyrinthAndPosition labyrinthAndPosition = readLabyrinth();
         Position position = labyrinthAndPosition.getPosition();
         char[][] labyrinth = labyrinthAndPosition.getLabyrinth();
-        Event event = new Event();
         while (!position.escaped(labyrinth)) {
-            event.findPotion(labyrinth, position,4,2);
-            event.findArmor(labyrinth, position,4,5);
-            event.findWeapon(labyrinth, position,5,4);
-            event.findFight(labyrinth, position,4,3);
-
+            for(Event el : eventList){
+                el.checkPositionAndRunEvent(position);
+            }
             Menu labyrinthMenu = new Menu("Необходимо преодолеть лабиринт:");
             List<String> pathOptions = position.pathMenu(labyrinth);
             labyrinthMenu.addItem(pathOptions.get(0), () -> {
@@ -53,7 +57,7 @@ public class Labyrinth {
 
     private LabyrinthAndPosition readLabyrinth() {
         ClassLoader classLoader = this.getClass().getClassLoader();
-        File file = new File(classLoader.getResource("startLabyrinth").getFile());
+        File file = new File(classLoader.getResource(locationName).getFile());
         Position position = null;
         int row = 0, column = 0;
         try (FileReader fr = new FileReader(file)) {
