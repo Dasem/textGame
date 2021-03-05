@@ -114,7 +114,7 @@ public class Level1 implements Levelable {
     }
 
     private void enchantedForest() {
-        System.out.println(
+        Utils.lor(
                 "Уверенно шагая по лесной тропинке ты чувствуешь на себе чей-то взгляд.\n" +
                         "По спине пробежал холодок.\n" +
                         "Ты решаешь перейти на бег, но коварные корни деревьев цепляются тебе за ноги и ты кубарем катишься вниз, в глубь леса.\n" +
@@ -125,7 +125,7 @@ public class Level1 implements Levelable {
 //            labyrinth.enterLabyrinth();
         });
         menu.addItem("Вправо", () -> {
-            System.out.println("Перед тобой появляется волк с явно недружелюбными намерениями\n");
+            Utils.lor("Перед тобой появляется волк с явно недружелюбными намерениями\n");
             fightWithWolf();
         });
         menu.showAndChoose();
@@ -135,15 +135,15 @@ public class Level1 implements Levelable {
         Fight fight = new Fight(Character.getInstance(), new Wolf());
         fight.battle();
         if (Character.getInstance().getCurrentHealth() <= 0) {
-            System.out.println("Ты убит волком. пресс F");
+            Utils.lor("Ты убит волком. пресс F");
             Utils.endGame();
         } else {
-            System.out.println("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
+            Utils.lor("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
         }
     }
     public void findStartLabyrinthFight() {
 
-            System.out.println("Бродя по лабиринту, ты находишь враждебное существо...");
+            Utils.lor("Бродя по лабиринту, ты находишь враждебное существо...");
             Battler battler = Randomizer.randomize(
                     new ObjectAndProbability<>(new Wolf(),5),
                     new ObjectAndProbability<>(new Goblin(),500),
@@ -155,10 +155,10 @@ public class Level1 implements Levelable {
             Fight fight = new Fight(Character.getInstance(), battler);
             fight.battle();
             if (Character.getInstance().getCurrentHealth() <= 0) {
-                System.out.println("В глубинах лабиринта ты погиб. Причиной твоей смерти стал '" + battler.getName() + "'");
+                Utils.lor("В глубинах лабиринта ты погиб. Причиной твоей смерти стал '" + battler.getName() + "'");
                 Utils.endGame();
             } else {
-                System.out.println("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
+                Utils.lor("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
 
             }
 
@@ -172,7 +172,7 @@ public class Level1 implements Levelable {
                     new ObjectAndProbability<>(null, 2)
             );
             if (armor == null) {
-                System.out.println("Тут должна была быть броня, но её украл Саня");
+                Utils.lor("Тут должна была быть броня, но её украл Саня");
             } else {
                 Character.getInstance().loot(armor);
             }

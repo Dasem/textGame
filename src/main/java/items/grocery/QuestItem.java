@@ -21,9 +21,4 @@ public class QuestItem extends Item {
     public String getName() {
         return itemName;
     }
-
-    @Override
-    public MenuItemType use() {
-        return itemMenu.showAndChoose().getMenuItemType();
-    }
 }

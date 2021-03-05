@@ -50,18 +50,26 @@ public class Fight {
     private AttackResult getAttackResult(Battler battlerFrom, Battler battlerTo) {
         AccuracyLevel accuracyLevel = calculateAttack(battlerFrom, battlerTo);
         int damage = accuracyLevel.getTotalDamage(battlerFrom);
+        boolean isDead = battlerTo.takeDamage(damage);
+
+        String hpBar = "";
+        if (battlerTo instanceof Character) {
+            hpBar = Character.getInstance().getHpBar();
+        }
+        AttackResult attackResult = null;
         switch (accuracyLevel) {
             case CRITICAL_HIT:
-                boolean isDead = battlerTo.takeDamage(damage);
-                return new AttackResult(isDead, "Критический удар! \uD83D\uDD25 " + battlerFrom.getName() + " нанёс " + damage + " урона ⚔", battlerFrom, battlerTo);
+                attackResult = new AttackResult(isDead, "Критический удар! \uD83D\uDD25 " + battlerFrom.getName() + " нанёс " + damage + " урона ⚔" + hpBar, battlerFrom, battlerTo);
+                break;
             case NORMAL_HIT:
-                isDead = battlerTo.takeDamage(damage);
-                return new AttackResult(isDead, battlerFrom.getName() + " нанёс " + damage + " урона ⚔", battlerFrom, battlerTo);
+                attackResult = new AttackResult(isDead, battlerFrom.getName() + " нанёс " + damage + " урона ⚔" + hpBar, battlerFrom, battlerTo);
+                break;
             case MISS:
-                return new AttackResult(false, battlerFrom.getName() + " промахнулся", battlerFrom, battlerTo);
+                attackResult =  new AttackResult(false, battlerFrom.getName() + " промахнулся", battlerFrom, battlerTo);
+                break;
         }
 
-        return null;
+        return attackResult;
     }
 
     private boolean hitBattler1() {

@@ -41,25 +41,23 @@ public class Character implements Battler {
         if (lootableItems == null) {
             return;
         }
-        List<Item> notNullItems = lootableItems.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        List<Item> existedItems = lootableItems.stream().filter(Objects::nonNull).collect(Collectors.toList());
 
-        while (!notNullItems.isEmpty()) {
+        while (!existedItems.isEmpty()) {
             Menu lootMenu = new Menu("Вы нашли предметы:", MenuSetting.HIDE_CHARACTER_MENU);
-            for (Item item : notNullItems) {
+            for (Item item : existedItems) {
                 lootMenu.addItem(item.getName(), () -> {
                     MenuItemType menuItemType = item.use();
                     if (menuItemType != MenuItemType.BACK) {
-                        notNullItems.remove(item);
+                        existedItems.remove(item);
                     }
                 });
             }
             lootMenu.addAdditionalItem("Забрать всё", () -> {
-                this.getInventory().addItems(notNullItems);
-                notNullItems.clear();
+                this.getInventory().addItems(existedItems);
+                existedItems.clear();
             });
-            lootMenu.addAdditionalItem("Закончить лутаться", () -> {
-                notNullItems.clear();
-            });
+            lootMenu.addAdditionalItem("Закончить лутаться", existedItems::clear);
             lootMenu.showAndChoose();
         }
     }
@@ -154,6 +152,19 @@ public class Character implements Battler {
         return currentHealth == 0;
     }
 
+    public void removeIfEquipped(Equipment equipment) {
+        if (equipment == weapon) {
+            weapon = null;
+        }
+        if (equipment == armor) {
+            armor = null;
+        }
+    }
+
+    public String getHpBar() {
+        return " (" + getCurrentHealth() + "/" + getMaxHealth() + ")";
+    }
+
     public QuestItem findQuestItemByInventory(int questId) {
         return (QuestItem) getInventory().getItems().stream().filter(item -> {
             if (item instanceof QuestItem) {
@@ -161,6 +172,10 @@ public class Character implements Battler {
             }
             return false;
         }).findAny().orElse(null);
+    }
+
+    public boolean isEquipped(Item item) {
+        return weapon == item || armor == item;
     }
 
     public void addCharacterMenu(Menu menu) {

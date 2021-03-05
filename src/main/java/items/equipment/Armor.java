@@ -26,11 +26,6 @@ public class Armor extends Equipment {
         return armorType.getTitle();
     }
 
-    @Override
-    public MenuItemType use() {
-        return itemMenu.showAndChoose().getMenuItemType();
-    }
-
     private void addArmorMenu() {
         if (this == Character.getInstance().getArmor()) {
             itemMenu.addItem("Снять броню", () -> {
@@ -39,11 +34,7 @@ public class Armor extends Equipment {
                 Character.getInstance().getInventory().addItem(this);
             });
         } else {
-            itemMenu.addItem("Надеть эту броню", () -> {
-                this.equipArmor();
-                System.out.println("Вы надеваете доспех. Ваш класс доспеха теперь равен: " + this.getArmorClass());
-                Character.getInstance().getInventory().removeItem(this);
-            });
+           equipMenuItem();
         }
     }
 
@@ -58,7 +49,19 @@ public class Armor extends Equipment {
 
     public String getPrettyName() {
         return "Ваша броня: " + getArmorType().getTitle() + "\nКласс Доспеха: " + armorType.getArmorClass();
-
     }
 
+    @Override
+    protected void equipMenuItem() {
+        itemMenu.addItem("Надеть эту броню", () -> {
+            this.equipArmor();
+            System.out.println("Вы надеваете доспех. Ваш класс доспеха теперь равен: " + this.getArmorClass());
+            Character.getInstance().getInventory().removeItem(this);
+        }, MenuItemType.EQUIP);
+    }
+
+    @Override
+    protected String getPrettyClassName() {
+        return "броня";
+    }
 }

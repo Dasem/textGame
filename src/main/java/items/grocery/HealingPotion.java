@@ -8,7 +8,6 @@ public class HealingPotion extends Item {
 
     private final HealingPotionType healingPotionType;
 
-
     public HealingPotion(HealingPotionType healingPotionType) {
         this.healingPotionType = healingPotionType;
         postInitialize();
@@ -19,7 +18,7 @@ public class HealingPotion extends Item {
         itemMenu.addItem("Выпить", () -> {
             int heal = getHeal();
             Character.getInstance().healing(heal);
-            System.out.println("Ну выпил и выпил, чё бубнить-то, захилен на " + heal + " ХП.");
+            System.out.println("Ну выпил и выпил, чё бубнить-то, захилен на " + heal + " ХП." + Character.getInstance().getHpBar());
             Character.getInstance().getInventory().removeItem(this);
         });
     }
@@ -31,10 +30,5 @@ public class HealingPotion extends Item {
     @Override
     public String getName() {
         return healingPotionType.getTitle();
-    }
-
-    @Override
-    public MenuItemType use() {
-        return itemMenu.showAndChoose().getMenuItemType();
     }
 }

@@ -6,6 +6,7 @@ import units.Character;
 import utils.*;
 
 import java.util.*;
+import java.util.stream.*;
 
 public class Menu {
     String title;
@@ -14,6 +15,16 @@ public class Menu {
     Set<MenuSetting> menuSettings;
 
     public MenuItem showAndChoose() {
+        return showAndChoose(this.menuItems, this.additionalMenuItems);
+    }
+
+    public MenuItem showAndChoose(Item item) {
+        List<MenuItem> filteredMenuItems = this.menuItems.stream().filter(item.getMenuFilters()).collect(Collectors.toList());
+        List<MenuItem> filteredAdditionalMenuItems = this.additionalMenuItems.stream().filter(item.getMenuFilters()).collect(Collectors.toList());
+        return showAndChoose(filteredMenuItems, filteredAdditionalMenuItems);
+    }
+
+    private MenuItem showAndChoose(List<MenuItem> menuItems, List<MenuItem> additionalMenuItems) {
         while (true) {
             try {
                 System.out.println("\n--------------\n"); // разделение между действиями
@@ -49,7 +60,7 @@ public class Menu {
         }
         if (menuSettings.contains(MenuSetting.ADD_BACK_BUTTON)) {
             addAdditionalItem("Назад", () -> {
-                // do nothing (в конце метода возвращается)
+                // do nothing
             }, MenuItemType.BACK);
         }
     }
@@ -66,6 +77,11 @@ public class Menu {
 
     public void addAdditionalItem(String name, Choosable choosable, MenuItemType menuItemType) {
         additionalMenuItems.add(new MenuItem(name, choosable, menuItemType));
+    }
+
+    public void removeItemsByType(MenuItemType menuItemType) {
+        menuItems.removeIf(menuItem -> menuItem.getMenuItemType() == menuItemType);
+        additionalMenuItems.removeIf(menuItem -> menuItem.getMenuItemType() == menuItemType);
     }
 
     public void addItem(String name, Choosable choosable) {

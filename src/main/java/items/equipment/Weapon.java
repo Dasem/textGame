@@ -26,11 +26,6 @@ public class Weapon extends Equipment {
         return weaponType.getTitle();
     }
 
-    @Override
-    public MenuItemType use() {
-        return itemMenu.showAndChoose().getMenuItemType();
-    }
-
     private void addWeaponMenu() {
         if (this == Character.getInstance().getWeapon()) {
             itemMenu.addItem("Убрать оружие", () -> {
@@ -39,12 +34,17 @@ public class Weapon extends Equipment {
                 Character.getInstance().getInventory().addItem(this);
             });
         } else {
-            itemMenu.addItem("Использовать это оружие", () -> {
-                this.equipWeapon();
-                System.out.println("Вы взяли '" + this.getName() + "', его максимальный урон: " + this.getWeaponDamage());
-                Character.getInstance().getInventory().removeItem(this);
-            });
+            equipMenuItem();
         }
+    }
+
+    @Override
+    protected void equipMenuItem() {
+        itemMenu.addItem("Использовать это оружие", () -> {
+            this.equipWeapon();
+            System.out.println("Вы взяли '" + this.getName() + "', его максимальный урон: " + this.getWeaponDamage());
+            Character.getInstance().getInventory().removeItem(this);
+        }, MenuItemType.EQUIP);
     }
 
     public void equipWeapon() {
@@ -62,4 +62,8 @@ public class Weapon extends Equipment {
 
     }
 
+    @Override
+    protected String getPrettyClassName() {
+        return "оружие";
+    }
 }
