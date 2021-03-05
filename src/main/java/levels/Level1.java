@@ -18,34 +18,29 @@ public class Level1 implements Levelable {
 
     @Override
     public void startLevel() {
-        Menu startMenu = new Menu("Хочешь ли ты продолжать путешествие?:", MenuSetting.HIDE_CHARACTER_MENU);
-        startMenu.addItem("Выжить", () -> {
-            System.out.println("Вы видите перед собой карту и поднимаете её\n");
-            Character.getInstance().getInventory().addItem(new Map("Карта подземелья"));
+        System.out.println("Вы видите перед собой карту и поднимаете её\n");
+        Character.getInstance().getInventory().addItem(new Map("Карта подземелья"));
 
-            Labyrinth startLabyrinth = new Labyrinth();
-            startLabyrinth.enterLabyrinth();
-            System.out.println("Ура! Лабиринт пройден! Перед тобой открылись просторы древнего мира!");
-            Menu menu = new Menu("Перед тобой развилка с путевым знаком, на нём видны варианты, выбери дальнейший путь:");
-            menu.addItem("Ривергард", () -> {
-                rivergard();
-                System.out.println("Перед твоим взором расстилаются огромные ворота города Ривергард");
-            });
-            menu.addItem("Литориан", () -> {
-                litorian();
-            });
-            menu.addItem("Зачарованный лес", () -> {
-                enchantedForest();
-            });
-            menu.showAndChoose();
+        Labyrinth startLabyrinth = new Labyrinth();
+        startLabyrinth.enterLabyrinth();
+        System.out.println("Ура! Лабиринт пройден! Перед тобой открылись просторы древнего мира!");
+        Menu menu = new Menu("Перед тобой развилка с путевым знаком, на нём видны варианты, выбери дальнейший путь:");
+        menu.addItem("Ривергард", () -> {
+            rivergard();
+            System.out.println("Перед твоим взором расстилаются огромные ворота города Ривергард");
+        });
+        menu.addItem("Литориан", () -> {
+            litorian();
+        });
+        menu.addItem("Зачарованный лес", () -> {
+            enchantedForest();
+        });
+        menu.showAndChoose();
 
-            System.out.println("Поздравляю! Ты закончил первый уровень. Вот тебе плюшки.");
-        });
-        startMenu.addItem("Умереть", () -> {
-            System.out.println("Вы умерли, слава герою " + Character.getInstance().getName());
-        });
-        startMenu.showAndChoose();
+        System.out.println("Поздравляю! Ты закончил первый уровень. Вот тебе плюшки.");
     }
+
+
 
     private void rivergard() {
         System.out.println("На своём пути к Ривергарду, ты видишь одинокого гоблина...");
@@ -71,9 +66,9 @@ public class Level1 implements Levelable {
     private void enchantedForest() {
         System.out.println(
                 "Уверенно шагая по лесной тропинке ты чувствуешь на себе чей-то взгляд.\n" +
-                "По спине пробежал холодок.\n" +
-                "Ты решаешь перейти на бег, но коварные корни деревьев цепляются тебе за ноги и ты кубарем катишься вниз, в глубь леса.\n" +
-                "Встав и отряхнувшись ты видишь перед собой развилку...");
+                        "По спине пробежал холодок.\n" +
+                        "Ты решаешь перейти на бег, но коварные корни деревьев цепляются тебе за ноги и ты кубарем катишься вниз, в глубь леса.\n" +
+                        "Встав и отряхнувшись ты видишь перед собой развилку...");
         Menu menu = new Menu("Куда ты отравишься?");
         menu.addItem("Влево", () -> {
             Labyrinth labyrinth = new Labyrinth();

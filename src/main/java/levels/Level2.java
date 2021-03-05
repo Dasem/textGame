@@ -47,7 +47,7 @@ public class Level2 implements Levelable {
         System.out.println("Развернув свёрток ты видишь порошок синего цвета и кулон с волчьей пастью");
         Menu rollmenu = new Menu("Что ты выберешь: ");
         rollmenu.addItem("Взять его", () -> {
-            Character.getInstance().getInventory().addItem(new QuestItem("Бумажный свёрток"));
+            Character.getInstance().getInventory().addItem(new QuestItem("Бумажный свёрток", 1));
             System.out.println("Ты кладёшь бумажный свёрток к себе в инвентарь");
             track();
         });
@@ -101,10 +101,11 @@ public class Level2 implements Levelable {
                 "На входе Пивной кружки стоит громила...");
         Menu menu = new Menu("Что ты выберешь:");
         menu.addItem("Подойти к нему и сказать, что Волчица искала тебя", () -> {
-                    System.out.println("Ты подходишь к громиле и говоришь, что тебя искала Волчица, его ответ немного тебя обескуражил:");
+                    System.out.println("Ты подходишь к громиле и говоришь, что тебя искала Волчица:");
                     Utils.suspense(1000);
-                    System.out.println("А ты купил DLC к Литориану? Просто там продолжение этого квеста, а без DLC туда не попасть, ты уж прости...");
-                    Utils.endGame();
+                    System.out.println("Он молча кивает и указывает тебе на дверь возле стойки корчмаря");
+                    bitchwolf();
+
                 }
         );
         menu.addItem("Попытаться просто зайти в кабак", () -> {
@@ -115,7 +116,43 @@ public class Level2 implements Levelable {
             System.out.println("Чёрт, у нас же не реализована голда, похоже это конец...");
             Utils.endGame();
         });
-
         menu.showAndChoose();
     }
+
+    private void bitchwolf() {
+        System.out.println("Открыв дверь, ты видишь узкую лестницу, ведущую вверх. " +
+                "Почти поднявшись на верх до вас доносится очень громкий звук удара о какой-то предмет и приближающиеся к вам шаги.");
+        Utils.suspense(500);
+        System.out.println("Большая дубовая дверь открывается и перед вашим взором является фигура в плаще, которая направляется к тебе...");
+        Menu menu = new Menu("Что ты выберешь");
+        menu.addItem("Стоять на месте", () -> {
+            System.out.println("Явно разъярённая личность толкает тебя плечом и ,что-то бормоча себя под нос, спускается вниз");
+            Character.getInstance().takeDamage(1);
+            System.out.println("Было немого больно...");
+            bitchwolfQuest();
+        });
+        menu.addItem("Подвинуться", () -> {
+            System.out.println("Явно разъярённая проходит мимо тебя и ,что-то бормоча себя под нос, спускается вниз");
+            bitchwolfQuest();
+        });
+        menu.showAndChoose();
+
+    }
+
+    private void bitchwolfQuest() {
+        QuestItem scroll = Character.getInstance().findQuestItemByInventory(1); //todo доделать сайдквест
+        if (scroll != null) {
+            Menu menu = new Menu("Что ты выберешь");
+            menu.addItem("Отдать", () -> {
+                Character.getInstance().getInventory().removeItem(scroll);
+                System.out.println("Ты отдаёшь свёрток и что-то происходит");
+            });
+            menu.addItem("Не отдавать", () -> {
+                System.out.println("Ты не отдаёшь свёрток и просходит что-то, отличное от первого");
+            });
+            menu.showAndChoose();
+
+        }
+    }
 }
+
