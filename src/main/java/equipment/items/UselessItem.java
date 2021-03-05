@@ -21,6 +21,6 @@ public class UselessItem extends Item {
 
     @Override
     public void execute() {
-        // Посмотреть какой красивый (нет)
+        itemMenu.showAndChoose();
     }
 }
