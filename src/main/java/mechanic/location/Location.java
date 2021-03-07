@@ -134,6 +134,10 @@ public class Location {
         eventList.add(new Event(row, column, event));
     }
 
+    public void addActions(Event ... events) {
+        addActions(Lists.newArrayList(events));
+    }
+
     public void addActions(Collection<Event> events) {
         eventList.addAll(events);
     }

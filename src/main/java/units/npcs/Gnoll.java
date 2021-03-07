@@ -14,7 +14,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Gnoll extends Enemy {
-    protected int currentHealth = getMaxHealth();
 
     @Override
     public int getCurrentHealth() {
@@ -57,12 +56,6 @@ public class Gnoll extends Enemy {
             colItem.add(itemMob);
         }
         return colItem.stream().filter(Objects::nonNull).collect(Collectors.toList());
-    }
-
-    @Override
-    public boolean takeDamage(int damage) {
-        currentHealth -= damage;
-        return currentHealth <= 0;
     }
 
     @Override

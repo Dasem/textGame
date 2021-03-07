@@ -68,6 +68,17 @@ public class Character implements Battler {
     }
 
     @Override
+    public void setCurrentHealth(int currentHealth) {
+        if (currentHealth < 0) {
+            this.currentHealth = 0;
+        } else if (currentHealth > getMaxHealth()) {
+            this.currentHealth = getMaxHealth();
+        } else {
+            this.currentHealth = currentHealth;
+        }
+    }
+
+    @Override
     public int getMaxHealth() {
         return 10;
     }
@@ -107,16 +118,6 @@ public class Character implements Battler {
 
     public void healing(int heal) {
         setCurrentHealth(getCurrentHealth() + heal);
-    }
-
-    public void setCurrentHealth(int currentHealth) {
-        if (currentHealth < 0) {
-            this.currentHealth = 0;
-        } else if (currentHealth > getMaxHealth()) {
-            this.currentHealth = getMaxHealth();
-        } else {
-            this.currentHealth = currentHealth;
-        }
     }
 
     public Armor getArmor() {

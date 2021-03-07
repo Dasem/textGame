@@ -73,12 +73,12 @@ public class Fight {
     }
 
     private boolean hitBattler1() {
-        int initiativBattler1 = battler1.initiativThrow();
-        int initiativBattler2 = battler2.initiativThrow();
+        int initiativBattler1 = battler1.initiativeThrow();
+        int initiativBattler2 = battler2.initiativeThrow();
         while (initiativBattler1 == initiativBattler2) {
             System.out.println("Реролл...");
-            initiativBattler1 = battler1.initiativThrow();
-            initiativBattler2 = battler2.initiativThrow();
+            initiativBattler1 = battler1.initiativeThrow();
+            initiativBattler2 = battler2.initiativeThrow();
         }
         return initiativBattler1 > initiativBattler2;
     }

@@ -31,15 +31,10 @@ public class Level1 implements Levelable {
                     location.printMap(false);
                 });
             }
-
-            @Override
-            public MenuItemType use() {
-                return super.use();
-            }
         };
 
         Character.getInstance().getInventory().addItem(map);
-        startLabyrinth.addActions(Lists.newArrayList(
+        startLabyrinth.addActions(
                 new Event(4, 1, this::findStartLabyrinthPotion),
                 new Event(4, 4, this::findStartLabyrinthArmor),
                 new Event(5, 3, this::findStartLabyrinthWeapon),
@@ -47,7 +42,7 @@ public class Level1 implements Levelable {
                 new Event(2, 3, this::findStartLabyrinthFight),
                 new EscapeEvent(0, 3, this::crossroad),
                 new EscapeEvent(3, 2, this::enchantedForest)
-        ));
+        );
 
         startLabyrinth.enterLocation(6, 3).escapeAction();
     }
@@ -149,7 +144,7 @@ public class Level1 implements Levelable {
             Utils.lor("Бродя по лабиринту, ты находишь враждебное существо...");
             Battler battler = Randomizer.randomize(
                     new ObjectAndProbability<>(new Wolf(),5),
-                    new ObjectAndProbability<>(new Goblin(),500),
+                    new ObjectAndProbability<>(new Goblin(),10),
                     new ObjectAndProbability<>(new Sanya(),1),
                     new ObjectAndProbability<>(new Spider(),3),
                     new ObjectAndProbability<>(new Skeleton(),3),
@@ -167,7 +162,6 @@ public class Level1 implements Levelable {
 
     }
     public void findStartLabyrinthArmor() {
-
             Armor armor = Randomizer.randomize(
                     new ObjectAndProbability<>(new Armor(ArmorType.LIGHT_ARMOR), 3),
                     new ObjectAndProbability<>(new Armor(ArmorType.HEAVY_ARMOR), 1),

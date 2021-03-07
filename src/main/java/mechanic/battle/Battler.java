@@ -6,6 +6,8 @@ import utils.Utils;
 public interface Battler {
     int getCurrentHealth();
 
+    void setCurrentHealth(int currentHealth);
+
     int getMaxHealth();
 
     int getOnHitDamage();
@@ -14,20 +16,21 @@ public interface Battler {
 
     int getArmorClass();
 
-  default  int initiativThrow() {
-      int initiativ = Dices.diceD20();
-      Utils.suspense(250);
-      System.out.println(this.getName()+" Бросил на инициативу "+initiativ);
-    return initiativ;
+    default int initiativeThrow() {
+        int initiative = Dices.diceD20();
+        Utils.suspense(250);
+        System.out.println(this.getName() + " Бросил на инициативу " + initiative);
+        return initiative;
     }
-
-
 
     /**
      * Возвращает false, если персонаж жив
      * true - если убит
      */
-    boolean takeDamage(int damage);
+    default boolean takeDamage(int damage) {
+        setCurrentHealth(getCurrentHealth() - damage);
+        return getCurrentHealth() == 0;
+    }
 
     String getName();
 }
