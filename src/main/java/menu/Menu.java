@@ -6,7 +6,6 @@ import units.Character;
 import utils.*;
 
 import java.util.*;
-import java.util.function.*;
 import java.util.stream.*;
 
 public class Menu {

@@ -26,11 +26,14 @@ public class Level1 implements Levelable {
         Item map = new UsefulItem("Карта подземелья") {
             final Location location = startLabyrinth;
 
-            @Override
-            public MenuItemType use() {
+            {
                 itemMenu.addItem("Посмотреть карту", () -> {
                     location.printMap(false);
                 });
+            }
+
+            @Override
+            public MenuItemType use() {
                 return super.use();
             }
         };

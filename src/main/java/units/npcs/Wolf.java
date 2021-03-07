@@ -65,6 +65,6 @@ public class Wolf extends Enemy {
 
     @Override
     public String getName() {
-        return "Wolf";
+        return "Волк";
     }
 }
