@@ -102,7 +102,7 @@ public class Character implements Battler {
 
     @Override
     public int getAttackModifier() {
-        return 20;
+        return 2;
     }
 
     @Override
