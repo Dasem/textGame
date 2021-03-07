@@ -54,12 +54,20 @@ public class Character implements Battler {
                 });
             }
             lootMenu.addAdditionalItem("Забрать всё", () -> {
-                this.getInventory().addItems(existedItems);
+                this.lootItems(existedItems);
                 existedItems.clear();
             });
             lootMenu.addAdditionalItem("Закончить лутаться", existedItems::clear);
             lootMenu.showAndChoose();
         }
+    }
+
+    public void lootItem(Item item) {
+        this.inventory.addItem(item);
+    }
+
+    public void lootItems(Collection<Item> item) {
+        this.inventory.addItems(item);
     }
 
     @Override
@@ -110,7 +118,7 @@ public class Character implements Battler {
     @Override
     public boolean takeDamage(int damage) {
         currentHealth -= damage;
-        if (Character.getInstance().isDead()) {
+        if (isDead()) {
             Utils.endGame();
         }
         return currentHealth <= 0;
@@ -181,11 +189,11 @@ public class Character implements Battler {
 
     public void addCharacterMenu(Menu menu) {
         menu.addAdditionalItem("Открыть инвентарь", () -> {
-            if (Character.getInstance().getInventory().getItems().isEmpty()) {
+            if (getInventory().getItems().isEmpty()) {
                 System.out.println("Твой инвентарь пуст");
             } else {
                 Menu inventoryMenu = new Menu("Инвентарь:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
-                for (Item item : Character.getInstance().getInventory().getItems()) {
+                for (Item item : getInventory().getItems()) {
                     inventoryMenu.addItem(item);
                 }
                 inventoryMenu.showAndChoose();
@@ -208,14 +216,14 @@ public class Character implements Battler {
             });
             characterMenu.addItem("Снаряжение", () -> {
                 Menu equippedMenu = new Menu("Экипированное снаряжение:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
-                if (Character.getInstance().getWeapon() == null && Character.getInstance().getArmor() == null ) {
+                if (getWeapon() == null && getArmor() == null ) {
                     System.out.println("Нет надетого снаряжения");
                 } else {
-                    if (Character.getInstance().getWeapon() != null) {
-                        equippedMenu.addItem(Character.getInstance().getWeapon());
+                    if (getWeapon() != null) {
+                        equippedMenu.addItem(getWeapon());
                     }
-                    if (Character.getInstance().getArmor() != null) {
-                        equippedMenu.addItem(Character.getInstance().getArmor());
+                    if (getArmor() != null) {
+                        equippedMenu.addItem(getArmor());
                     }
                     equippedMenu.showAndChoose();
                 }

@@ -24,7 +24,7 @@ public abstract class Item implements Usable {
     protected void itemToInventoryMenuItem() {
         itemMenu.addItem("Положить в инвентарь", () -> {
             System.out.println("Взят новый предмет: '" + getName() + "'");
-            Character.getInstance().getInventory().addItem(this);
+            Character.getInstance().lootItem(this);
         }, MenuItemType.LOOT);
     }
 

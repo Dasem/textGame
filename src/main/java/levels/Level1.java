@@ -33,7 +33,7 @@ public class Level1 implements Levelable {
             }
         };
 
-        Character.getInstance().getInventory().addItem(map);
+        Character.getInstance().lootItem(map);
         startLabyrinth.addActions(
                 new Event(4, 1, this::findStartLabyrinthPotion),
                 new Event(4, 4, this::findStartLabyrinthArmor),
@@ -78,7 +78,7 @@ public class Level1 implements Levelable {
             System.out.println("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
             Utils.suspense();
             System.out.println("После недолгих раздумий ты берёшь с собой голову гоблина");
-            Character.getInstance().getInventory().addItem(new UselessItem("Голова гоблина"));
+            Character.getInstance().lootItem(new UselessItem("Голова гоблина"));
         }
         Location rivergard = new Location("rivergard", LocationSetting.ENABLE_GPS);
         rivergard.addActions(Lists.newArrayList(

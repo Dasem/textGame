@@ -9,7 +9,7 @@ public abstract class Equipment extends Item {
     protected void itemToInventoryMenuItem() {
         itemMenu.addItem("Положить в инвентарь (" + getPrettyClassName() + ")", () -> {
             System.out.println("Взят новый предмет (" + getPrettyClassName() + "): '" + getName() + "'");
-            Character.getInstance().getInventory().addItem(this);
+            Character.getInstance().lootItem(this);
             Character.getInstance().removeIfEquipped(this);
         }, MenuItemType.LOOT);
     }

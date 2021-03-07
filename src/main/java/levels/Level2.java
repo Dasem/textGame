@@ -35,7 +35,7 @@ public class Level2 implements Levelable {
         Utils.lor("Развернув свёрток ты видишь порошок синего цвета и кулон с волчьей пастью");
         Menu rollmenu = new Menu("Что ты выберешь: ");
         rollmenu.addItem("Взять его", () -> {
-            Character.getInstance().getInventory().addItem(new QuestItem("Бумажный свёрток", 1));
+            Character.getInstance().lootItem(new QuestItem("Бумажный свёрток", 1));
             Utils.lor("Ты кладёшь бумажный свёрток к себе в инвентарь");
             track();
         });
