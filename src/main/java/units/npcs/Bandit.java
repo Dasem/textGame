@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class Spider extends Enemy {
+public class Bandit extends Enemy {
     protected int currentHealth = getMaxHealth();
 
     @Override
@@ -24,7 +24,7 @@ public class Spider extends Enemy {
 
     @Override
     public int getMaxHealth() {
-        return 1;
+        return 10;
     }
 
     @Override
@@ -34,12 +34,12 @@ public class Spider extends Enemy {
 
     @Override
     public int getAttackModifier() {
-        return 4;
+        return 2;
     }
 
     @Override
     public int getArmorClass() {
-        return 12;
+        return 11;
     }
 
     @Override
@@ -48,8 +48,8 @@ public class Spider extends Enemy {
         List<ObjectAndProbability<Item>> loot = new ArrayList<>();
         loot.add(new ObjectAndProbability<>( new HealingPotion(HealingPotionType.LESSER_HEALING_POTION),2));
         loot.add(new ObjectAndProbability<> (new HealingPotion(HealingPotionType.LESSER_HEALING_POTION),2));
-        loot.add(new ObjectAndProbability<> ( new UselessItem("Клык паука"),2));
-        loot.add(new ObjectAndProbability<> ( new UselessItem("Паучья ножка"),2));
+        loot.add(new ObjectAndProbability<> ( new UselessItem("Бондана бандита"),2));
+        loot.add(new ObjectAndProbability<> ( new UselessItem("Дырявый сапог"),2));
         int countItem = Randomizer.randomize(
                 new ObjectAndProbability<>(1, 3),
                 new ObjectAndProbability<>(2, 2),
@@ -70,7 +70,7 @@ public class Spider extends Enemy {
 
     @Override
     public String getName() {
-        return "Spider";
+        return "Bandit";
     }
 
 

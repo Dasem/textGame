@@ -119,6 +119,10 @@ public class Character implements Battler {
         }
     }
 
+    public void setFullRest() {
+        this.currentHealth = this.getMaxHealth();
+    }
+
     public Armor getArmor() {
         return armor;
     }
@@ -207,7 +211,7 @@ public class Character implements Battler {
             });
             characterMenu.addItem("Снаряжение", () -> {
                 Menu equippedMenu = new Menu("Экипированное снаряжение:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
-                if (Character.getInstance().getWeapon() == null && Character.getInstance().getArmor() == null ) {
+                if (Character.getInstance().getWeapon() == null && Character.getInstance().getArmor() == null) {
                     System.out.println("Нет надетого снаряжения");
                 } else {
                     if (Character.getInstance().getWeapon() != null) {
