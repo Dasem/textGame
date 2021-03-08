@@ -68,7 +68,7 @@ public class Level2 implements Levelable {
             Utils.endGame();
         } else {
             Utils.lor("Ты не знаешь почему, но ты уверен, что поблизости больше нет противников и позволяешь себе спокойно передохнуть.");
-            Character.getInstance().setCurrentHealth(Character.getInstance().getMaxHealth()); //todo сделать метод SetFullRest
+            Character.getInstance().setCurrentHealth(Character.getInstance().getMaxHealth());
             Utils.lor("Наступает утро и ты решаешь продолжить своё путешествие\n" +
                     "Через пару часов ты доходишь до ворот города Даумгард");
             daumgard();
@@ -122,6 +122,7 @@ public class Level2 implements Levelable {
 
     private void bitchwolfQuest() {
         QuestItem scroll = Character.getInstance().findQuestItemByInventory(1); //todo доделать сайдквест
+        Utils.lor("Ты видишь перед собой женщину и она тебе что-то говорит... ");
         if (scroll != null) {
             Menu menu = new Menu("Что ты выберешь");
             menu.addItem("Отдать", () -> {

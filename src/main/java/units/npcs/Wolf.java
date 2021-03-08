@@ -40,19 +40,21 @@ public class Wolf extends Enemy {
     }
 
     @Override
-    public Collection<Item> getLoot() { //todo Пофиксить 3 уха и тд.
-                Collection<Item> colItem = new ArrayList<>();
+    public Collection<Item> getLoot() {
+        Collection<Item> colItem = new ArrayList<>();
+        List<ObjectAndProbability<Item>> loot = new ArrayList<>();
+        loot.add(new ObjectAndProbability<>( new HealingPotion(HealingPotionType.LESSER_HEALING_POTION),2));
+        loot.add(new ObjectAndProbability<> (new HealingPotion(HealingPotionType.LESSER_HEALING_POTION),2));
+        loot.add(new ObjectAndProbability<> ( new UselessItem("Клык волка"),2));
+        loot.add(new ObjectAndProbability<> ( new UselessItem("Клык волка"),2));
         int countItem = Randomizer.randomize(
                 new ObjectAndProbability<>(1, 3),
                 new ObjectAndProbability<>(2, 2),
                 new ObjectAndProbability<>(3, 1));
         for ( int i=0;i<countItem;i++) {
-            Item itemMob = Randomizer.randomize(
-                    new ObjectAndProbability<>(new HealingPotion(HealingPotionType.LESSER_HEALING_POTION), 3),
-                    new ObjectAndProbability<>(new UselessItem("Ухо волка"), 1),
-                    new ObjectAndProbability<>(null, 1)
-            );
-            colItem.add(itemMob);
+            ObjectAndProbability<Item> itemMob = Randomizer.randomizeContainer(loot);
+            loot.remove(itemMob);
+            colItem.add(itemMob.getObject());
         }
         return colItem.stream().filter(Objects::nonNull).collect(Collectors.toList());
     }

@@ -1,12 +1,18 @@
 package utils.random;
 
+import com.google.common.collect.Lists;
 import utils.*;
 
 import java.util.*;
 
 public class Randomizer {
     public static <T> T randomize(ObjectAndProbability<T>... objects) {
-        int sum = Arrays.stream(objects)
+        return randomizeContainer(Lists.newArrayList(objects)).getObject();
+    }
+
+
+    public static <T> ObjectAndProbability<T> randomizeContainer(Collection<ObjectAndProbability<T>> objects) {
+        int sum = objects.stream()
                 .map(ObjectAndProbability::getProbability)
                 .reduce(0, Integer::sum);
         int threshold = Utils.random.nextInt(sum);
@@ -15,7 +21,7 @@ public class Randomizer {
         for (ObjectAndProbability<T> object : objects) {
             currentSumWeight += object.getProbability();
             if (currentSumWeight > threshold) {
-                return object.getObject();
+                return object;
             }
         }
 
@@ -26,5 +32,6 @@ public class Randomizer {
         int num = Utils.random.nextInt(objects.length);
         return objects[num];
     }
+
 
 }

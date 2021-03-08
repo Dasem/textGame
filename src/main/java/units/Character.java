@@ -126,6 +126,10 @@ public class Character implements Battler {
         setCurrentHealth(getCurrentHealth() + heal);
     }
 
+    public void setFullRest() {
+        this.currentHealth = this.getMaxHealth();
+    }
+
     public Armor getArmor() {
         return armor;
     }

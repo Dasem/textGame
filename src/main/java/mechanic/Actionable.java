@@ -1,6 +1,6 @@
 package mechanic;
 
 @FunctionalInterface
-public interface Actionable {
+public interface    Actionable {
     void doAction();
 }
