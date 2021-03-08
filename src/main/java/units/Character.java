@@ -118,11 +118,8 @@ public class Character implements Battler {
 
     @Override
     public boolean takeDamage(int damage) {
-        currentHealth -= damage;
-        if (isDead()) {
-            Utils.endGame();
-        }
-        return currentHealth <= 0;
+        setCurrentHealth(getCurrentHealth() - damage);
+        return getCurrentHealth() == 0;
     }
 
     public void healing(int heal) {
