@@ -69,7 +69,6 @@ public class Character implements Battler {
     public void lootItems(Collection<Item> item) {
         this.inventory.addItems(item);
     }
-    public void buyItem(Item item){this.inventory.addItem(item);}
 
     @Override
     public int getCurrentHealth() {
@@ -80,10 +79,8 @@ public class Character implements Battler {
     public void setCurrentHealth(int currentHealth) {
         if (currentHealth < 0) {
             this.currentHealth = 0;
-        } else if (currentHealth > getMaxHealth()) {
-            this.currentHealth = getMaxHealth();
         } else {
-            this.currentHealth = currentHealth;
+            this.currentHealth = Math.min(currentHealth, getMaxHealth());
         }
     }
 

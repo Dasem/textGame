@@ -4,7 +4,7 @@ import mechanic.battle.*;
 import units.Lootable;
 
 public abstract class Enemy extends NPC implements Battler, Lootable {
-    protected int currentHealth = getMaxHealth();
+    int currentHealth = getMaxHealth();
 
     @Override
     public void setCurrentHealth(int currentHealth) {

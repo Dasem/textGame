@@ -43,7 +43,7 @@ public class Level1 implements Levelable {
                 new Event(5, 3, this::findStartLabyrinthWeapon),
                 new Event(4, 2, this::findStartLabyrinthFight),
                 new Event(2, 3, this::findStartLabyrinthFight),
-                new Event(5,4,this::findTrade,false),
+                new Event(5, 4, this::findTrade, false),
                 new EscapeEvent(0, 3, this::crossroad),
                 new EscapeEvent(3, 2, this::enchantedForest)
         );
@@ -90,14 +90,14 @@ public class Level1 implements Levelable {
                     System.out.println("Подойдя к фонтану ты решаешь немного отдохнуть... ");
                     Character.getInstance().setFullRest();
                     System.out.println("Твоё хп: " + Character.getInstance().getCurrentHealth());
-                },false),
+                }, false),
                 new Event(5, 12, () -> { // кузня
 
                 }),
                 new Event(3, 12, () -> { // квест
                     System.out.println("Ты видишь квестодателя с квестом, но мне лень придумывать лор...");
 
-                },false),
+                }, false),
                 new Event(3, 11, () -> { // генг-бенг
                     System.out.println("Из стайки бандитов выходит один из них, кажется он хочет выделится...");
                     Fight gangbang = new Fight(Character.getInstance(), new Bandit());
@@ -150,59 +150,64 @@ public class Level1 implements Levelable {
             lor("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
         }
     }
+
     public void findStartLabyrinthFight() {
 
-            lor("Бродя по лабиринту, ты находишь враждебное существо...");
-            Battler battler = Randomizer.randomize(
-                    new ObjectAndProbability<>(new Wolf(),5),
-                    new ObjectAndProbability<>(new Goblin(),10),
-                    new ObjectAndProbability<>(new Sanya(),1),
-                    new ObjectAndProbability<>(new Spider(),3),
-                    new ObjectAndProbability<>(new Skeleton(),3),
-                    new ObjectAndProbability<>(new Gnoll(),1)
-            );
-            Fight fight = new Fight(Character.getInstance(), battler);
-            fight.battle();
-            if (Character.getInstance().getCurrentHealth() <= 0) {
-                lor("В глубинах лабиринта ты погиб. Причиной твоей смерти стал '" + battler.getName() + "'");
-                Utils.endGame();
-            } else {
-                lor("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
+        lor("Бродя по лабиринту, ты находишь враждебное существо...");
+        Battler battler = Randomizer.randomize(
+                new ObjectAndProbability<>(new Wolf(), 5),
+                new ObjectAndProbability<>(new Goblin(), 10),
+                new ObjectAndProbability<>(new Sanya(), 1),
+                new ObjectAndProbability<>(new Spider(), 3),
+                new ObjectAndProbability<>(new Skeleton(), 3),
+                new ObjectAndProbability<>(new Gnoll(), 1)
+        );
+        Fight fight = new Fight(Character.getInstance(), battler);
+        fight.battle();
+        if (Character.getInstance().getCurrentHealth() <= 0) {
+            lor("В глубинах лабиринта ты погиб. Причиной твоей смерти стал '" + battler.getName() + "'");
+            Utils.endGame();
+        } else {
+            lor("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
 
-            }
+        }
 
     }
+
     public void findStartLabyrinthArmor() {
-            Armor armor = Randomizer.randomize(
-                    new ObjectAndProbability<>(new Armor(ArmorType.LIGHT_ARMOR), 3),
-                    new ObjectAndProbability<>(new Armor(ArmorType.HEAVY_ARMOR), 1),
-                    new ObjectAndProbability<>(new Armor(ArmorType.MEDIUM_ARMOR), 2),
-                    new ObjectAndProbability<>(null, 2)
-            );
-            if (armor == null) {
-                lor("Тут должна была быть броня, но её украл Саня");
-            } else {
-                Character.getInstance().loot(armor);
-            }
+        Armor armor = Randomizer.randomize(
+                new ObjectAndProbability<>(new Armor(ArmorType.LIGHT_ARMOR), 3),
+                new ObjectAndProbability<>(new Armor(ArmorType.HEAVY_ARMOR), 1),
+                new ObjectAndProbability<>(new Armor(ArmorType.MEDIUM_ARMOR), 2),
+                new ObjectAndProbability<>(null, 2)
+        );
+        if (armor == null) {
+            lor("Тут должна была быть броня, но её украл Саня");
+        } else {
+            Character.getInstance().loot(armor);
+        }
 
     }
+
     public void findStartLabyrinthPotion() {
-            HealingPotion healingPotion = Randomizer.randomize(
-                    new ObjectAndProbability<>(new HealingPotion(HealingPotionType.LESSER_HEALING_POTION), 3),
-                    new ObjectAndProbability<>(new HealingPotion(HealingPotionType.NORMAL_HEALING_POTION), 1),
-                    new ObjectAndProbability<>(null, 1)
-            );
-            Character.getInstance().loot(healingPotion);
+        HealingPotion healingPotion = Randomizer.randomize(
+                new ObjectAndProbability<>(new HealingPotion(HealingPotionType.LESSER_HEALING_POTION), 3),
+                new ObjectAndProbability<>(new HealingPotion(HealingPotionType.NORMAL_HEALING_POTION), 1),
+                new ObjectAndProbability<>(null, 1)
+        );
+        Character.getInstance().loot(healingPotion);
 
     }
+
     public void findStartLabyrinthWeapon() {
-            Weapon weapon = Randomizer.randomize(
-                    new ObjectAndProbability<>(new Weapon(WeaponType.DAGGER), 3),
-                    new ObjectAndProbability<>(new Weapon(WeaponType.TWO_HANDED_SWORD), 1),
-                    new ObjectAndProbability<>(new Weapon(WeaponType.SWORD), 2));
-            Character.getInstance().loot(weapon);
+        Weapon weapon = Randomizer.randomize(
+                new ObjectAndProbability<>(new Weapon(WeaponType.DAGGER), 3),
+                new ObjectAndProbability<>(new Weapon(WeaponType.TWO_HANDED_SWORD), 1),
+                new ObjectAndProbability<>(new Weapon(WeaponType.SWORD), 2));
+        Character.getInstance().loot(weapon);
 
     }
+
     ArrayList<Item> tradeItems = Lists.newArrayList(
             new Weapon(WeaponType.STAFF),
             new Armor(ArmorType.MEDIUM_ARMOR),

@@ -12,7 +12,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Gnoll extends Enemy {
-
     @Override
     public int getCurrentHealth() {
         return currentHealth;

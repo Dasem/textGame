@@ -12,8 +12,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Wolf extends Enemy {
-    protected int currentHealth = getMaxHealth();
-
     @Override
     public int getCurrentHealth() {
         return currentHealth;
