@@ -5,5 +5,6 @@ public enum MenuItemType {
     THROW,
     EQUIP,
     LOOT,
-    BACK;
+    BACK,
+    TRADE;
 }

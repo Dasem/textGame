@@ -14,6 +14,8 @@ import utils.random.ObjectAndProbability;
 import utils.random.Randomizer;
 
 import java.lang.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class Level1 implements Levelable {
 
@@ -40,6 +42,7 @@ public class Level1 implements Levelable {
                 new Event(5, 3, this::findStartLabyrinthWeapon),
                 new Event(4, 2, this::findStartLabyrinthFight),
                 new Event(2, 3, this::findStartLabyrinthFight),
+                new Event(5,4,this::findTrade,false),
                 new EscapeEvent(0, 3, this::crossroad),
                 new EscapeEvent(3, 2, this::enchantedForest)
         );
@@ -191,5 +194,33 @@ public class Level1 implements Levelable {
                     new ObjectAndProbability<>(new Weapon(WeaponType.SWORD), 2));
             Character.getInstance().loot(weapon);
 
+    }
+    ArrayList<Item> tradeItems = Lists.newArrayList(
+            new Weapon(WeaponType.STAFF),
+            new Armor(ArmorType.MEDIUM_ARMOR),
+            new HealingPotion(HealingPotionType.LESSER_HEALING_POTION)
+    );
+    public void findTrade() {
+        boolean trade = true;
+        MenuItem resultItem;
+        do {
+            Menu tradeMenu = new Menu("Меню торговли", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
+            tradeMenu.addItem("Покупка", () -> {
+                Menu buyMenu = new Menu("Покупка", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.TRADE_MENU);
+                for (Item item : tradeItems) {
+                    buyMenu.addItem(item.getName(), item::use, MenuItemType.TRADE);
+                }
+                buyMenu.showAndChoose();
+            });
+            tradeMenu.addItem("Продажа", () -> {
+                Menu sellMenu = new Menu("Продажа", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.TRADE_MENU);
+                for (Item item : Character.getInstance().getInventory().getItems()) {
+                    sellMenu.addItem(item.getName(), item::use, MenuItemType.TRADE);
+                }
+                sellMenu.showAndChoose();
+            });
+            resultItem=tradeMenu.showAndChoose();
+
+        }while (resultItem.getMenuItemType() != MenuItemType.BACK);
     }
 }

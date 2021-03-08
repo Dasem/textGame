@@ -1,7 +1,6 @@
 package items.grocery;
 
 import items.*;
-import menu.*;
 import units.Character;
 
 public class HealingPotion extends Item {
@@ -11,6 +10,7 @@ public class HealingPotion extends Item {
     public HealingPotion(HealingPotionType healingPotionType) {
         this.healingPotionType = healingPotionType;
         addPotionMenu();
+        this.cost = healingPotionType.getCost();
     }
 
     private void addPotionMenu() {

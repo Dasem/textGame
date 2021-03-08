@@ -14,6 +14,7 @@ public class Armor extends Equipment {
     public Armor(ArmorType armorType) {
         this.armorType = armorType;
         addArmorMenu();
+        this.cost = armorType.getCost();
     }
 
     public int getArmorClass() {

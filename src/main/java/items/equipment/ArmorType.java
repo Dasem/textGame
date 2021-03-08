@@ -6,17 +6,32 @@ public enum ArmorType {
         public int  getArmorClass() {
             return 14;
         }
+
+        @Override
+        public int getCost() {
+            return 30;
+        }
     },
     MEDIUM_ARMOR("Средняя броня") {
         @Override
         public int getArmorClass() {
             return 16;
         }
+
+        @Override
+        public int getCost() {
+            return 60;
+        }
     },
     HEAVY_ARMOR("Тяжёлая броня") {
         @Override
         public int getArmorClass() {
             return 18;
+        }
+
+        @Override
+        public int getCost() {
+            return 200;
         }
     };
 
@@ -31,5 +46,6 @@ public enum ArmorType {
     }
 
     abstract public int getArmorClass();
+    abstract public int getCost();
 }
 

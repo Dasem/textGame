@@ -69,6 +69,7 @@ public class Character implements Battler {
     public void lootItems(Collection<Item> item) {
         this.inventory.addItems(item);
     }
+    public void buyItem(Item item){this.inventory.addItem(item);}
 
     @Override
     public int getCurrentHealth() {
@@ -206,6 +207,7 @@ public class Character implements Battler {
                 Character c = Character.getInstance();
                 System.out.println("Меня зовут " + c.getName());
                 System.out.println(c.getCurrentHealth() + "/" + c.getMaxHealth() + " HP");
+                System.out.println((c.getInventory().getMoney()+" Золота"));
                 System.out.println(c.getArmorClass() + " Защиты");
                 if (c.getArmor() != null) {
                     System.out.println(c.getArmor().getPrettyName());

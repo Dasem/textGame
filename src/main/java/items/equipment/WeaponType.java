@@ -8,10 +8,14 @@ public enum WeaponType {
         public int getDamage() {
             return 12;
         }
-
         @Override
         public int getDicedDamage() {
             return Dices.diceD6() + Dices.diceD6();
+        }
+
+        @Override
+        public int getCost() {
+            return 80;
         }
     },
     DAGGER("Кинжал") {
@@ -24,6 +28,11 @@ public enum WeaponType {
         public int getDicedDamage() {
             return Dices.diceD4();
         }
+
+        @Override
+        public int getCost() {
+            return 15;
+        }
     },
     STAFF("Посох") {
         @Override
@@ -35,6 +44,11 @@ public enum WeaponType {
         public int getDicedDamage() {
             return Dices.diceD10();
         }
+
+        @Override
+        public int getCost() {
+            return 50;
+        }
     },
     SWORD("Меч") {
         @Override
@@ -45,6 +59,11 @@ public enum WeaponType {
         @Override
         public int getDicedDamage() {
             return Dices.diceD6();
+        }
+
+        @Override
+        public int getCost() {
+            return 40;
         }
     };
 
@@ -61,4 +80,5 @@ public enum WeaponType {
     abstract public int getDamage();
 
     abstract public int getDicedDamage();
+    abstract public int getCost();
 }

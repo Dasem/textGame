@@ -10,6 +10,7 @@ public class Weapon extends Equipment {
     public Weapon(WeaponType weaponType) {
         this.weaponType = weaponType;
         addWeaponMenu();
+        this.cost = weaponType.getCost();
     }
 
     public WeaponType getWeaponType() {

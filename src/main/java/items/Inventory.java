@@ -5,6 +5,8 @@ import java.util.*;
 public class Inventory {
     List<Item> items = new ArrayList<>();
 
+    private int money = 100;
+
     public List<Item> getItems() {
         return items;
     }
@@ -28,5 +30,11 @@ public class Inventory {
             stringBuilder.append(index++).append(". ").append(el.getName()).append("\n"); // 1. Предмет
         }
         return stringBuilder.toString();
+    }
+    public int getMoney() {
+        return money;
+    }
+    public void setMoney(int money){
+        this.money=money;
     }
 }

@@ -13,6 +13,8 @@ public class Menu {
     Holder<String> titleHolder;
     List<MenuItem> menuItems = new ArrayList<>();
     List<MenuItem> additionalMenuItems = new ArrayList<>();
+
+
     Set<MenuSetting> menuSettings;
 
     public MenuItem showAndChoose() {
@@ -104,5 +106,8 @@ public class Menu {
 
     public void addItem(Item item) {
         menuItems.add(new MenuItem(item.getName(), item::use));
+    }
+    public Set<MenuSetting> getMenuSettings() {
+        return menuSettings;
     }
 }
