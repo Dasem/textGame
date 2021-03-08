@@ -15,7 +15,6 @@ import utils.random.Randomizer;
 
 import java.lang.*;
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class Level1 implements Levelable {
 
@@ -200,27 +199,26 @@ public class Level1 implements Levelable {
             new Armor(ArmorType.MEDIUM_ARMOR),
             new HealingPotion(HealingPotionType.LESSER_HEALING_POTION)
     );
+
     public void findTrade() {
-        boolean trade = true;
         MenuItem resultItem;
         do {
             Menu tradeMenu = new Menu("Меню торговли", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
             tradeMenu.addItem("Покупка", () -> {
-                Menu buyMenu = new Menu("Покупка", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.TRADE_MENU);
+                Menu buyMenu = new Menu("Покупка", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
                 for (Item item : tradeItems) {
-                    buyMenu.addItem(item.getName(), item::use, MenuItemType.TRADE);
+                    buyMenu.addItem(item.getName(), () -> item.use(UseSettings.BUY), MenuItemType.BUY);
                 }
                 buyMenu.showAndChoose();
             });
             tradeMenu.addItem("Продажа", () -> {
-                Menu sellMenu = new Menu("Продажа", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.TRADE_MENU);
+                Menu sellMenu = new Menu("Продажа", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
                 for (Item item : Character.getInstance().getInventory().getItems()) {
-                    sellMenu.addItem(item.getName(), item::use, MenuItemType.TRADE);
+                    sellMenu.addItem(item.getName(), () -> item.use(UseSettings.SELL), MenuItemType.SELL);
                 }
                 sellMenu.showAndChoose();
             });
-            resultItem=tradeMenu.showAndChoose();
-
-        }while (resultItem.getMenuItemType() != MenuItemType.BACK);
+            resultItem = tradeMenu.showAndChoose();
+        } while (resultItem.getMenuItemType() != MenuItemType.BACK);
     }
 }

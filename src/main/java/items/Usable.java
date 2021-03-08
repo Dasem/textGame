@@ -4,5 +4,5 @@ import menu.*;
 
 @FunctionalInterface
 public interface Usable {
-    MenuItemType use();
+    MenuItemType use(UseSettings... useSettings);
 }

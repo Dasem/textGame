@@ -1,14 +1,17 @@
 package items;
 
+import com.google.common.collect.*;
 import menu.*;
 import units.Character;
 
+import java.util.*;
 import java.util.function.*;
 
 public abstract class Item implements Usable {
     protected int cost;
 
     protected Menu itemMenu = new Menu(() -> "Меню для '" + getName() + "'", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
+    protected Collection<UseSettings> useSettings;
 
     {
         itemToInventoryMenuItem();
@@ -36,7 +39,7 @@ public abstract class Item implements Usable {
             Character.getInstance().getInventory().setMoney(Character.getInstance().getInventory().getMoney()-getCost());
             Character.getInstance().getInventory().addItem(this);
             System.out.println("Осталось "+Character.getInstance().getInventory().getMoney()+" Золота");
-        }, MenuItemType.TRADE);
+        }, MenuItemType.BUY);
     }
     protected void addSellMenu(){
         itemMenu.addItem("Продать", () -> {
@@ -44,11 +47,12 @@ public abstract class Item implements Usable {
             Character.getInstance().getInventory().setMoney(Character.getInstance().getInventory().getMoney()+getCost());
             Character.getInstance().getInventory().removeItem(this);
             System.out.println("Теперь "+Character.getInstance().getInventory().getMoney()+" Золота");
-        }, MenuItemType.TRADE);
+        }, MenuItemType.SELL);
     }
 
     @Override
-    public MenuItemType use() {
+    public MenuItemType use(UseSettings... useSettings) {
+        this.useSettings = Lists.newArrayList(useSettings);
         return itemMenu.showAndChoose(this).getMenuItemType();
     }
 
@@ -56,12 +60,18 @@ public abstract class Item implements Usable {
 
     public Predicate<MenuItem> getMenuFilters(){
         return menuItem -> {
-            if (menuItem.getMenuItemType() == MenuItemType.TRADE){
-                return true;
+            if (useSettings.contains(UseSettings.BUY)){
+                return menuItem.getMenuItemType() == MenuItemType.BUY || menuItem.getMenuItemType() == MenuItemType.BACK;
             }
+            if (useSettings.contains(UseSettings.SELL)){
+                return menuItem.getMenuItemType() == MenuItemType.SELL || menuItem.getMenuItemType() == MenuItemType.BACK;
+            }
+            // TODO: подумать как штуку сверху сдвинуть вниз без ущерба остальному меню
             boolean result;
             result = !(Character.getInstance().getInventory().getItems().contains(this) && menuItem.getMenuItemType() == MenuItemType.LOOT);
             result &= !(Character.getInstance().isEquipped(this) && menuItem.getMenuItemType() == MenuItemType.EQUIP);
+            result &= menuItem.getMenuItemType() != MenuItemType.BUY;
+            result &= menuItem.getMenuItemType() != MenuItemType.SELL;
             return result;
         };
     }
