@@ -36,6 +36,12 @@ public class Level1 implements Levelable {
             }
         };
 
+        Trader trader = new Trader(
+                new Weapon(WeaponType.STAFF),
+                new Armor(ArmorType.MEDIUM_ARMOR),
+                new HealingPotion(HealingPotionType.LESSER_HEALING_POTION)
+        );
+
         Character.getInstance().lootItem(map);
         startLabyrinth.addActions(
                 new Event(4, 1, this::findStartLabyrinthPotion),
@@ -43,7 +49,7 @@ public class Level1 implements Levelable {
                 new Event(5, 3, this::findStartLabyrinthWeapon),
                 new Event(4, 2, this::findStartLabyrinthFight),
                 new Event(2, 3, this::findStartLabyrinthFight),
-                new Event(5, 4, this::findTrade, false),
+                new Event(5, 4, trader::trade, false),
                 new EscapeEvent(0, 3, this::crossroad),
                 new EscapeEvent(3, 2, this::enchantedForest)
         );
@@ -205,34 +211,5 @@ public class Level1 implements Levelable {
                 new ObjectAndProbability<>(new Weapon(WeaponType.TWO_HANDED_SWORD), 1),
                 new ObjectAndProbability<>(new Weapon(WeaponType.SWORD), 2));
         Character.getInstance().loot(weapon);
-
-    }
-
-    ArrayList<Item> tradeItems = Lists.newArrayList(
-            new Weapon(WeaponType.STAFF),
-            new Armor(ArmorType.MEDIUM_ARMOR),
-            new HealingPotion(HealingPotionType.LESSER_HEALING_POTION)
-    );
-
-    public void findTrade() {
-        MenuItem resultItem;
-        do {
-            Menu tradeMenu = new Menu("Меню торговли", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
-            tradeMenu.addItem("Покупка", () -> {
-                Menu buyMenu = new Menu("Покупка", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
-                for (Item item : tradeItems) {
-                    buyMenu.addItem(item.getName(), () -> item.use(UseSettings.BUY), MenuItemType.BUY);
-                }
-                buyMenu.showAndChoose();
-            });
-            tradeMenu.addItem("Продажа", () -> {
-                Menu sellMenu = new Menu("Продажа", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
-                for (Item item : Character.getInstance().getInventory().getItems()) {
-                    sellMenu.addItem(item.getName(), () -> item.use(UseSettings.SELL), MenuItemType.SELL);
-                }
-                sellMenu.showAndChoose();
-            });
-            resultItem = tradeMenu.showAndChoose();
-        } while (resultItem.getMenuItemType() != MenuItemType.BACK);
     }
 }

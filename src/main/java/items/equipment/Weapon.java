@@ -27,11 +27,6 @@ public class Weapon extends Equipment {
     }
 
     private void addWeaponMenu() {
-        itemMenu.addItem("Убрать оружие", () -> {
-            this.removeWeapon();
-            System.out.println("Вы решили сражаться без оружия. Ваш максимальный урон: 4");
-            Character.getInstance().lootItem(this);
-        });
         equipMenuItem();
     }
 

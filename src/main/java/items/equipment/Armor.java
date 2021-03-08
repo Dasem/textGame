@@ -27,11 +27,6 @@ public class Armor extends Equipment {
     }
 
     private void addArmorMenu() {
-        itemMenu.addItem("Снять броню", () -> {
-            this.removeArmor();
-            System.out.println("Сняв броню, вы чувствует облегчение");
-            Character.getInstance().lootItem(this);
-        });
         equipMenuItem();
     }
 

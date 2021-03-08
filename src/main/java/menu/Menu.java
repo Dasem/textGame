@@ -14,7 +14,6 @@ public class Menu {
     List<MenuItem> menuItems = new ArrayList<>();
     List<MenuItem> additionalMenuItems = new ArrayList<>();
 
-
     Set<MenuSetting> menuSettings;
 
     public MenuItem showAndChoose() {
@@ -88,7 +87,11 @@ public class Menu {
     }
 
     public void addAdditionalItem(String name, Choosable choosable, MenuItemType menuItemType) {
-        additionalMenuItems.add(new MenuItem(name, choosable, menuItemType));
+        additionalMenuItems.add(new MenuItem(name, choosable, menuItemType, null));
+    }
+
+    public void addAdditionalItem(String name, Choosable choosable, MenuItemType menuItemType, Object callbackObject) {
+        additionalMenuItems.add(new MenuItem(name, choosable, menuItemType, callbackObject));
     }
 
     public void removeItemsByType(MenuItemType menuItemType) {
@@ -101,7 +104,11 @@ public class Menu {
     }
 
     public void addItem(String name, Choosable choosable, MenuItemType menuItemType) {
-        menuItems.add(new MenuItem(name, choosable, menuItemType));
+        menuItems.add(new MenuItem(name, choosable, menuItemType, null));
+    }
+
+    public void addItem(String name, Choosable choosable, MenuItemType menuItemType, Object callbackObject) {
+        menuItems.add(new MenuItem(name, choosable, menuItemType, callbackObject));
     }
 
     public void addItem(Item item) {
