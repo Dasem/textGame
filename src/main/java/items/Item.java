@@ -60,19 +60,17 @@ public abstract class Item implements Usable {
 
     public Predicate<MenuItem> getMenuFilters(){
         return menuItem -> {
-            if (useSettings.contains(UseSettings.BUY)){
-                return menuItem.getMenuItemType() == MenuItemType.BUY || menuItem.getMenuItemType() == MenuItemType.BACK;
-            }
-            if (useSettings.contains(UseSettings.SELL)){
-                return menuItem.getMenuItemType() == MenuItemType.SELL || menuItem.getMenuItemType() == MenuItemType.BACK;
-            }
-            // TODO: подумать как штуку сверху сдвинуть вниз без ущерба остальному меню
-            boolean result;
-            result = !(Character.getInstance().getInventory().getItems().contains(this) && menuItem.getMenuItemType() == MenuItemType.LOOT);
-            result &= !(Character.getInstance().isEquipped(this) && menuItem.getMenuItemType() == MenuItemType.EQUIP);
-            result &= menuItem.getMenuItemType() != MenuItemType.BUY;
-            result &= menuItem.getMenuItemType() != MenuItemType.SELL;
-            return result;
+            boolean buyAndBackWhenBuying = !useSettings.contains(UseSettings.BUY) || (menuItem.getMenuItemType() == MenuItemType.BUY || menuItem.getMenuItemType() == MenuItemType.BACK);
+            boolean sellAndBackWhenSelling = !useSettings.contains(UseSettings.SELL) || (menuItem.getMenuItemType() == MenuItemType.SELL || menuItem.getMenuItemType() == MenuItemType.BACK);
+            boolean hideTradeWhenNotTrade = (useSettings.contains(UseSettings.BUY) || menuItem.getMenuItemType() != MenuItemType.BUY) && (useSettings.contains(UseSettings.SELL) || menuItem.getMenuItemType() != MenuItemType.SELL);
+            boolean lootWhenLooted = Character.getInstance().getInventory().getItems().contains(this) && menuItem.getMenuItemType() == MenuItemType.LOOT;
+            boolean equipWhenEquipped = Character.getInstance().isEquipped(this) && menuItem.getMenuItemType() == MenuItemType.EQUIP;
+
+            return buyAndBackWhenBuying
+                    && sellAndBackWhenSelling
+                    && !lootWhenLooted
+                    && !equipWhenEquipped
+                    && hideTradeWhenNotTrade;
         };
     }
 
