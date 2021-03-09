@@ -1,6 +1,6 @@
 package menu;
 
-public enum UseSettings {
+public enum UseSetting {
     BUY,
     SELL;
 }

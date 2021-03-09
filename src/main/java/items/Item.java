@@ -11,7 +11,7 @@ public abstract class Item implements Usable {
     protected int cost;
 
     protected Menu itemMenu = new Menu(() -> "Меню для '" + getName() + "'", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
-    protected Collection<UseSettings> useSettings;
+    protected Collection<UseSetting> useSettings;
 
     {
         itemToInventoryMenuItem();
@@ -51,7 +51,7 @@ public abstract class Item implements Usable {
     }
 
     @Override
-    public MenuItemType use(UseSettings... useSettings) {
+    public MenuItemType use(UseSetting... useSettings) {
         this.useSettings = Lists.newArrayList(useSettings);
         return itemMenu.showAndChoose(this).getMenuItemType();
     }
@@ -60,18 +60,22 @@ public abstract class Item implements Usable {
 
     public Predicate<MenuItem> getMenuFilters(){
         return menuItem -> {
-            boolean buyAndBackWhenBuying = !useSettings.contains(UseSettings.BUY) || (menuItem.getMenuItemType() == MenuItemType.BUY || menuItem.getMenuItemType() == MenuItemType.BACK);
-            boolean sellAndBackWhenSelling = !useSettings.contains(UseSettings.SELL) || (menuItem.getMenuItemType() == MenuItemType.SELL || menuItem.getMenuItemType() == MenuItemType.BACK);
-            boolean hideTradeWhenNotTrade = (useSettings.contains(UseSettings.BUY) || menuItem.getMenuItemType() != MenuItemType.BUY) && (useSettings.contains(UseSettings.SELL) || menuItem.getMenuItemType() != MenuItemType.SELL);
+            boolean buyAndBackWhenBuying = allowedOnlyInUseSetting(menuItem, UseSetting.BUY, MenuItemType.BUY);
+            boolean sellAndBackWhenSelling = allowedOnlyInUseSetting(menuItem, UseSetting.SELL, MenuItemType.SELL);
             boolean lootWhenLooted = Character.getInstance().getInventory().getItems().contains(this) && menuItem.getMenuItemType() == MenuItemType.LOOT;
             boolean equipWhenEquipped = Character.getInstance().isEquipped(this) && menuItem.getMenuItemType() == MenuItemType.EQUIP;
 
             return buyAndBackWhenBuying
                     && sellAndBackWhenSelling
                     && !lootWhenLooted
-                    && !equipWhenEquipped
-                    && hideTradeWhenNotTrade;
+                    && !equipWhenEquipped;
         };
+    }
+
+    private boolean allowedOnlyInUseSetting(MenuItem menuItem, UseSetting useSetting, MenuItemType forMenuItemType) {
+        boolean showIf = !useSettings.contains(useSetting) || (menuItem.getMenuItemType() == forMenuItemType || menuItem.getMenuItemType() == MenuItemType.BACK);
+        boolean hideElse = (useSettings.contains(useSetting) || menuItem.getMenuItemType() != forMenuItemType);
+        return showIf && hideElse;
     }
 
     public int getCost() {
