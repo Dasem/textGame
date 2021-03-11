@@ -11,7 +11,7 @@ public abstract class Equipment extends Item {
             System.out.println("Взят новый предмет (" + getPrettyClassName() + "): '" + getName() + "'");
             Character.getInstance().lootItem(this);
             Character.getInstance().removeIfEquipped(this);
-        }, MenuItemType.LOOT);
+        }, MenuItemType.LOOT_ITEM);
     }
 
     @Override
@@ -20,7 +20,7 @@ public abstract class Equipment extends Item {
             System.out.println("Снаряжение уничтожено " + getPrettyClassName() + ": '" + getName() + "'");
             Character.getInstance().getInventory().removeItem(this);
             Character.getInstance().removeIfEquipped(this);
-        }, MenuItemType.THROW);
+        }, MenuItemType.THROW_ITEM);
     }
 
     protected abstract void equipMenuItem();

@@ -22,9 +22,10 @@ public class Trader {
             tradeMenu.addItem("Покупка", () -> {
                 Menu buyMenu = new Menu("Покупка", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
                 for (Item item : tradeItems) {
-                    buyMenu.addItem(item.getName(), item::buy, MenuItemType.CUSTOM, item);
+                    MenuItem menuItem = buyMenu.addItem(item.getName(), null, MenuItemType.BUY, item);
+                    menuItem.setChoosable(() -> item.trade(menuItem));
                 }
-                Object maybeItem = buyMenu.showAndChoose().getCallbackObject();
+                Object maybeItem = buyMenu.showAndChoose().getChosenMenuItem().getCallbackObject();
                 if (maybeItem instanceof Item) {
                     Item item = (Item) maybeItem;
                     tradeItems.remove(item);
@@ -33,15 +34,16 @@ public class Trader {
             tradeMenu.addItem("Продажа", () -> {
                 Menu sellMenu = new Menu("Продажа", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
                 for (Item item : Character.getInstance().getInventory().getItems()) {
-                    sellMenu.addItem(item.getName(), item::sell, MenuItemType.CUSTOM, item);
+                    MenuItem menuItem = sellMenu.addItem(item.getName(), null, MenuItemType.SELL, item);
+                    menuItem.setChoosable(() -> item.trade(menuItem));
                 }
-                Object maybeItem = sellMenu.showAndChoose().getCallbackObject();
+                Object maybeItem = sellMenu.showAndChoose().getChosenMenuItem().getCallbackObject();
                 if (maybeItem instanceof Item) {
                     Item item = (Item) maybeItem;
                     tradeItems.add(item);
                 }
             });
-            resultItem = tradeMenu.showAndChoose();
+            resultItem = tradeMenu.showAndChoose().getChosenMenuItem();
         } while (resultItem.getMenuItemType() != MenuItemType.BACK);
     }
 }

@@ -1,9 +1,10 @@
-package units.npcs;
+package units.enemies;
 
 import mechanic.battle.*;
 import units.*;
+import units.npcs.*;
 
-public abstract class Enemy extends NPC implements Battler, Lootable, Deadable {
+public abstract class Enemy implements Battler, Lootable, Deadable {
     int currentHealth = getMaxHealth();
 
     boolean dead = false;

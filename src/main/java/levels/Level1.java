@@ -8,13 +8,12 @@ import mechanic.battle.*;
 import mechanic.location.*;
 import menu.*;
 import units.Character;
-import units.npcs.*;
+import units.enemies.*;
 import utils.*;
 import utils.random.ObjectAndProbability;
 import utils.random.Randomizer;
 
 import java.lang.*;
-import java.util.ArrayList;
 
 import static utils.Utils.lor;
 

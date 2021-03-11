@@ -36,7 +36,7 @@ public class Weapon extends Equipment {
             this.equipWeapon();
             System.out.println("Вы взяли '" + this.getName() + "', его максимальный урон: " + this.getWeaponDamage());
             Character.getInstance().getInventory().removeItem(this);
-        }, MenuItemType.EQUIP);
+        }, MenuItemType.EQUIP_ITEM);
     }
 
     public void equipWeapon() {

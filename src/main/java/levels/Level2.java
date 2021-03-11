@@ -4,7 +4,7 @@ import items.grocery.QuestItem;
 import mechanic.battle.*;
 import menu.*;
 import units.Character;
-import units.npcs.*;
+import units.enemies.*;
 import utils.*;
 import utils.random.ObjectAndProbability;
 import utils.random.Randomizer;

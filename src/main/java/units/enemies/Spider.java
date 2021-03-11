@@ -1,6 +1,6 @@
-package units.npcs;
+package units.enemies;
 
-import items.*;
+import items.Item;
 import items.grocery.HealingPotion;
 import items.grocery.HealingPotionType;
 import items.grocery.UselessItem;
@@ -8,10 +8,13 @@ import utils.Dices;
 import utils.random.ObjectAndProbability;
 import utils.random.Randomizer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class Sanya extends Enemy {
+public class Spider extends Enemy {
     @Override
     public int getCurrentHealth() {
         return currentHealth;
@@ -19,22 +22,22 @@ public class Sanya extends Enemy {
 
     @Override
     public int getMaxHealth() {
-        return 5;
-    }
-
-    @Override
-    public int getOnHitDamage() {
-        return Dices.diceD8();
-    }
-
-    @Override
-    public int getAttackModifier() {
         return 1;
     }
 
     @Override
+    public int getOnHitDamage() {
+        return Dices.diceD4();
+    }
+
+    @Override
+    public int getAttackModifier() {
+        return 4;
+    }
+
+    @Override
     public int getArmorClass() {
-        return 10;
+        return 12;
     }
 
     @Override
@@ -43,8 +46,8 @@ public class Sanya extends Enemy {
         List<ObjectAndProbability<Item>> loot = new ArrayList<>();
         loot.add(new ObjectAndProbability<>( new HealingPotion(HealingPotionType.LESSER_HEALING_POTION),2));
         loot.add(new ObjectAndProbability<> (new HealingPotion(HealingPotionType.LESSER_HEALING_POTION),2));
-        loot.add(new ObjectAndProbability<> ( new UselessItem("Ухо Сани"),2));
-        loot.add(new ObjectAndProbability<> ( new UselessItem("Ухо Сани"),2));
+        loot.add(new ObjectAndProbability<> ( new UselessItem("Клык паука"),2));
+        loot.add(new ObjectAndProbability<> ( new UselessItem("Паучья ножка"),2));
         int countItem = Randomizer.randomize(
                 new ObjectAndProbability<>(1, 3),
                 new ObjectAndProbability<>(2, 2),
@@ -59,7 +62,10 @@ public class Sanya extends Enemy {
 
     @Override
     public String getName() {
-        return "Sanya";
+        return "Spider";
     }
 
+
 }
+
+

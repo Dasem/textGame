@@ -1,4 +1,4 @@
-package units.npcs;
+package units.enemies;
 
 import items.Item;
 import items.grocery.HealingPotion;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class Skeleton extends Enemy {
+public class Bandit extends Enemy {
     @Override
     public int getCurrentHealth() {
         return currentHealth;
@@ -22,7 +22,7 @@ public class Skeleton extends Enemy {
 
     @Override
     public int getMaxHealth() {
-        return 13;
+        return 10;
     }
 
     @Override
@@ -32,12 +32,12 @@ public class Skeleton extends Enemy {
 
     @Override
     public int getAttackModifier() {
-        return 1;
+        return 2;
     }
 
     @Override
     public int getArmorClass() {
-        return 13;
+        return 11;
     }
 
     @Override
@@ -46,8 +46,8 @@ public class Skeleton extends Enemy {
         List<ObjectAndProbability<Item>> loot = new ArrayList<>();
         loot.add(new ObjectAndProbability<>( new HealingPotion(HealingPotionType.LESSER_HEALING_POTION),2));
         loot.add(new ObjectAndProbability<> (new HealingPotion(HealingPotionType.LESSER_HEALING_POTION),2));
-        loot.add(new ObjectAndProbability<> ( new UselessItem("Кость"),2));
-        loot.add(new ObjectAndProbability<> ( new UselessItem("Череп"),2));
+        loot.add(new ObjectAndProbability<> ( new UselessItem("Бондана бандита"),2));
+        loot.add(new ObjectAndProbability<> ( new UselessItem("Дырявый сапог"),2));
         int countItem = Randomizer.randomize(
                 new ObjectAndProbability<>(1, 3),
                 new ObjectAndProbability<>(2, 2),
@@ -61,8 +61,14 @@ public class Skeleton extends Enemy {
     }
 
     @Override
+    public boolean takeDamage(int damage) {
+        currentHealth -= damage;
+        return currentHealth <= 0;
+    }
+
+    @Override
     public String getName() {
-        return "Skeleton";
+        return "Bandit";
     }
 
 

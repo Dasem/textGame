@@ -1,19 +1,15 @@
 package items;
 
-import com.google.common.collect.*;
 import menu.*;
 import units.Character;
 
-import java.util.*;
 import java.util.function.*;
 
-public abstract class Item implements Usable, Buyable, Sellable {
+public abstract class Item implements Usable, Tradeable {
     protected int cost;
 
     protected Menu itemMenu = new Menu(() -> "Меню для '" + getName() + "'", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
-    protected Menu buyMenu = new Menu(() -> "Меню покупки", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
-    protected Menu sellMenu = new Menu(() -> "Меню продажи", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
-    protected Collection<MenuItemType> allowedMenuItemTypes;
+    protected Menu tradeMenu = new Menu(() -> "Меню торговли", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
 
     {
         itemToInventoryMenuItem();
@@ -26,24 +22,24 @@ public abstract class Item implements Usable, Buyable, Sellable {
         itemMenu.addItem("Выбросить", () -> {
             System.out.println("Предмет уничтожен: '" + getName() + "'");
             Character.getInstance().getInventory().removeItem(this);
-        }, MenuItemType.THROW);
+        }, MenuItemType.THROW_ITEM);
     }
 
     protected void itemToInventoryMenuItem() {
         itemMenu.addItem("Положить в инвентарь", () -> {
             System.out.println("Взят новый предмет: '" + getName() + "'");
             Character.getInstance().lootItem(this);
-        }, MenuItemType.LOOT);
+        }, MenuItemType.LOOT_ITEM);
     }
 
     protected void addTradeMenu(){
-        buyMenu.addItem("Купить", () -> {
+        tradeMenu.addItem("Купить", () -> {
             System.out.println("Вы купили : '" + getName() + "'");
             Character.getInstance().wasteMoney(getCost());
             Character.getInstance().getInventory().addItem(this);
             System.out.println("Осталось " + Character.getInstance().getInventory().getMoney() + " Золота");
         }, MenuItemType.BUY);
-        sellMenu.addItem("Продать", () -> {
+        tradeMenu.addItem("Продать", () -> {
             System.out.println("Вы продали : '" + getName() + "'");
             Character.getInstance().earnMoney(getCost());
             Character.getInstance().getInventory().removeItem(this);
@@ -52,34 +48,34 @@ public abstract class Item implements Usable, Buyable, Sellable {
     }
 
     @Override
-    public MenuItemType use(MenuItemType ... allowedMenuItemTypes) {
-        this.allowedMenuItemTypes = Lists.newArrayList(allowedMenuItemTypes);
-        return itemMenu.showAndChoose(this).getMenuItemType();
+    public Menu use(MenuItem fromMenuItem) {
+        itemMenu.setParentMenuItem(fromMenuItem);
+        Menu menu = itemMenu.showAndChoose(this);
+        itemMenu.setParentMenuItem(null);
+        return menu;
     }
 
     @Override
-    public MenuItemType buy(MenuItemType... allowedMenuItemTypes) {
-        this.allowedMenuItemTypes = Lists.newArrayList(allowedMenuItemTypes);
-        return buyMenu.showAndChoose(this).getMenuItemType();
-    }
-
-    @Override
-    public MenuItemType sell(MenuItemType... allowedMenuItemTypes) {
-        this.allowedMenuItemTypes = Lists.newArrayList(allowedMenuItemTypes);
-        return sellMenu.showAndChoose(this).getMenuItemType();
+    public Menu trade(MenuItem fromMenuItem) {
+        tradeMenu.setParentMenuItem(fromMenuItem);
+        Menu menu = tradeMenu.showAndChoose(this);
+        tradeMenu.setParentMenuItem(null); // Чтобы не оставалось некорректного родительского меню
+        return menu;
     }
 
     public abstract String getName();
 
     public Predicate<MenuItem> getMenuFilters(){
         return menuItem -> {
-            if (!allowedMenuItemTypes.isEmpty()) { // Если есть прямое ограничение на показываемые пункты меню, его и исполняем
-                return allowedMenuItemTypes.contains(menuItem.getMenuItemType());
+            boolean lootWhenLooted = Character.getInstance().getInventory().getItems().contains(this) && menuItem.getMenuItemType() == MenuItemType.LOOT_ITEM;
+            boolean equipWhenEquipped = Character.getInstance().isEquipped(this) && menuItem.getMenuItemType() == MenuItemType.EQUIP_ITEM;
+            boolean buyingWhenSelling = false;
+            boolean sellingWhenBuying = false;
+            if (menuItem.getForMenu().getParentMenuItem() != null) {
+                buyingWhenSelling = menuItem.getForMenu().getParentMenuItem().getMenuItemType() == MenuItemType.BUY && menuItem.getMenuItemType() == MenuItemType.SELL;
+                sellingWhenBuying = menuItem.getForMenu().getParentMenuItem().getMenuItemType() == MenuItemType.SELL && menuItem.getMenuItemType() == MenuItemType.BUY;
             }
-
-            boolean lootWhenLooted = Character.getInstance().getInventory().getItems().contains(this) && menuItem.getMenuItemType() == MenuItemType.LOOT;
-            boolean equipWhenEquipped = Character.getInstance().isEquipped(this) && menuItem.getMenuItemType() == MenuItemType.EQUIP;
-            return !lootWhenLooted && !equipWhenEquipped;
+            return !lootWhenLooted && !equipWhenEquipped && !buyingWhenSelling && !sellingWhenBuying;
         };
     }
 

@@ -48,9 +48,10 @@ public class Character implements Battler {
         while (!existedItems.isEmpty()) {
             Menu lootMenu = new Menu("Вы нашли предметы:", MenuSetting.HIDE_CHARACTER_MENU);
             for (Item item : existedItems) {
-                lootMenu.addItem(item.getName(), () -> {
-                    MenuItemType menuItemType = item.use();
-                    if (menuItemType != MenuItemType.BACK) {
+                MenuItem menuItem = lootMenu.addItem(item.getName(), null);
+                menuItem.setChoosable(() -> {
+                    Menu use = item.use(menuItem);
+                    if (use.getChosenMenuItem().getMenuItemType() != MenuItemType.BACK) {
                         existedItems.remove(item);
                     }
                 });

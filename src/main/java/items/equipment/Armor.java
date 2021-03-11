@@ -49,7 +49,7 @@ public class Armor extends Equipment {
             this.equipArmor();
             System.out.println("Вы надеваете доспех. Ваш класс доспеха теперь равен: " + this.getArmorClass());
             Character.getInstance().getInventory().removeItem(this);
-        }, MenuItemType.EQUIP);
+        }, MenuItemType.EQUIP_ITEM);
     }
 
     @Override

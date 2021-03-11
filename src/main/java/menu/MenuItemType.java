@@ -2,9 +2,9 @@ package menu;
 
 public enum MenuItemType {
     CUSTOM,
-    THROW,
-    EQUIP,
-    LOOT,
+    THROW_ITEM,
+    EQUIP_ITEM,
+    LOOT_ITEM,
     BACK,
     BUY,
     SELL;

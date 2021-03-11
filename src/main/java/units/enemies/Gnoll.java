@@ -1,6 +1,6 @@
-package units.npcs;
+package units.enemies;
 
-import items.*;
+import items.Item;
 import items.grocery.HealingPotion;
 import items.grocery.HealingPotionType;
 import items.grocery.UselessItem;
@@ -11,7 +11,7 @@ import utils.random.Randomizer;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Goblin extends Enemy {
+public class Gnoll extends Enemy {
     @Override
     public int getCurrentHealth() {
         return currentHealth;
@@ -19,12 +19,12 @@ public class Goblin extends Enemy {
 
     @Override
     public int getMaxHealth() {
-        return 10;
+        return 20;
     }
 
     @Override
     public int getOnHitDamage() {
-        return Dices.diceD4();
+        return Dices.diceD8();
     }
 
     @Override
@@ -34,7 +34,7 @@ public class Goblin extends Enemy {
 
     @Override
     public int getArmorClass() {
-        return 11;
+        return 15;
     }
 
     @Override
@@ -43,8 +43,8 @@ public class Goblin extends Enemy {
         List<ObjectAndProbability<Item>> loot = new ArrayList<>();
         loot.add(new ObjectAndProbability<>( new HealingPotion(HealingPotionType.LESSER_HEALING_POTION),2));
         loot.add(new ObjectAndProbability<> (new HealingPotion(HealingPotionType.LESSER_HEALING_POTION),2));
-        loot.add(new ObjectAndProbability<> ( new UselessItem("Голова гоблина"),2));
-        loot.add(new ObjectAndProbability<> ( new UselessItem("Ухо гоблина"),2));
+        loot.add(new ObjectAndProbability<> ( new UselessItem("Ухо гнолла"),2));
+        loot.add(new ObjectAndProbability<> ( new UselessItem("Ухо гнолла"),2));
         int countItem = Randomizer.randomize(
                 new ObjectAndProbability<>(1, 3),
                 new ObjectAndProbability<>(2, 2),
@@ -59,7 +59,7 @@ public class Goblin extends Enemy {
 
     @Override
     public String getName() {
-        return "Goblin";
+        return "Gnoll";
     }
 
 
