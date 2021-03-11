@@ -18,7 +18,7 @@ public class Position {
 
         // col 0, row +1
         if (checkValid(currentRow + 1, currentColumn, labyrinth)) {
-            result.add("\u2193");
+            result.add("\u2191" );
         } else {
             result.add(NONE);
         }
@@ -37,7 +37,7 @@ public class Position {
         }
         // col 0, row -1
         if (checkValid(currentRow - 1, currentColumn, labyrinth)) {
-            result.add("\u2191");
+            result.add("\u2193");
         } else {
             result.add(NONE);
         }

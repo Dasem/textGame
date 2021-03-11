@@ -101,9 +101,14 @@ public class Level1 implements Levelable {
 
                 }),
                 new Event(3, 12, () -> { // квест
-                    System.out.println("Ты видишь квестодателя с квестом, но мне лень придумывать лор...");
-
-                }, false),
+                    lor("Ты видишь странную фигуру в плаще, которая подзывает тебя к себе\n" +
+                            "Ты решаешь подойти к нему...\n" +
+                            "- Найди одинокий дом по пути к Думгарду и передай то, что там найдёшь Волчице..." +
+                            "*Он кидает тебе звонкий мешочек*" +
+                            "и давай без лишних вопросов...");
+                    Character.getInstance().getInventory().setMoney(Character.getInstance().getInventory().getMoney()+100);
+                    System.out.println("Ты получаешь 100 голды");
+                    }, true),
                 new Event(3, 11, () -> { // генг-бенг
                     System.out.println("Из стайки бандитов выходит один из них, кажется он хочет выделится...");
                     Fight gangbang = new Fight(Character.getInstance(), new Bandit());
