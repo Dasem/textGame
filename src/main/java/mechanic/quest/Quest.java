@@ -18,6 +18,10 @@ public class Quest {
         this.questCompleteAction = questCompleteAction;
     }
 
+    public void addTask(Task task) {
+        tasks.add(task);
+    }
+
     public void completeQuest() {
         if (readyToCompleteQuest()) {
             questCompleteAction.doAction();
