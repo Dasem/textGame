@@ -7,17 +7,19 @@ import units.Character;
 import java.util.*;
 import java.util.function.*;
 
-public abstract class Item implements Usable {
+public abstract class Item implements Usable, Buyable, Sellable {
     protected int cost;
 
     protected Menu itemMenu = new Menu(() -> "Меню для '" + getName() + "'", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
+    protected Menu buyMenu = new Menu(() -> "Меню покупки", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
+    protected Menu sellMenu = new Menu(() -> "Меню продажи", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
     protected Collection<MenuItemType> allowedMenuItemTypes;
 
     {
         itemToInventoryMenuItem();
         dropItemMenuItem();
-        addBuyMenu();
-        addSellMenu();
+
+        addTradeMenu();
     }
 
     protected void dropItemMenuItem() {
@@ -33,20 +35,19 @@ public abstract class Item implements Usable {
             Character.getInstance().lootItem(this);
         }, MenuItemType.LOOT);
     }
-    protected void addBuyMenu(){
-        itemMenu.addItem("Купить", () -> {
+
+    protected void addTradeMenu(){
+        buyMenu.addItem("Купить", () -> {
             System.out.println("Вы купили : '" + getName() + "'");
-            Character.getInstance().getInventory().setMoney(Character.getInstance().getInventory().getMoney()-getCost());
+            Character.getInstance().getInventory().setMoney(Character.getInstance().getInventory().getMoney() - getCost());
             Character.getInstance().getInventory().addItem(this);
-            System.out.println("Осталось "+Character.getInstance().getInventory().getMoney()+" Золота");
+            System.out.println("Осталось " + Character.getInstance().getInventory().getMoney() + " Золота");
         }, MenuItemType.BUY);
-    }
-    protected void addSellMenu(){
-        itemMenu.addItem("Продать", () -> {
+        sellMenu.addItem("Продать", () -> {
             System.out.println("Вы продали : '" + getName() + "'");
-            Character.getInstance().getInventory().setMoney(Character.getInstance().getInventory().getMoney()+getCost());
+            Character.getInstance().getInventory().setMoney(Character.getInstance().getInventory().getMoney() + getCost());
             Character.getInstance().getInventory().removeItem(this);
-            System.out.println("Теперь "+Character.getInstance().getInventory().getMoney()+" Золота");
+            System.out.println("Теперь " + Character.getInstance().getInventory().getMoney() + " Золота");
         }, MenuItemType.SELL);
     }
 
@@ -54,6 +55,18 @@ public abstract class Item implements Usable {
     public MenuItemType use(MenuItemType ... allowedMenuItemTypes) {
         this.allowedMenuItemTypes = Lists.newArrayList(allowedMenuItemTypes);
         return itemMenu.showAndChoose(this).getMenuItemType();
+    }
+
+    @Override
+    public MenuItemType buy(MenuItemType... allowedMenuItemTypes) {
+        this.allowedMenuItemTypes = Lists.newArrayList(allowedMenuItemTypes);
+        return buyMenu.showAndChoose(this).getMenuItemType();
+    }
+
+    @Override
+    public MenuItemType sell(MenuItemType... allowedMenuItemTypes) {
+        this.allowedMenuItemTypes = Lists.newArrayList(allowedMenuItemTypes);
+        return sellMenu.showAndChoose(this).getMenuItemType();
     }
 
     public abstract String getName();
@@ -66,11 +79,7 @@ public abstract class Item implements Usable {
 
             boolean lootWhenLooted = Character.getInstance().getInventory().getItems().contains(this) && menuItem.getMenuItemType() == MenuItemType.LOOT;
             boolean equipWhenEquipped = Character.getInstance().isEquipped(this) && menuItem.getMenuItemType() == MenuItemType.EQUIP;
-            boolean trade = menuItem.getMenuItemType() == MenuItemType.BUY || menuItem.getMenuItemType() == MenuItemType.SELL;
-
-            return !lootWhenLooted
-                    && !equipWhenEquipped
-                    && !trade;
+            return !lootWhenLooted && !equipWhenEquipped;
         };
     }
 

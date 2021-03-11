@@ -22,7 +22,7 @@ public class Trader {
             tradeMenu.addItem("Покупка", () -> {
                 Menu buyMenu = new Menu("Покупка", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
                 for (Item item : tradeItems) {
-                    buyMenu.addItem(item.getName(), () -> item.use(MenuItemType.BUY, MenuItemType.BACK), MenuItemType.BUY, item);
+                    buyMenu.addItem(item.getName(), item::buy, MenuItemType.CUSTOM, item);
                 }
                 Object maybeItem = buyMenu.showAndChoose().getCallbackObject();
                 if (maybeItem instanceof Item) {
@@ -33,7 +33,7 @@ public class Trader {
             tradeMenu.addItem("Продажа", () -> {
                 Menu sellMenu = new Menu("Продажа", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
                 for (Item item : Character.getInstance().getInventory().getItems()) {
-                    sellMenu.addItem(item.getName(), () -> item.use(MenuItemType.SELL, MenuItemType.BACK), MenuItemType.SELL, item);
+                    sellMenu.addItem(item.getName(), item::sell, MenuItemType.CUSTOM, item);
                 }
                 Object maybeItem = sellMenu.showAndChoose().getCallbackObject();
                 if (maybeItem instanceof Item) {
