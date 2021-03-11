@@ -39,13 +39,13 @@ public abstract class Item implements Usable, Buyable, Sellable {
     protected void addTradeMenu(){
         buyMenu.addItem("Купить", () -> {
             System.out.println("Вы купили : '" + getName() + "'");
-            Character.getInstance().getInventory().setMoney(Character.getInstance().getInventory().getMoney() - getCost());
+            Character.getInstance().wasteMoney(getCost());
             Character.getInstance().getInventory().addItem(this);
             System.out.println("Осталось " + Character.getInstance().getInventory().getMoney() + " Золота");
         }, MenuItemType.BUY);
         sellMenu.addItem("Продать", () -> {
             System.out.println("Вы продали : '" + getName() + "'");
-            Character.getInstance().getInventory().setMoney(Character.getInstance().getInventory().getMoney() + getCost());
+            Character.getInstance().earnMoney(getCost());
             Character.getInstance().getInventory().removeItem(this);
             System.out.println("Теперь " + Character.getInstance().getInventory().getMoney() + " Золота");
         }, MenuItemType.SELL);

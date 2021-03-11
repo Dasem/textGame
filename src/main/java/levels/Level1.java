@@ -106,7 +106,7 @@ public class Level1 implements Levelable {
                             "- Найди одинокий дом по пути к Думгарду и передай то, что там найдёшь Волчице..." +
                             "*Он кидает тебе звонкий мешочек*" +
                             "и давай без лишних вопросов...");
-                    Character.getInstance().getInventory().setMoney(Character.getInstance().getInventory().getMoney()+100);
+                    Character.getInstance().earnMoney(100);
                     System.out.println("Ты получаешь 100 голды");
                     }, true),
                 new Event(3, 11, () -> { // генг-бенг

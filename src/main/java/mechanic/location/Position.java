@@ -16,8 +16,8 @@ public class Position {
         String NONE = "Пути нет";
         String pathMenu="Выберите путь: \n";
 
-        // col 0, row +1
-        if (checkValid(currentRow + 1, currentColumn, labyrinth)) {
+        // col 0, row -1
+        if (checkValid(currentRow - 1, currentColumn, labyrinth)) {
             result.add("\u2191" );
         } else {
             result.add(NONE);
@@ -35,8 +35,8 @@ public class Position {
         } else {
             result.add(NONE);
         }
-        // col 0, row -1
-        if (checkValid(currentRow - 1, currentColumn, labyrinth)) {
+        // col 0, row +1
+        if (checkValid(currentRow + 1, currentColumn, labyrinth)) {
             result.add("\u2193");
         } else {
             result.add(NONE);

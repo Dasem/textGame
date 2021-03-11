@@ -5,6 +5,7 @@ import items.*;
 import items.equipment.*;
 import items.grocery.*;
 import mechanic.battle.*;
+import mechanic.quest.*;
 import menu.*;
 import utils.*;
 
@@ -18,6 +19,7 @@ public class Character implements Battler {
     private Armor armor;
     private Weapon weapon;
     private final Inventory inventory = new Inventory();
+    private Collection<Quest> activeQuests = new ArrayList<>();
 
     private static Character character;
 
@@ -60,6 +62,14 @@ public class Character implements Battler {
             lootMenu.addAdditionalItem("Закончить лутаться", existedItems::clear);
             lootMenu.showAndChoose();
         }
+    }
+
+    public void earnMoney(int money) {
+        getInventory().setMoney(getInventory().getMoney() + money);
+    }
+
+    public void wasteMoney(int money) {
+        getInventory().setMoney(getInventory().getMoney() - money);
     }
 
     public void lootItem(Item item) {
@@ -112,6 +122,13 @@ public class Character implements Battler {
         }
     }
 
+    public void acceptQuest(Quest quest){
+        activeQuests.add(quest);
+    }
+
+    public void denyQuest(Quest quest) {
+        activeQuests.remove(quest);
+    }
 
     @Override
     public boolean takeDamage(int damage) {
@@ -167,6 +184,10 @@ public class Character implements Battler {
         if (equipment == armor) {
             armor = null;
         }
+    }
+
+    public Collection<Quest> getActiveQuests() {
+        return activeQuests;
     }
 
     public String getHpBar() {

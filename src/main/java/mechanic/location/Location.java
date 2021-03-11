@@ -57,7 +57,7 @@ public class Location {
             Menu locationMenu = new Menu("Выбор пути:");
             List<String> pathOptions = startPosition.pathMenu(location);
             locationMenu.addItem(pathOptions.get(0), () -> {
-                System.out.println(startPosition.goDown(location));
+                System.out.println(startPosition.goTop(location));
             });
             locationMenu.addItem(pathOptions.get(1), () -> {
                 System.out.println(startPosition.goRight(location));
@@ -66,7 +66,7 @@ public class Location {
                 System.out.println(startPosition.goLeft(location));
             });
             locationMenu.addItem(pathOptions.get(3), () -> {
-                System.out.println(startPosition.goTop(location));
+                System.out.println(startPosition.goDown(location));
             });
             locationMenu.showAndChoose();
         }
