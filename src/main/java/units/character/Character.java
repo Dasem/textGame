@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.stream.*;
 
 public class Character implements Battler {
-    private final static int DEFAULT_ARMOR_CLASS = 100;
+    private final static int DEFAULT_ARMOR_CLASS = 10;
     private String username;
     private int currentHealth = getMaxHealth();
     private Armor armor;
@@ -106,12 +106,16 @@ public class Character implements Battler {
 
     @Override
     public int getOnHitDamage() {
-        return 100;
+        if (weapon == null) {
+            return Dices.diceD4();
+        } else {
+            return weapon.getWeaponType().getDicedDamage();
+        }
     }
 
     @Override
     public int getAttackModifier() {
-        return 100;
+        return 2;
     }
 
     @Override
