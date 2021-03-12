@@ -9,7 +9,7 @@ public abstract class Item implements Usable, Tradeable {
     protected int cost;
 
     protected Menu itemMenu = new Menu(() -> "Меню для '" + getName() + "'", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
-    protected Menu tradeMenu = new Menu(() -> "Меню торговли", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
+    protected TradeMenu tradeMenu = new TradeMenu(() -> "Меню торговли", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
 
     {
         itemToInventoryMenuItem();
@@ -32,12 +32,19 @@ public abstract class Item implements Usable, Tradeable {
         }, MenuItemType.LOOT_ITEM);
     }
 
-    protected void addTradeMenu(){
+
+    protected void addTradeMenu() {
         tradeMenu.addItem("Купить", () -> {
-            System.out.println("Вы купили : '" + getName() + "'");
-            Character.getInstance().wasteMoney(getCost());
-            Character.getInstance().getInventory().addItem(this);
-            System.out.println("Осталось " + Character.getInstance().getInventory().getMoney() + " Золота");
+            if (Character.getInstance().getInventory().getMoney() > this.getCost()) {
+                System.out.println("Вы купили : '" + getName() + "'");
+                Character.getInstance().wasteMoney(getCost());
+                Character.getInstance().getInventory().addItem(this);
+                System.out.println("Осталось " + Character.getInstance().getInventory().getMoney() + " Золота");
+                tradeMenu.setSuccess(true);
+            } else {
+                System.out.println("Недостаточно золота");
+                tradeMenu.setSuccess(false);
+            }
         }, MenuItemType.BUY);
         tradeMenu.addItem("Продать", () -> {
             System.out.println("Вы продали : '" + getName() + "'");
@@ -65,7 +72,7 @@ public abstract class Item implements Usable, Tradeable {
 
     public abstract String getName();
 
-    public Predicate<MenuItem> getMenuFilters(){
+    public Predicate<MenuItem> getMenuFilters() {
         return menuItem -> {
             boolean lootWhenLooted = Character.getInstance().getInventory().getItems().contains(this) && menuItem.getMenuItemType() == MenuItemType.LOOT_ITEM;
             boolean equipWhenEquipped = Character.getInstance().isEquipped(this) && menuItem.getMenuItemType() == MenuItemType.EQUIP_ITEM;
@@ -81,6 +88,10 @@ public abstract class Item implements Usable, Tradeable {
 
 
     public int getCost() {
-    return cost;
+        return cost;
+    }
+
+    public TradeMenu getTradeMenu() {
+        return tradeMenu;
     }
 }
