@@ -10,7 +10,7 @@ public class DialogTask extends Task {
         this.description = description;
     }
 
-    boolean talkWithId(String dialogIdentifier) {
+    public boolean talkWithId(String dialogIdentifier) {
         if (StringUtils.equals(dialogIdentifier, this.dialogIdentifier)) {
             closeTask();
             return true;

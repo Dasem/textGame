@@ -33,4 +33,6 @@ public interface Battler {
     }
 
     String getName();
+
+    void died();
 }

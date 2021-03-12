@@ -4,8 +4,11 @@ import com.google.common.collect.*;
 import items.*;
 import items.equipment.*;
 import items.grocery.*;
+import mechanic.Actionable;
 import mechanic.battle.*;
 import mechanic.quest.*;
+import mechanic.quest.task.DialogTask;
+import mechanic.quest.task.Task;
 import menu.*;
 import utils.*;
 
@@ -13,7 +16,7 @@ import java.util.*;
 import java.util.stream.*;
 
 public class Character implements Battler {
-    private final static int DEFAULT_ARMOR_CLASS = 10;
+    private final static int DEFAULT_ARMOR_CLASS = 100;
     private String username;
     private int currentHealth = getMaxHealth();
     private Armor armor;
@@ -102,16 +105,12 @@ public class Character implements Battler {
 
     @Override
     public int getOnHitDamage() {
-        if (weapon == null) {
-            return Dices.diceD4();
-        } else {
-            return weapon.getWeaponType().getDicedDamage();
-        }
+        return 100;
     }
 
     @Override
     public int getAttackModifier() {
-        return 2;
+        return 100;
     }
 
     @Override
@@ -123,7 +122,7 @@ public class Character implements Battler {
         }
     }
 
-    public void acceptQuest(Quest quest){
+    public void acceptQuest(Quest quest) {
         activeQuests.add(quest);
     }
 
@@ -156,6 +155,11 @@ public class Character implements Battler {
     @Override
     public String getName() {
         return username;
+    }
+
+    @Override
+    public void died() {
+
     }
 
     public Weapon getWeapon() {
@@ -227,7 +231,7 @@ public class Character implements Battler {
                 Character c = Character.getInstance();
                 System.out.println("Меня зовут " + c.getName());
                 System.out.println(c.getCurrentHealth() + "/" + c.getMaxHealth() + " HP");
-                System.out.println((c.getInventory().getMoney()+" Золота"));
+                System.out.println((c.getInventory().getMoney() + " Золота"));
                 System.out.println(c.getArmorClass() + " Защиты");
                 if (c.getArmor() != null) {
                     System.out.println(c.getArmor().getPrettyName());
@@ -238,7 +242,7 @@ public class Character implements Battler {
             });
             characterMenu.addItem("Снаряжение", () -> {
                 Menu equippedMenu = new Menu("Экипированное снаряжение:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
-                if (getWeapon() == null && getArmor() == null ) {
+                if (getWeapon() == null && getArmor() == null) {
                     System.out.println("Нет надетого снаряжения");
                 } else {
                     if (getWeapon() != null) {
@@ -258,5 +262,21 @@ public class Character implements Battler {
             characterMenu.showAndChoose();
             menu.showAndChoose();
         });
+    }
+
+
+    public boolean tryDialog(String dialogIdentifier, Actionable actionable){
+        for(Quest quest : Character.getInstance().getActiveQuests()){
+            for(Task task : quest.getTasks()){
+                if(task instanceof DialogTask){
+                    DialogTask dialogTask = (DialogTask) task;
+                    if(dialogTask.talkWithId(dialogIdentifier)){
+                        actionable.doAction();
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

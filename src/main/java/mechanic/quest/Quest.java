@@ -1,30 +1,36 @@
 package mechanic.quest;
 
+import com.google.common.collect.Lists;
 import mechanic.*;
 import mechanic.quest.task.*;
+import units.Character;
 
 import java.util.*;
 
 public class Quest {
     String questIdentifier; // Идентификатор, по которому будет сдаваться квест при диалогах, напр. "questWithNpcName"
     List<Task> tasks;
-    Award award;
+    Reward reward;
     Actionable questCompleteAction;
 
-    public Quest(String questIdentifier, List<Task> tasks, Award award, Actionable questCompleteAction) {
+    public Quest(String questIdentifier, Reward reward, Actionable questCompleteAction, Task ... tasks) {
         this.questIdentifier = questIdentifier;
-        this.tasks = tasks;
-        this.award = award;
+        this.tasks = Lists.newArrayList(tasks);
+        this.tasks.forEach(task -> task.setQuest(this));
+        this.reward = reward;
         this.questCompleteAction = questCompleteAction;
     }
 
-    public void addTask(Task task) {
+    public Task addTask(Task task) {
+        task.setQuest(this);
         tasks.add(task);
+        return task;
     }
 
     public void completeQuest() {
         if (readyToCompleteQuest()) {
             questCompleteAction.doAction();
+            reward.receiveReward();
         }
     }
 
@@ -35,5 +41,9 @@ public class Quest {
             }
         }
         return true;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
     }
 }

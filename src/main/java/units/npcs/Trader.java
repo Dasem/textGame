@@ -1,4 +1,4 @@
-package mechanic.location;
+package units.npcs;
 
 import com.google.common.collect.*;
 import items.*;
@@ -7,7 +7,7 @@ import units.Character;
 
 import java.util.*;
 
-public class Trader {
+public class Trader extends NPC {
 
     private final ArrayList<Item> tradeItems;
 

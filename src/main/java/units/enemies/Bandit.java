@@ -61,12 +61,6 @@ public class Bandit extends Enemy {
     }
 
     @Override
-    public boolean takeDamage(int damage) {
-        currentHealth -= damage;
-        return currentHealth <= 0;
-    }
-
-    @Override
     public String getName() {
         return "Bandit";
     }
