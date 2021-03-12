@@ -195,6 +195,15 @@ public class Character implements Battler {
         return activeQuests;
     }
 
+    public Quest getQuestById(String questIdentifier) {
+        for (Quest quest : activeQuests) {
+            if (quest.getQuestIdentifier().equals(questIdentifier)){
+                return quest;
+            }
+        }
+        return null;
+    }
+
     public String getHpBar() {
         return " (" + getCurrentHealth() + "/" + getMaxHealth() + ")";
     }
@@ -265,17 +274,22 @@ public class Character implements Battler {
     }
 
 
-    public boolean tryDialog(String dialogIdentifier, Actionable actionable){
-        for(Quest quest : Character.getInstance().getActiveQuests()){
-            for(Task task : quest.getTasks()){
-                if(task instanceof DialogTask){
+    public boolean tryDialog(String dialogIdentifier, Actionable success, Actionable fail) {
+        for (Quest quest : Character.getInstance().getActiveQuests()) {
+            for (Task task : quest.getTasks()) {
+                if (task instanceof DialogTask) {
                     DialogTask dialogTask = (DialogTask) task;
-                    if(dialogTask.talkWithId(dialogIdentifier)){
-                        actionable.doAction();
+                    if (dialogTask.talkWithId(dialogIdentifier)) {
+                        if(success!=null) {
+                            success.doAction();
+                        }
                         return true;
                     }
                 }
             }
+        }
+        if(fail!=null) {
+            fail.doAction();
         }
         return false;
     }

@@ -12,6 +12,7 @@ public class Quest {
     List<Task> tasks;
     Reward reward;
     Actionable questCompleteAction;
+    boolean done = false;
 
     public Quest(String questIdentifier, Reward reward, Actionable questCompleteAction, Task ... tasks) {
         this.questIdentifier = questIdentifier;
@@ -31,6 +32,7 @@ public class Quest {
         if (readyToCompleteQuest()) {
             questCompleteAction.doAction();
             reward.receiveReward();
+            done = true;
         }
     }
 
@@ -45,5 +47,13 @@ public class Quest {
 
     public List<Task> getTasks() {
         return tasks;
+    }
+
+    public String getQuestIdentifier() {
+        return questIdentifier;
+    }
+
+    public boolean isDone() {
+        return done;
     }
 }

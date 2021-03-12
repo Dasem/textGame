@@ -112,10 +112,10 @@ public class Level1 implements Levelable {
                             "и давай без лишних вопросов...");
                     Character.getInstance().earnMoney(100);
                     System.out.println("Ты получаешь 100 голды");
-                    }, true),
+                }, true),
                 new Event(3, 11, () -> { // генг-бенг
                     System.out.println("Из стайки бандитов выходит один из них, кажется он хочет выделится...");
-                    Fight gangbang = new Fight(Character.getInstance(), new Bandit(){
+                    Fight gangbang = new Fight(Character.getInstance(), new Bandit() {
                         @Override
                         public String getName() {
                             return "Амброз Джакис";
@@ -125,33 +125,44 @@ public class Level1 implements Levelable {
                     System.out.println("Шайка разбежалась... ");
 
                 }),
-                new Event( 6, 12, () -> { //Квест в городе на убийство генг бенгера
+                new Event(6, 12, () -> { //Квест в городе на убийство генг бенгера
                     System.out.println("Подойдя к доске объявлений, ты видишь листовку на которой написано:\n " +
-                                    "\t\t\"АМБРОЗ ДЖАКИС\"\n" +
+                            "\t\t\"АМБРОЗ ДЖАКИС\"\n" +
                             "\"ЖИВЫМ ИЛИ МЁРТВЫМ (ЛУЧШЕ МЁРТВЫМ)\"\n" +
-                                "\t\"НАГРАДА 100 ЗОЛОТЫХ\"");
+                            "\t\"НАГРАДА 100 ЗОЛОТЫХ\"");
                     Menu menu = new Menu("Взяться за задание?:");
                     menu.addItem("Да", () -> {
                         Quest quest = new Quest("KillGangBanger",
                                 new Reward(100, null),
-                                () -> {}
+                                () -> {
+                                }
                         );
                         quest.addTask(new MobTask("Амброз Джакис", 1, "Убить Амброза Джакиса на восточной стороне Ривергарда.", () -> {
                             quest.addTask(new DialogTask("Bartender", "Поговорите с хозяином таверны, чтобы получить награду.")).print();
                         })).print();
                         Character.getInstance().acceptQuest(quest);
                     });
-                    menu.addItem("Нет", () -> {System.out.println("На тебя смотрит пьянчуга и говорит: \"Ха, обоссался?! Дед сам с ним разделается!\", - и срывает объявление.");});
+                    menu.addItem("Нет", () -> {
+                        System.out.println("На тебя смотрит пьянчуга и говорит: \"Ха, обоссался?! Дед сам с ним разделается!\", - и срывает объявление.");
+                    });
                     menu.showAndChoose();
                 }),
                 new Event(1, 4, () -> {//Таверна (Пока что только можно сдать квест на Генг Бенгера)
-                    Character.getInstance().tryDialog("Bartender", () -> {
-                        System.out.println("Вас встречает статный мужчина средних лет с длинными рыжими волосами.\n" +
-                                "Слухи о том как ты надрал зад Амброзу уже разнеслись по всему городу. Жаль, что мне не довелось это увидеть самому.\n" +
-                                "Доказательств требовать не буду, награда твоя.");
-                    });
+                    System.out.println("Вас встречает статный мужчина средних лет с длинными рыжими волосами.");
+                    Quest wantedQuest = Character.getInstance().getQuestById("KillGangBanger");
+                    if (wantedQuest == null) {
+                        System.out.println("Вижу ты не из робких. Тут в городе назначена награда за голову одного засранца, сходи к доске объявлений, если тебе интересно.");
+                    } else if (wantedQuest.isDone()) {
+                        System.out.println("Ооо, новоиспечённый герой вернулся! Тебе чего?");
+                    } else {
+                        Character.getInstance().tryDialog("Bartender", () -> {
+                            System.out.println("Слухи о том как ты надрал зад Амброзу уже разнеслись по всему городу. Жаль, что мне не довелось это увидеть самому.\n" +
+                                    "Доказательств требовать не буду, награда твоя.");
+                        }, () -> {
+                            System.out.println("С Амброзом, как я вижу ты ещё не разобрался. Так чего ты ждёшь? Благословения?");
+                        });
+                    }
                 }, false),
-                //todo: сделать проверку на наличие квеста и то что квест уже сдан
                 new Event(2, 9, () -> { // Магазин
 
                 }),
