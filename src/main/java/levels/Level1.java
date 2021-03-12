@@ -59,6 +59,7 @@ public class Level1 implements Levelable {
         );
 
         startLabyrinth.enterLocation(6, 3).escapeAction();
+
     }
 
     private void crossroad() {
@@ -133,6 +134,7 @@ public class Level1 implements Levelable {
                     Menu menu = new Menu("Взяться за задание?:");
                     menu.addItem("Да", () -> {
                         Quest quest = new Quest("KillGangBanger",
+                                "Убить Амброза Джакиса",
                                 new Reward(100, null),
                                 () -> {
                                 }

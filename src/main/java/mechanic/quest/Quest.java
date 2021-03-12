@@ -13,14 +13,21 @@ public class Quest {
     Reward reward;
     Actionable questCompleteAction;
     boolean done = false;
+    String description;
 
-    public Quest(String questIdentifier, Reward reward, Actionable questCompleteAction, Task ... tasks) {
+    public Quest(String questIdentifier,String description, Reward reward, Actionable questCompleteAction, Task ... tasks) {
         this.questIdentifier = questIdentifier;
         this.tasks = Lists.newArrayList(tasks);
         this.tasks.forEach(task -> task.setQuest(this));
         this.reward = reward;
         this.questCompleteAction = questCompleteAction;
+        this.description = description;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
 
     public Task addTask(Task task) {
         task.setQuest(this);

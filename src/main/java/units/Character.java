@@ -22,7 +22,7 @@ public class Character implements Battler {
     private Armor armor;
     private Weapon weapon;
     private final Inventory inventory = new Inventory();
-    private Collection<Quest> activeQuests = new ArrayList<>();
+    private final Collection<Quest> activeQuests = new ArrayList<>();
 
     private static Character character;
 
@@ -197,7 +197,7 @@ public class Character implements Battler {
 
     public Quest getQuestById(String questIdentifier) {
         for (Quest quest : activeQuests) {
-            if (quest.getQuestIdentifier().equals(questIdentifier)){
+            if (quest.getQuestIdentifier().equals(questIdentifier)) {
                 return quest;
             }
         }
@@ -271,6 +271,34 @@ public class Character implements Battler {
             characterMenu.showAndChoose();
             menu.showAndChoose();
         });
+        menu.addAdditionalItem("Текущие задания", () -> {
+            if (activeQuests.isEmpty()) {
+                System.out.println("У тебя нет заданий");
+            } else {
+                Menu questMenu = new Menu("Задания:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
+                for (Quest quest : activeQuests) {
+                    questMenu.addItem(quest.getDescription(), () -> {
+                        Menu innerMenu = new Menu("Задание: ", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
+                        innerMenu.addItem("Просмотреть задачи", () -> {
+                            for (Task task : quest.getTasks()){
+                                System.out.println(task);
+                            }
+                        });
+                        innerMenu.addItem("Отклонить", () -> {
+                            this.denyQuest(quest);
+                            System.out.println("Ты отколняешь задание");
+                        });
+
+                        innerMenu.showAndChoose();
+                    });
+                }
+                questMenu.showAndChoose();
+            }
+
+            menu.showAndChoose();
+        });
+
+
     }
 
 
@@ -280,7 +308,7 @@ public class Character implements Battler {
                 if (task instanceof DialogTask) {
                     DialogTask dialogTask = (DialogTask) task;
                     if (dialogTask.talkWithId(dialogIdentifier)) {
-                        if(success!=null) {
+                        if (success != null) {
                             success.doAction();
                         }
                         return true;
@@ -288,7 +316,7 @@ public class Character implements Battler {
                 }
             }
         }
-        if(fail!=null) {
+        if (fail != null) {
             fail.doAction();
         }
         return false;

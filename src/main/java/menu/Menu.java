@@ -121,6 +121,7 @@ public class Menu {
         menuItems.add(menuItem);
         return menuItem;
     }
+
     public Set<MenuSetting> getMenuSettings() {
         return menuSettings;
     }
