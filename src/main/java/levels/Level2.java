@@ -3,7 +3,7 @@ package levels;
 import items.grocery.QuestItem;
 import mechanic.battle.*;
 import menu.*;
-import units.Character;
+import units.character.Character;
 import units.enemies.*;
 import utils.*;
 import utils.random.ObjectAndProbability;

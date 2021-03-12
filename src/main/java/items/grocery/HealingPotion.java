@@ -1,7 +1,7 @@
 package items.grocery;
 
 import items.*;
-import units.Character;
+import units.character.Character;
 
 public class HealingPotion extends Item {
 

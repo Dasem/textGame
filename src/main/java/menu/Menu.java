@@ -2,7 +2,7 @@ package menu;
 
 import com.google.common.collect.*;
 import items.*;
-import units.Character;
+import units.character.Character;
 import utils.*;
 
 import java.util.*;

@@ -1,4 +1,4 @@
-package units;
+package units.character;
 
 import com.google.common.collect.*;
 import items.*;
@@ -23,6 +23,7 @@ public class Character implements Battler {
     private Weapon weapon;
     private final Inventory inventory = new Inventory();
     private final Collection<Quest> activeQuests = new ArrayList<>();
+    private final Map<Stat, Integer> stats = new HashMap<>();
 
     private static Character character;
 
@@ -281,7 +282,7 @@ public class Character implements Battler {
                         Menu innerMenu = new Menu("Задание: ", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
                         innerMenu.addItem("Просмотреть задачи", () -> {
                             for (Task task : quest.getTasks()){
-                                System.out.println(task);
+                                task.print();
                             }
                         });
                         innerMenu.addItem("Отклонить", () -> {
@@ -297,10 +298,24 @@ public class Character implements Battler {
 
             menu.showAndChoose();
         });
-
-
     }
 
+    public Map<Stat, Integer> getStats() {
+        return stats;
+    }
+
+    public int getStat(Stat stat) {
+        return stats.get(stat);
+    }
+
+    public int factStat(Stat stat) {
+        int statValue = getStat(stat);
+        if (statValue - 10 >= 0) {
+            return (statValue - 10) / 2;
+        } else {
+            return (statValue - 11) / 2;
+        }
+    }
 
     public boolean tryDialog(String dialogIdentifier, Actionable success, Actionable fail) {
         for (Quest quest : Character.getInstance().getActiveQuests()) {

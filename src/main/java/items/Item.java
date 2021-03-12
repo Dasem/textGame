@@ -1,7 +1,7 @@
 package items;
 
 import menu.*;
-import units.Character;
+import units.character.Character;
 
 import java.util.function.*;
 

@@ -1,6 +1,7 @@
 import levels.*;
 import menu.*;
-import units.Character;
+import units.character.*;
+import units.character.Character;
 import utils.*;
 
 public class Main {
@@ -23,5 +24,13 @@ public class Main {
         System.out.print("Введите имя персонажа: ");
         String username = Utils.sc.nextLine();
         Character.createInstance(username);
+        System.out.print("Задайте характеристики: ");
+        //TODO: сделать распределение статов
+        Character.getInstance().getStats().put(Stat.BODY, 12);
+        Character.getInstance().getStats().put(Stat.CHARISMA, 12);
+        Character.getInstance().getStats().put(Stat.INTELLIGENCE, 12);
+        Character.getInstance().getStats().put(Stat.AGILITY, 12);
+        Character.getInstance().getStats().put(Stat.STRENGTH, 14);
+        Character.getInstance().getStats().put(Stat.WISDOM, 12);
     }
 }

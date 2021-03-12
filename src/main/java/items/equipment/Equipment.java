@@ -2,7 +2,7 @@ package items.equipment;
 
 import items.*;
 import menu.*;
-import units.Character;
+import units.character.Character;
 
 public abstract class Equipment extends Item {
     @Override

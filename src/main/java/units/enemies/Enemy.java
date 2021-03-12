@@ -5,8 +5,7 @@ import mechanic.quest.Quest;
 import mechanic.quest.task.MobTask;
 import mechanic.quest.task.Task;
 import units.*;
-import units.Character;
-import units.npcs.*;
+import units.character.Character;
 
 import java.util.List;
 

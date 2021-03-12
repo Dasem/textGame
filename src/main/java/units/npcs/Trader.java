@@ -3,7 +3,7 @@ package units.npcs;
 import com.google.common.collect.*;
 import items.*;
 import menu.*;
-import units.Character;
+import units.character.Character;
 
 import java.util.*;
 

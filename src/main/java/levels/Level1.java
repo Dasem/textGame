@@ -11,9 +11,9 @@ import mechanic.quest.Quest;
 import mechanic.quest.task.DialogTask;
 import mechanic.quest.task.MobTask;
 import menu.*;
-import units.Character;
+import units.character.Character;
 import units.enemies.*;
-import units.npcs.Trader;
+import units.npcs.*;
 import utils.*;
 import utils.random.ObjectAndProbability;
 import utils.random.Randomizer;
@@ -40,12 +40,6 @@ public class Level1 implements Levelable {
             }
         };
 
-        Trader trader = new Trader(
-                new Weapon(WeaponType.STAFF),
-                new Armor(ArmorType.MEDIUM_ARMOR),
-                new HealingPotion(HealingPotionType.LESSER_HEALING_POTION)
-        );
-
         Character.getInstance().lootItem(map);
         startLabyrinth.addActions(
                 new Event(4, 1, this::findStartLabyrinthPotion),
@@ -53,7 +47,6 @@ public class Level1 implements Levelable {
                 new Event(5, 3, this::findStartLabyrinthWeapon),
                 new Event(4, 2, this::findStartLabyrinthFight),
                 new Event(2, 3, this::findStartLabyrinthFight),
-                new Event(5, 4, trader::trade, false),
                 new EscapeEvent(0, 3, this::crossroad),
                 new EscapeEvent(3, 2, this::enchantedForest)
         );
@@ -96,6 +89,20 @@ public class Level1 implements Levelable {
             Character.getInstance().lootItem(new UselessItem("Голова гоблина"));
         }
         Location rivergard = new Location("rivergard", LocationSetting.ENABLE_GPS);
+        Trader trader = new Trader(
+                new Weapon(WeaponType.STAFF),
+                new Armor(ArmorType.MEDIUM_ARMOR),
+                new HealingPotion(HealingPotionType.LESSER_HEALING_POTION)
+        );
+        QuestNPC bartender = new QuestNPC("KillGangBanger", "Bartender",
+                () -> System.out.println("Вас встречает статный мужчина средних лет с длинными рыжими волосами."),
+                () -> System.out.println("Вижу ты не из робких. Тут в городе назначена награда за голову одного засранца, сходи к доске объявлений, если тебе интересно."),
+                () -> System.out.println("С Амброзом, как я вижу ты ещё не разобрался. Так чего ты ждёшь? Благословения?"),
+                () -> System.out.println("Слухи о том как ты надрал зад Амброзу уже разнеслись по всему городу. Жаль, что мне не довелось это увидеть самому.\n" +
+                        "Доказательств требовать не буду, награда твоя."),
+                () -> System.out.println("Ооо, новоиспечённый герой вернулся! Тебе чего?")
+        );
+        //Таверна (Пока что только можно сдать квест на Генг Бенгера)
         rivergard.addActions(Lists.newArrayList(
                 new Event(6, 8, () -> { // фонтан
                     System.out.println("Подойдя к фонтану ты решаешь немного отдохнуть... ");
@@ -149,25 +156,8 @@ public class Level1 implements Levelable {
                     });
                     menu.showAndChoose();
                 }),
-                new Event(1, 4, () -> {//Таверна (Пока что только можно сдать квест на Генг Бенгера)
-                    System.out.println("Вас встречает статный мужчина средних лет с длинными рыжими волосами.");
-                    Quest wantedQuest = Character.getInstance().getQuestById("KillGangBanger");
-                    if (wantedQuest == null) {
-                        System.out.println("Вижу ты не из робких. Тут в городе назначена награда за голову одного засранца, сходи к доске объявлений, если тебе интересно.");
-                    } else if (wantedQuest.isDone()) {
-                        System.out.println("Ооо, новоиспечённый герой вернулся! Тебе чего?");
-                    } else {
-                        Character.getInstance().tryDialog("Bartender", () -> {
-                            System.out.println("Слухи о том как ты надрал зад Амброзу уже разнеслись по всему городу. Жаль, что мне не довелось это увидеть самому.\n" +
-                                    "Доказательств требовать не буду, награда твоя.");
-                        }, () -> {
-                            System.out.println("С Амброзом, как я вижу ты ещё не разобрался. Так чего ты ждёшь? Благословения?");
-                        });
-                    }
-                }, false),
-                new Event(2, 9, () -> { // Магазин
-
-                }),
+                new Event(1, 4, bartender::doDialog, false),
+                new Event(2, 9, trader::trade, false),
                 new EscapeEvent(4, 0, () -> { // западный выход
 
                 }),
@@ -183,11 +173,10 @@ public class Level1 implements Levelable {
     }
 
     private void enchantedForest() {
-        lor(
-                "Уверенно шагая по лесной тропинке ты чувствуешь на себе чей-то взгляд.\n" +
-                        "По спине пробежал холодок.\n" +
-                        "Ты решаешь перейти на бег, но коварные корни деревьев цепляются тебе за ноги и ты кубарем катишься вниз, в глубь леса.\n" +
-                        "Встав и отряхнувшись ты видишь перед собой развилку...");
+        lor("Уверенно шагая по лесной тропинке ты чувствуешь на себе чей-то взгляд.\n" +
+                "По спине пробежал холодок.\n" +
+                "Ты решаешь перейти на бег, но коварные корни деревьев цепляются тебе за ноги и ты кубарем катишься вниз, в глубь леса.\n" +
+                "Встав и отряхнувшись ты видишь перед собой развилку...");
         Menu menu = new Menu("Куда ты отравишься?");
         menu.addItem("Влево", () -> {
 //            Location labyrinth = new Location(null,null);

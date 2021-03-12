@@ -1,7 +1,7 @@
 package mechanic.battle;
 
 import units.Lootable;
-import units.Character;
+import units.character.Character;
 import utils.*;
 
 public class Fight {

@@ -1,7 +1,7 @@
 package items.equipment;
 
 import menu.*;
-import units.Character;
+import units.character.Character;
 
 public class Armor extends Equipment {
 
@@ -36,7 +36,6 @@ public class Armor extends Equipment {
 
     public void removeArmor() {
         Character.getInstance().setArmor(null);
-
     }
 
     public String getPrettyName() {

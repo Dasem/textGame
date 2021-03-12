@@ -1,5 +1,7 @@
 package items.equipment;
 
+import units.character.*;
+import units.character.Character;
 import utils.*;
 
 public enum WeaponType {
@@ -10,7 +12,7 @@ public enum WeaponType {
         }
         @Override
         public int getDicedDamage() {
-            return Dices.diceD6() + Dices.diceD6();
+            return Dices.diceD6() + Dices.diceD6() + Character.getInstance().factStat(Stat.STRENGTH);
         }
 
         @Override
@@ -26,7 +28,7 @@ public enum WeaponType {
 
         @Override
         public int getDicedDamage() {
-            return Dices.diceD4();
+            return Dices.diceD4() + Character.getInstance().factStat(Stat.AGILITY);
         }
 
         @Override
@@ -42,7 +44,7 @@ public enum WeaponType {
 
         @Override
         public int getDicedDamage() {
-            return Dices.diceD10();
+            return Dices.diceD10() + Character.getInstance().factStat(Stat.STRENGTH);
         }
 
         @Override
@@ -58,7 +60,7 @@ public enum WeaponType {
 
         @Override
         public int getDicedDamage() {
-            return Dices.diceD6();
+            return Dices.diceD6() + Character.getInstance().factStat(Stat.STRENGTH);
         }
 
         @Override
@@ -80,5 +82,6 @@ public enum WeaponType {
     abstract public int getDamage();
 
     abstract public int getDicedDamage();
+
     abstract public int getCost();
 }

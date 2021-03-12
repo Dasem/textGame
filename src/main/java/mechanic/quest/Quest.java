@@ -3,7 +3,6 @@ package mechanic.quest;
 import com.google.common.collect.Lists;
 import mechanic.*;
 import mechanic.quest.task.*;
-import units.Character;
 
 import java.util.*;
 
