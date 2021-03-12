@@ -11,7 +11,7 @@ public class Trader extends NPC {
 
     private final ArrayList<Item> tradeItems;
 
-    public Trader(Item ... tradeItems) {
+    public Trader(Item... tradeItems) {
         this.tradeItems = Lists.newArrayList(tradeItems);
     }
 
@@ -28,7 +28,9 @@ public class Trader extends NPC {
                 Object maybeItem = buyMenu.showAndChoose().getChosenMenuItem().getCallbackObject();
                 if (maybeItem instanceof Item) {
                     Item item = (Item) maybeItem;
-                    tradeItems.remove(item);
+                    if (item.getTradeMenu().isSuccess()) {
+                        tradeItems.remove(item);
+                    }
                 }
             });
             tradeMenu.addItem("Продажа", () -> {
