@@ -341,3 +341,5 @@ public class Character implements Battler {
         return false;
     }
 }
+
+//  -6+сила
