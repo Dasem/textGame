@@ -9,37 +9,37 @@ import static units.character.Performance.*;
 public enum Stat {
     WISDOM("Мудрость") {
         @Override
-        public Set<Performance> getDependencedPerformance() {
+        public Set<Performance> getDependencePerformance() {
             return Sets.newHashSet(PERCEPTION, SURVIVAL, MEDICINE, INSIGHT, ANIMAL_HANDLING);
         }
     },
     BODY("Телосложение") {
         @Override
-        public Set<Performance> getDependencedPerformance() {
+        public Set<Performance> getDependencePerformance() {
             return Sets.newHashSet();
         }
     },
     AGILITY("Ловкость") {
         @Override
-        public Set<Performance> getDependencedPerformance() {
+        public Set<Performance> getDependencePerformance() {
             return Sets.newHashSet(ACROBATICS, SLEIGHT_OF_HAND, STEALTH);
         }
     },
     INTELLIGENCE("Интеллект") {
         @Override
-        public Set<Performance> getDependencedPerformance() {
+        public Set<Performance> getDependencePerformance() {
             return Sets.newHashSet(INVESTIGATION, HISTORY, ARCANA, NATURE, RELIGION);
         }
     },
     CHARISMA("Харизма") {
         @Override
-        public Set<Performance> getDependencedPerformance() {
+        public Set<Performance> getDependencePerformance() {
             return Sets.newHashSet(PERFORMANCE, INTIMIDATION, DECEPTION, PERSUASION);
         }
     },
     STRENGTH("Сила") {
         @Override
-        public Set<Performance> getDependencedPerformance() {
+        public Set<Performance> getDependencePerformance() {
             return Sets.newHashSet(ATHLETICS);
         }
     };
@@ -68,7 +68,7 @@ public enum Stat {
         this.name=name;
     }
 
-    public abstract Set<Performance> getDependencedPerformance();
+    public abstract Set<Performance> getDependencePerformance();
 
     public String getName() {
         return name;

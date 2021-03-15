@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import items.*;
 import items.equipment.*;
 import items.grocery.*;
+import mechanic.Traps.Trap;
+import mechanic.Traps.TrapType;
 import mechanic.battle.*;
 import mechanic.location.*;
 import mechanic.quest.Reward;
@@ -12,6 +14,7 @@ import mechanic.quest.task.DialogTask;
 import mechanic.quest.task.MobTask;
 import menu.*;
 import units.character.Character;
+import units.character.Stat;
 import units.enemies.*;
 import units.npcs.*;
 import utils.*;
@@ -42,6 +45,7 @@ public class Level1 implements Levelable {
 
         Character.getInstance().lootItem(map);
         startLabyrinth.addActions(
+                new Event(5, 2, this::findTrap),
                 new Event(4, 1, this::findStartLabyrinthPotion),
                 new Event(4, 4, this::findStartLabyrinthArmor),
                 new Event(5, 3, this::findStartLabyrinthWeapon),
@@ -255,4 +259,29 @@ public class Level1 implements Levelable {
                 new ObjectAndProbability<>(new Weapon(WeaponType.SWORD), 2));
         Character.getInstance().loot(weapon);
     }
+
+    public void findTrap() {
+        int rollResult = Dices.diceD20();
+        Trap trap = Randomizer.randomize(
+                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_EASY_TRAP),3),
+                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_MEDIUM_TRAP),2),
+                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_HARD_TRAP),1),
+                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_EASY_TRAP),3),
+                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_EASY_TRAP),2),
+                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_EASY_TRAP),1));
+        Stat necessaryStat = trap.trapStat();
+        if (rollResult + ((Character.getInstance().getStat(Stat.WISDOM)/2)-5) >= trap.getTrapPerceptionThreshold()) {
+            System.out.println("Вы удачно прошли ловушку");
+        } else {
+            System.out.println("Вы не прошли ловушку =(");
+            int damageCount = Dices.diceD4();
+            Character.getInstance().takeDamage(damageCount);
+            System.out.println("Вы получили " + damageCount + " урона.");
+        }
+    }
+
+
+
 }
+
+/*if ((rollResult + Character.getInstance().getStat().necessaryStat) > )*/
