@@ -2,6 +2,7 @@ package mechanic.battle;
 
 import units.Lootable;
 import units.character.Character;
+import units.character.Stat;
 import utils.*;
 
 public class Fight {
@@ -74,11 +75,11 @@ public class Fight {
     }
 
     private boolean hitBattler1() {
-        int initiativBattler1 = battler1.initiativeThrow();
+        int initiativBattler1 = battler1.initiativeThrow() + Character.getInstance().factStat(Stat.AGILITY);
         int initiativBattler2 = battler2.initiativeThrow();
         while (initiativBattler1 == initiativBattler2) {
             System.out.println("Реролл...");
-            initiativBattler1 = battler1.initiativeThrow();
+            initiativBattler1 = battler1.initiativeThrow() + Character.getInstance().factStat(Stat.AGILITY);
             initiativBattler2 = battler2.initiativeThrow();
         }
         return initiativBattler1 > initiativBattler2;

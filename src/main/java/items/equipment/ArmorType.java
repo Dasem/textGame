@@ -1,10 +1,13 @@
 package items.equipment;
 
+import units.character.Character;
+import units.character.Stat;
+
 public enum ArmorType {
     LIGHT_ARMOR("Лёгкая броня") {
         @Override
         public int  getArmorClass() {
-            return 14;
+            return 14 + Character.getInstance().factStat(Stat.AGILITY);
         }
 
         @Override

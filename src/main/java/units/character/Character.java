@@ -115,7 +115,7 @@ public class Character implements Battler {
 
     @Override
     public int getAttackModifier() {
-        return 2;
+        return Character.getInstance().factStat(Stat.AGILITY);
     }
 
     @Override

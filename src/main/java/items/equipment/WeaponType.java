@@ -23,7 +23,7 @@ public enum WeaponType {
     DAGGER("Кинжал") {
         @Override
         public int getDamage() {
-            return 4;
+            return 4 ;
         }
 
         @Override
