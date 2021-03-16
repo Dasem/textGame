@@ -115,6 +115,7 @@ public class Character implements Battler {
 
     @Override
     public int getAttackModifier() {
+        //TODO: сделать поумнее (чтоб зависело от класса, например)
         return Character.getInstance().factStat(Stat.AGILITY);
     }
 
@@ -341,5 +342,3 @@ public class Character implements Battler {
         return false;
     }
 }
-
-//  -6+сила

@@ -4,6 +4,7 @@ import units.character.*;
 import units.character.Character;
 import utils.*;
 
+//TODO: Secondary Добавить стат к оружию, которым оно бьёт
 public enum WeaponType {
     TWO_HANDED_SWORD("Двуручный меч") {
         @Override

@@ -270,7 +270,7 @@ public class Level1 implements Levelable {
                 new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_EASY_TRAP),2),
                 new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_EASY_TRAP),1));
         Stat necessaryStat = trap.trapStat();
-        if (rollResult + ((Character.getInstance().getStat(Stat.WISDOM)/2)-5) >= trap.getTrapPerceptionThreshold()) {
+        if (rollResult + Character.getInstance().factStat(Stat.WISDOM) >= trap.getTrapPerceptionThreshold()) {
             System.out.println("Вы удачно прошли ловушку");
         } else {
             System.out.println("Вы не прошли ловушку =(");
@@ -279,9 +279,6 @@ public class Level1 implements Levelable {
             System.out.println("Вы получили " + damageCount + " урона.");
         }
     }
-
-
-
 }
 
 /*if ((rollResult + Character.getInstance().getStat().necessaryStat) > )*/

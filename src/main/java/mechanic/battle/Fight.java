@@ -3,6 +3,7 @@ package mechanic.battle;
 import units.Lootable;
 import units.character.Character;
 import units.character.Stat;
+import units.enemies.*;
 import utils.*;
 
 public class Fight {
@@ -75,6 +76,10 @@ public class Fight {
     }
 
     private boolean hitBattler1() {
+        //TODO: W3st125 Сделать через instanceof
+        /*if (battler1 instanceof Character) {
+
+        }*/
         int initiativBattler1 = battler1.initiativeThrow() + Character.getInstance().factStat(Stat.AGILITY);
         int initiativBattler2 = battler2.initiativeThrow();
         while (initiativBattler1 == initiativBattler2) {
