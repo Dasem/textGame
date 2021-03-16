@@ -7,5 +7,6 @@ public enum MenuItemType {
     LOOT_ITEM,
     BACK,
     BUY,
+    QUEST_LIST,
     SELL;
 }

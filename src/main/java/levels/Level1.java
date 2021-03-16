@@ -215,7 +215,7 @@ public class Level1 implements Levelable {
                 new ObjectAndProbability<>(new Skeleton(), 3),
                 new ObjectAndProbability<>(new Gnoll(), 1)
         );
-        Fight fight = new Fight(Character.getInstance(), battler);
+        AdvancedFight fight = new AdvancedFight(battler);
         fight.battle();
         if (Character.getInstance().getCurrentHealth() <= 0) {
             lor("В глубинах лабиринта ты погиб. Причиной твоей смерти стал '" + battler.getName() + "'");

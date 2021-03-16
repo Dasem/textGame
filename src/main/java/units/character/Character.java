@@ -128,6 +128,30 @@ public class Character implements Battler {
         }
     }
 
+    @Override
+    public boolean isFriendly() {
+        return true;
+    }
+
+    @Override
+    public BattleActionResult battleAction(List<Battler> possibleTargets) {
+        List<Battler> opponents = BattleUtils.extractAliveOpponents(possibleTargets);
+        return BattleUtils.doDirectAttack(this, opponents.get(0));
+    }
+
+//    @Override
+//    public BattleActionResult battleAction(List<Battler> possibleTargets) {
+//        return null;
+//    }
+
+    @Override
+    public int initiativeThrow() {
+        int initiative = Dices.diceD20() + Character.getInstance().factStat(Stat.AGILITY);
+        Utils.suspense(250);
+        System.out.println(this.getName() + " Бросил на инициативу " + initiative);
+        return initiative;
+    }
+
     public void acceptQuest(Quest quest) {
         activeQuests.add(quest);
     }
@@ -277,16 +301,14 @@ public class Character implements Battler {
             characterMenu.showAndChoose();
             menu.showAndChoose();
         });
-        menu.addAdditionalItem("Текущие задания", () -> {
-            if (activeQuests.isEmpty()) {
-                System.out.println("У тебя нет заданий");
-            } else {
+        if (!activeQuests.isEmpty()) {
+            menu.addAdditionalItem("Текущие задания", () -> {
                 Menu questMenu = new Menu("Задания:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
                 for (Quest quest : activeQuests) {
                     questMenu.addItem(quest.getDescription(), () -> {
                         Menu innerMenu = new Menu("Задание: ", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
                         innerMenu.addItem("Просмотреть задачи", () -> {
-                            for (Task task : quest.getTasks()){
+                            for (Task task : quest.getTasks()) {
                                 task.print();
                             }
                         });
@@ -294,15 +316,12 @@ public class Character implements Battler {
                             this.denyQuest(quest);
                             System.out.println("Ты отколняешь задание");
                         });
-
                         innerMenu.showAndChoose();
                     });
                 }
                 questMenu.showAndChoose();
-            }
-
-            menu.showAndChoose();
-        });
+            }, MenuItemType.QUEST_LIST);
+        }
     }
 
     public Map<Stat, Integer> getStats() {

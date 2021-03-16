@@ -6,11 +6,13 @@ import mechanic.quest.task.MobTask;
 import mechanic.quest.task.Task;
 import units.*;
 import units.character.Character;
+import utils.*;
 
 import java.util.List;
 
 public abstract class Enemy implements Battler, Lootable, Deadable {
     int currentHealth = getMaxHealth();
+    boolean friendly = false;
 
     @Override
     public void setCurrentHealth(int currentHealth) {
@@ -19,6 +21,11 @@ public abstract class Enemy implements Battler, Lootable, Deadable {
         } else {
             this.currentHealth = Math.min(currentHealth, getMaxHealth());
         }
+    }
+
+    @Override
+    public boolean isFriendly() {
+        return friendly;
     }
 
     @Override
@@ -33,5 +40,12 @@ public abstract class Enemy implements Battler, Lootable, Deadable {
                 }
             }
         }
+    }
+
+    @Override
+    public BattleActionResult battleAction(List<Battler> possibleTargets) {
+        Utils.suspense();
+        List<Battler> opponents = BattleUtils.extractAliveAllies(possibleTargets);
+        return BattleUtils.doDirectAttack(this, opponents.get(0));
     }
 }

@@ -80,7 +80,7 @@ public class Fight {
         /*if (battler1 instanceof Character) {
 
         }*/
-        int initiativBattler1 = battler1.initiativeThrow() + Character.getInstance().factStat(Stat.AGILITY);
+        int initiativBattler1 = battler1.initiativeThrow();
         int initiativBattler2 = battler2.initiativeThrow();
         while (initiativBattler1 == initiativBattler2) {
             System.out.println("Реролл...");
