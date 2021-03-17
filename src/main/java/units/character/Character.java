@@ -21,6 +21,7 @@ public class Character implements Battler {
     private int currentHealth = getMaxHealth();
     private Armor armor;
     private Weapon weapon;
+    private Stat attackStat;
     private final Inventory inventory = new Inventory();
     private final Collection<Quest> activeQuests = new ArrayList<>();
     private final Map<Stat, Integer> stats = new HashMap<>();
@@ -278,7 +279,7 @@ public class Character implements Battler {
         });
         menu.addAdditionalItem("Текущие задания", () -> {
             if (activeQuests.isEmpty()) {
-                System.out.println("У тебя нет заданий");
+                System.out.println("\nУ тебя нет заданий");
             } else {
                 Menu questMenu = new Menu("Задания:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
                 for (Quest quest : activeQuests) {
