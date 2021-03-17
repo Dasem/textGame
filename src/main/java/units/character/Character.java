@@ -279,6 +279,9 @@ public class Character implements Battler {
                 if (c.getWeapon() != null) {
                     System.out.println(c.getWeapon().getPrettyName());
                 } else System.out.println("Нет оружия");
+                for(Stat stat : Stat.values()){
+                    System.out.println(stat.getName()+" "+getStat(stat));
+                }
             });
             characterMenu.addItem("Снаряжение", () -> {
                 Menu equippedMenu = new Menu("Экипированное снаряжение:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
