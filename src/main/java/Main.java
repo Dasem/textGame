@@ -26,11 +26,7 @@ public class Main {
         Character.createInstance(username);
         System.out.print("Задайте характеристики: ");
         //TODO: сделать распределение статов
-        Character.getInstance().getStats().put(Stat.BODY, 12);
-        Character.getInstance().getStats().put(Stat.CHARISMA, 12);
-        Character.getInstance().getStats().put(Stat.INTELLIGENCE, 12);
-        Character.getInstance().getStats().put(Stat.AGILITY, 12);
-        Character.getInstance().getStats().put(Stat.STRENGTH, 14);
-        Character.getInstance().getStats().put(Stat.WISDOM, 12);
+        StartStat startStat = new StartStat();
+        startStat.statEnter();
     }
 }
