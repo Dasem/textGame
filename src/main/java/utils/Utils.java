@@ -7,7 +7,12 @@ public class Utils {
     public static Random random = new Random();
 
     public static void lor(String lor) {
-        System.out.println(lor);
+        for(char symbol : lor.toCharArray()){
+            System.out.print(symbol);
+            suspense(20);
+        }
+        System.out.println();
+        suspense();
     }
 
     public static void suspense() {
