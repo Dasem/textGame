@@ -263,22 +263,20 @@ public class Level1 implements Levelable {
     public void findTrap() {
         int rollResult = Dices.diceD20();
         Trap trap = Randomizer.randomize(
-                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_EASY_TRAP),3),
-                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_MEDIUM_TRAP),2),
-                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_HARD_TRAP),1),
+                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_EASY_TRAP),0),
+                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_MEDIUM_TRAP),0),
+                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_HARD_TRAP),0),
                 new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_EASY_TRAP),3),
-                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_EASY_TRAP),2),
-                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_EASY_TRAP),1));
-        Stat necessaryStat = trap.trapStat();
-        if (rollResult + Character.getInstance().factStat(Stat.WISDOM) >= trap.getTrapPerceptionThreshold()) {
-            System.out.println("Вы удачно прошли ловушку");
+                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_MEDIUM_TRAP),0),
+                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_HARD_TRAP),0));
+        if (rollResult + (Character.getInstance().factStat(Stat.WISDOM)) >= trap.getTrapPerceptionThreshold()) {
+            System.out.println(trap.getTextTrapNoticed());
+            trap.trapMenu.showAndChoose();
         } else {
-            System.out.println("Вы не прошли ловушку =(");
-            int damageCount = Dices.diceD4();
-            Character.getInstance().takeDamage(damageCount);
-            System.out.println("Вы получили " + damageCount + " урона.");
+            System.out.println(trap.getTextTrapNotNoticed());
+            int trapDamageOut = trap.getTrapDamage();
+            Character.getInstance().takeDamage(trapDamageOut);
+            System.out.println("Вы получили " + trapDamageOut + " урона.");
         }
     }
 }
-
-/*if ((rollResult + Character.getInstance().getStat().necessaryStat) > )*/

@@ -1,27 +1,46 @@
 package mechanic.Traps;
 
 import menu.Menu;
+import menu.MenuSetting;
 import units.character.Character;
 import units.character.Stat;
+import utils.Dices;
+import utils.Utils;
 
 public class Trap {
 
     private final TrapType trapType;
-/*    private Menu itemMenu;*/
+    public Menu trapMenu = new Menu(() -> "Впереди ловушка. Что будешь делать?", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
 
-    public Trap (TrapType trapType) {
-/*        addTrapMenu();*/
+    public Trap(TrapType trapType) {
+        addTrapMenu();
         this.trapType = trapType;
     }
 
-/*    private void addTrapMenu() {
-        itemMenu.addItem("Выпить", () -> {
-            int heal = getHeal();
-            Character.getInstance().healing(heal);
-            System.out.println("Ну выпил и выпил, чё бубнить-то, захилен на " + heal + " ХП." + Character.getInstance().getHpBar());
-            Character.getInstance().getInventory().removeItem(this);
+    private void addTrapMenu() {
+        trapMenu.addItem("Пройти ловушку", () -> {
+            int rollResult = Dices.diceD20();
+            System.out.println("Вы совершаете проверку характеристики: " + Stat.getStatFromName(getTrapStat().getName()) + ".");
+            Utils.suspense();
+            System.out.println("Ваш результат: " + (rollResult + Character.getInstance().factStat(getTrapStat())));
+            Utils.suspense();
+            if (rollResult + Character.getInstance().factStat(getTrapStat()) >= getTrapDifficulty()) {
+                System.out.println(getTextTrapSuccess());
+
+            } else {
+                int trapDamageOut = (getTrapDamage() / 2);
+                Character.getInstance().takeDamage((getTrapDamage() / 2));
+                System.out.println(getTextTrapFail());
+                System.out.println("Вы получаете " + trapDamageOut + " урона.");
+
+            }
+
         });
-    }*/
+        trapMenu.addItem("Отступить", () -> {
+            System.out.println("Вы скипаете ловушку =(");
+        });
+
+    }
 
     public int getTrapDifficulty() {
         return trapType.trapDifficulty();
@@ -31,9 +50,29 @@ public class Trap {
         return trapType.trapPerceptionThreshold();
     }
 
-    public Stat trapStat() {
+    public int getTrapDamage() {
+        return trapType.trapDamage();
+    }
+
+    public Stat getTrapStat() {
         return trapType.trapStat();
     }
 
+    public String getTextTrapNotNoticed() {
+        return trapType.textTrapNotNoticed();
+    }
+
+    public String getTextTrapNoticed() {
+        return trapType.textTrapNoticed();
+    }
+
+    public String getTextTrapSuccess() {
+        return trapType.textTrapSuccess();
+    }
+
+    public String getTextTrapFail() {
+        return trapType.textTrapFail();
+    }
 
 }
+

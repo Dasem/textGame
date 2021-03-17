@@ -21,6 +21,7 @@ public class Character implements Battler {
     private int currentHealth = getMaxHealth();
     private Armor armor;
     private Weapon weapon;
+    private Stat attackStat;
     private final Inventory inventory = new Inventory();
     private final Collection<Quest> activeQuests = new ArrayList<>();
     private final Map<Stat, Integer> stats = new HashMap<>();

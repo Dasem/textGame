@@ -11,6 +11,7 @@ public enum WeaponType {
         public int getDamage() {
             return 12;
         }
+
         @Override
         public int getDicedDamage() {
             return Dices.diceD6() + Dices.diceD6() + Character.getInstance().factStat(Stat.STRENGTH);
@@ -20,6 +21,8 @@ public enum WeaponType {
         public int getCost() {
             return 80;
         }
+
+        public Stat getAttackStat() {return Stat.STRENGTH;}
     },
     DAGGER("Кинжал") {
         @Override
@@ -36,6 +39,8 @@ public enum WeaponType {
         public int getCost() {
             return 15;
         }
+
+        public Stat getAttackStat() {return Stat.AGILITY;}
     },
     STAFF("Посох") {
         @Override
@@ -52,6 +57,8 @@ public enum WeaponType {
         public int getCost() {
             return 50;
         }
+
+        public Stat getAttackStat() {return Stat.STRENGTH;}
     },
     SWORD("Меч") {
         @Override
@@ -68,6 +75,8 @@ public enum WeaponType {
         public int getCost() {
             return 40;
         }
+
+        public Stat getAttackStat() {return Stat.STRENGTH;}
     };
 
     private final String title;
@@ -85,4 +94,6 @@ public enum WeaponType {
     abstract public int getDicedDamage();
 
     abstract public int getCost();
+
+    abstract public Stat getAttackStat();
 }
