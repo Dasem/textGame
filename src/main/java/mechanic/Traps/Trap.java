@@ -20,7 +20,7 @@ public class Trap {
     private void addTrapMenu() {
         trapMenu.addItem("Пройти ловушку", () -> {
             int rollResult = Dices.diceD20();
-            System.out.println("Вы совершаете проверку характеристики: " + Stat.getStatFromName(getTrapStat().getName()) + ".");
+            System.out.println("Вы совершаете проверку характеристики: " + getTrapStat().getName() + ".");
             Utils.suspense();
             System.out.println("Ваш результат: " + (rollResult + Character.getInstance().factStat(getTrapStat())));
             Utils.suspense();

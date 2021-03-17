@@ -144,10 +144,10 @@ public class Location {
 
     // Отображает местность вокруг. Если параметр attention == true, то производим проверку на ловушки поблизости.
     public void printVision(boolean attention) {
-        int startRow = Math.max(currentPosition.currentRow - VISION_DEPTH, 0)-1;
-        int startCol = Math.max(currentPosition.currentColumn - VISION_DEPTH,0)-1;
-        int endRow = Math.min(currentPosition.currentRow + VISION_DEPTH, locationHeight)+1;
-        int endCol = Math.min(currentPosition.currentColumn + VISION_DEPTH, locationWidth)+1;
+        int startRow = Math.max(currentPosition.currentRow - VISION_DEPTH, 0);
+        int startCol = Math.max(currentPosition.currentColumn - VISION_DEPTH,0);
+        int endRow = Math.min(currentPosition.currentRow + VISION_DEPTH, locationHeight);
+        int endCol = Math.min(currentPosition.currentColumn + VISION_DEPTH, locationWidth);
         for (int row = startRow; row < endRow; row++) {
             for (int col = startCol; col < endCol; col++) {
                 char cell = location[row][col];

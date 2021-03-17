@@ -259,12 +259,12 @@ public class Level1 implements Levelable {
     public void findTrap() {
         int rollResult = Dices.diceD20();
         Trap trap = Randomizer.randomize(
-                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_EASY_TRAP),0),
-                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_MEDIUM_TRAP),0),
-                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_HARD_TRAP),0),
+                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_EASY_TRAP),2),
+                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_MEDIUM_TRAP),2),
+                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_HARD_TRAP),2),
                 new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_EASY_TRAP),3),
-                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_MEDIUM_TRAP),0),
-                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_HARD_TRAP),0));
+                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_MEDIUM_TRAP),2),
+                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_HARD_TRAP),2));
         if (rollResult + (Character.getInstance().factStat(Stat.WISDOM)) >= trap.getTrapPerceptionThreshold()) {
             System.out.println(trap.getTextTrapNoticed());
             trap.trapMenu.showAndChoose();
@@ -277,15 +277,15 @@ public class Level1 implements Levelable {
     }
 
     private void goblinsArrows() {
-//        lor("На выходе из города вы замечаете склочного дварфа, который отчитывает громилу стоящего у повозки.\n" +
-//                "Вы замечаете, что при виде вас у ворчуна появляется идея. Он подбегает к вам и предлагает выгодную сделку.\n" +
-//                "Дварф представляется Гандреном Роксикером, а громила стоящий у повозки это Сильдар Холлвинтер его телохранитель.\n" +
-//                "Гандрен просит вас вас доставить гружёную провизией повозку в поселение Фандалин, расположенное в паре дней пути к северо-востоку." +
-//                "Гандрен готов заплатить 50 золотых. Вы соглашаетесь.\n" +
-//                "...\n" +
-//                "Вы провели несколько последних дней, следуя по Главному тракту на север от Ривергарда, и только недавно\n" +
-//                "свернули по Триборской тропе на восток. До сих пор вы не встретили никаких препятствий, но эта территория может" +
-//                "быть опасна. Бандиты и преступники, как известно, бродят вдоль этой тропы.");
+        lor("На выходе из города вы замечаете склочного дварфа, который отчитывает громилу стоящего у повозки.\n" +
+                "Вы замечаете, что при виде вас у ворчуна появляется идея. Он подбегает к вам и предлагает выгодную сделку.\n" +
+                "Дварф представляется Гандреном Роксикером, а громила стоящий у повозки это Сильдар Холлвинтер его телохранитель.\n" +
+                "Гандрен просит вас вас доставить гружёную провизией повозку в поселение Фандалин, расположенное в паре дней пути к северо-востоку." +
+                "Гандрен готов заплатить 50 золотых. Вы соглашаетесь.\n" +
+                "...\n" +
+                "Вы провели несколько последних дней, следуя по Главному тракту на север от Ривергарда, и только недавно\n" +
+                "свернули по Триборской тропе на восток. До сих пор вы не встретили никаких препятствий, но эта территория может" +
+                "быть опасна. Бандиты и преступники, как известно, бродят вдоль этой тропы.");
 
         Location triborgTrail = new Location("triborgTrail", LocationSetting.ENABLE_VISION);
 
