@@ -21,6 +21,7 @@ public class Character implements Battler {
     private int currentHealth = getMaxHealth();
     private Armor armor;
     private Weapon weapon;
+    private Stat attackStat;
     private final Inventory inventory = new Inventory();
     private final Collection<Quest> activeQuests = new ArrayList<>();
     private final Map<Stat, Integer> stats = new HashMap<>();
@@ -109,7 +110,7 @@ public class Character implements Battler {
         if (weapon == null) {
             return Dices.diceD4();
         } else {
-            return weapon.getWeaponType().getDicedDamage();
+            return weapon.getDicedDamage();
         }
     }
 
@@ -126,6 +127,30 @@ public class Character implements Battler {
         } else {
             return getArmor().getArmorType().getArmorClass();
         }
+    }
+
+    @Override
+    public boolean isFriendly() {
+        return true;
+    }
+
+    @Override
+    public BattleActionResult battleAction(List<Battler> possibleTargets) {
+        List<Battler> opponents = BattleUtils.extractAliveOpponents(possibleTargets);
+        return BattleUtils.doDirectAttack(this, opponents.get(0));
+    }
+
+//    @Override
+//    public BattleActionResult battleAction(List<Battler> possibleTargets) {
+//        return null;
+//    }
+
+    @Override
+    public int initiativeThrow() {
+        int initiative = Dices.diceD20() + Character.getInstance().factStat(Stat.AGILITY);
+        Utils.suspense(250);
+        System.out.println(this.getName() + " Бросил на инициативу " + initiative);
+        return initiative;
     }
 
     public void acceptQuest(Quest quest) {
@@ -254,6 +279,9 @@ public class Character implements Battler {
                 if (c.getWeapon() != null) {
                     System.out.println(c.getWeapon().getPrettyName());
                 } else System.out.println("Нет оружия");
+                for(Stat stat : Stat.values()){
+                    System.out.println(stat.getName()+" "+getStat(stat));
+                }
             });
             characterMenu.addItem("Снаряжение", () -> {
                 Menu equippedMenu = new Menu("Экипированное снаряжение:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
@@ -277,16 +305,14 @@ public class Character implements Battler {
             characterMenu.showAndChoose();
             menu.showAndChoose();
         });
-        menu.addAdditionalItem("Текущие задания", () -> {
-            if (activeQuests.isEmpty()) {
-                System.out.println("У тебя нет заданий");
-            } else {
+        if (!activeQuests.isEmpty()) {
+            menu.addAdditionalItem("Текущие задания", () -> {
                 Menu questMenu = new Menu("Задания:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
                 for (Quest quest : activeQuests) {
                     questMenu.addItem(quest.getDescription(), () -> {
                         Menu innerMenu = new Menu("Задание: ", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
                         innerMenu.addItem("Просмотреть задачи", () -> {
-                            for (Task task : quest.getTasks()){
+                            for (Task task : quest.getTasks()) {
                                 task.print();
                             }
                         });
@@ -294,15 +320,12 @@ public class Character implements Battler {
                             this.denyQuest(quest);
                             System.out.println("Ты отколняешь задание");
                         });
-
                         innerMenu.showAndChoose();
                     });
                 }
                 questMenu.showAndChoose();
-            }
-
-            menu.showAndChoose();
-        });
+            }, MenuItemType.QUEST_LIST);
+        }
     }
 
     public Map<Stat, Integer> getStats() {

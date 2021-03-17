@@ -3,6 +3,8 @@ package mechanic.battle;
 import utils.Dices;
 import utils.Utils;
 
+import java.util.*;
+
 public interface Battler {
     int getCurrentHealth();
 
@@ -15,6 +17,14 @@ public interface Battler {
     int getAttackModifier();
 
     int getArmorClass();
+
+    boolean isFriendly();
+
+    default boolean isDead() {
+        return getCurrentHealth() == 0;
+    }
+
+    BattleActionResult battleAction(List<Battler> possibleTargets);
 
     default int initiativeThrow() {
         int initiative = Dices.diceD20();

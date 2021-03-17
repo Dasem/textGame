@@ -97,6 +97,7 @@ public class Level1 implements Levelable {
                 new Armor(ArmorType.MEDIUM_ARMOR),
                 new HealingPotion(HealingPotionType.LESSER_HEALING_POTION)
         );
+        Blacksmith blacksmith = new Blacksmith();
         QuestNPC bartender = new QuestNPC("KillGangBanger", "Bartender",
                 () -> System.out.println("Вас встречает статный мужчина средних лет с длинными рыжими волосами."),
                 () -> System.out.println("Вижу ты не из робких. Тут в городе назначена награда за голову одного засранца, сходи к доске объявлений, если тебе интересно."),
@@ -112,9 +113,9 @@ public class Level1 implements Levelable {
                     Character.getInstance().setFullRest();
                     System.out.println("Твоё хп: " + Character.getInstance().getCurrentHealth());
                 }, false),
-                new Event(5, 12, () -> { // кузня
+                new Event(5, 12, blacksmith::upgrade, false) // кузня
 
-                }),
+                ,
                 new Event(3, 12, () -> { // квест
                     lor("Ты видишь странную фигуру в плаще, которая подзывает тебя к себе\n" +
                             "Ты решаешь подойти к нему...\n" +
@@ -211,7 +212,7 @@ public class Level1 implements Levelable {
                 new ObjectAndProbability<>(new Skeleton(), 3),
                 new ObjectAndProbability<>(new Gnoll(), 1)
         );
-        Fight fight = new Fight(Character.getInstance(), battler);
+        AdvancedFight fight = new AdvancedFight(battler);
         fight.battle();
         if (Character.getInstance().getCurrentHealth() <= 0) {
             lor("В глубинах лабиринта ты погиб. Причиной твоей смерти стал '" + battler.getName() + "'");
@@ -258,33 +259,33 @@ public class Level1 implements Levelable {
     public void findTrap() {
         int rollResult = Dices.diceD20();
         Trap trap = Randomizer.randomize(
-                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_EASY_TRAP), 3),
-                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_MEDIUM_TRAP), 2),
-                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_HARD_TRAP), 1),
-                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_EASY_TRAP), 3),
-                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_EASY_TRAP), 2),
-                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_EASY_TRAP), 1));
-        Stat necessaryStat = trap.trapStat();
-        if (rollResult + Character.getInstance().factStat(Stat.WISDOM) >= trap.getTrapPerceptionThreshold()) {
-            System.out.println("Вы удачно прошли ловушку");
+                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_EASY_TRAP),2),
+                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_MEDIUM_TRAP),2),
+                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_HARD_TRAP),2),
+                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_EASY_TRAP),3),
+                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_MEDIUM_TRAP),2),
+                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_HARD_TRAP),2));
+        if (rollResult + (Character.getInstance().factStat(Stat.WISDOM)) >= trap.getTrapPerceptionThreshold()) {
+            System.out.println(trap.getTextTrapNoticed());
+            trap.trapMenu.showAndChoose();
         } else {
-            System.out.println("Вы не прошли ловушку =(");
-            int damageCount = Dices.diceD4();
-            Character.getInstance().takeDamage(damageCount);
-            System.out.println("Вы получили " + damageCount + " урона.");
+            System.out.println(trap.getTextTrapNotNoticed());
+            int trapDamageOut = trap.getTrapDamage();
+            Character.getInstance().takeDamage(trapDamageOut);
+            System.out.println("Вы получили " + trapDamageOut + " урона.");
         }
     }
 
     private void goblinsArrows() {
-//        lor("На выходе из города вы замечаете склочного дварфа, который отчитывает громилу стоящего у повозки.\n" +
-//                "Вы замечаете, что при виде вас у ворчуна появляется идея. Он подбегает к вам и предлагает выгодную сделку.\n" +
-//                "Дварф представляется Гандреном Роксикером, а громила стоящий у повозки это Сильдар Холлвинтер его телохранитель.\n" +
-//                "Гандрен просит вас вас доставить гружёную провизией повозку в поселение Фандалин, расположенное в паре дней пути к северо-востоку." +
-//                "Гандрен готов заплатить 50 золотых. Вы соглашаетесь.\n" +
-//                "...\n" +
-//                "Вы провели несколько последних дней, следуя по Главному тракту на север от Ривергарда, и только недавно\n" +
-//                "свернули по Триборской тропе на восток. До сих пор вы не встретили никаких препятствий, но эта территория может" +
-//                "быть опасна. Бандиты и преступники, как известно, бродят вдоль этой тропы.");
+        lor("На выходе из города вы замечаете склочного дварфа, который отчитывает громилу стоящего у повозки.\n" +
+                "Вы замечаете, что при виде вас у ворчуна появляется идея. Он подбегает к вам и предлагает выгодную сделку.\n" +
+                "Дварф представляется Гандреном Роксикером, а громила стоящий у повозки это Сильдар Холлвинтер его телохранитель.\n" +
+                "Гандрен просит вас вас доставить гружёную провизией повозку в поселение Фандалин, расположенное в паре дней пути к северо-востоку." +
+                "Гандрен готов заплатить 50 золотых. Вы соглашаетесь.\n" +
+                "...\n" +
+                "Вы провели несколько последних дней, следуя по Главному тракту на север от Ривергарда, и только недавно\n" +
+                "свернули по Триборской тропе на восток. До сих пор вы не встретили никаких препятствий, но эта территория может" +
+                "быть опасна. Бандиты и преступники, как известно, бродят вдоль этой тропы.");
 
         Location triborgTrail = new Location("triborgTrail", LocationSetting.ENABLE_VISION);
 
@@ -307,5 +308,3 @@ public class Level1 implements Levelable {
         triborgTrail.enterLocation(4, 0).escapeAction();
     }
 }
-
-/*if ((rollResult + Character.getInstance().getStat().necessaryStat) > )*/

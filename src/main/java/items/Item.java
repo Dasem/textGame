@@ -11,6 +11,7 @@ public abstract class Item implements Usable, Tradeable {
     protected Menu itemMenu = new Menu(() -> "Меню для '" + getName() + "'", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
     protected TradeMenu tradeMenu = new TradeMenu(() -> "Меню торговли", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
 
+
     {
         itemToInventoryMenuItem();
         dropItemMenuItem();
@@ -70,7 +71,9 @@ public abstract class Item implements Usable, Tradeable {
         return menu;
     }
 
+
     public abstract String getName();
+
 
     public Predicate<MenuItem> getMenuFilters() {
         return menuItem -> {
