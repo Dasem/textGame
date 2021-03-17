@@ -23,6 +23,11 @@ public enum WeaponType {
         }
 
         public Stat getAttackStat() {return Stat.STRENGTH;}
+
+        @Override
+        public int getUpgradeCost() {
+            return getCost()*2;
+        }
     },
     DAGGER("Кинжал") {
         @Override
@@ -41,6 +46,11 @@ public enum WeaponType {
         }
 
         public Stat getAttackStat() {return Stat.AGILITY;}
+
+        @Override
+        public int getUpgradeCost() {
+            return getCost()*2;
+        }
     },
     STAFF("Посох") {
         @Override
@@ -59,6 +69,11 @@ public enum WeaponType {
         }
 
         public Stat getAttackStat() {return Stat.STRENGTH;}
+
+        @Override
+        public int getUpgradeCost() {
+            return getCost()*2;
+        }
     },
     SWORD("Меч") {
         @Override
@@ -77,6 +92,11 @@ public enum WeaponType {
         }
 
         public Stat getAttackStat() {return Stat.STRENGTH;}
+
+        @Override
+        public int getUpgradeCost() {
+            return getCost()*2;
+        }
     };
 
     private final String title;
@@ -96,4 +116,6 @@ public enum WeaponType {
     abstract public int getCost();
 
     abstract public Stat getAttackStat();
+
+    abstract public int getUpgradeCost();
 }

@@ -7,6 +7,9 @@ public class Weapon extends Equipment {
 
     WeaponType weaponType;
 
+
+
+
     public Weapon(WeaponType weaponType) {
         this.weaponType = weaponType;
         addWeaponMenu();
@@ -18,13 +21,22 @@ public class Weapon extends Equipment {
     }
 
     public int getWeaponDamage() {
-        return weaponType.getDamage();
+        return weaponType.getDamage() + upgradeLevel;
+    }
+
+    public int getDicedDamage(){
+        return weaponType.getDicedDamage() + upgradeLevel;
     }
 
     @Override
     public String getName() {
-        return weaponType.getTitle();
+        if (upgradeLevel == 0) {
+            return weaponType.getTitle();
+        } else {
+            return weaponType.getTitle() + " +" + upgradeLevel;
+        }
     }
+
 
     private void addWeaponMenu() {
         equipMenuItem();
@@ -50,12 +62,19 @@ public class Weapon extends Equipment {
     }
 
     public String getPrettyName() {
-        return "Оружие: "+getWeaponType().getTitle()+"\nМакс урон: "+getWeaponType().getDamage();
+        return "Оружие: " + getName() + "\nМакс урон: " + getWeaponDamage();
 
     }
+
 
     @Override
     protected String getPrettyClassName() {
         return "оружие";
     }
+
+    @Override
+    protected int getUpgradeCost() {
+        return weaponType.getUpgradeCost();
+    }
+
 }

@@ -7,6 +7,9 @@ public class Armor extends Equipment {
 
     private final ArmorType armorType;
 
+
+
+
     public ArmorType getArmorType() {
         return armorType;
     }
@@ -18,12 +21,16 @@ public class Armor extends Equipment {
     }
 
     public int getArmorClass() {
-        return armorType.getArmorClass();
+        return armorType.getArmorClass() + upgradeLevel;
     }
 
     @Override
     public String getName() {
-        return armorType.getTitle();
+        if (upgradeLevel == 0) {
+            return armorType.getTitle();
+        } else {
+            return armorType.getTitle() + " +" + upgradeLevel;
+        }
     }
 
     private void addArmorMenu() {
@@ -39,7 +46,7 @@ public class Armor extends Equipment {
     }
 
     public String getPrettyName() {
-        return "Ваша броня: " + getArmorType().getTitle() + "\nКласс Доспеха: " + armorType.getArmorClass();
+        return "Ваша броня: " + getName() + "\nКласс Доспеха: " + getArmorClass();
     }
 
     @Override
@@ -55,4 +62,11 @@ public class Armor extends Equipment {
     protected String getPrettyClassName() {
         return "броня";
     }
+
+    @Override
+    protected int getUpgradeCost() {
+        return (int) (armorType.getUpgradeCost()*Math.pow(3,upgradeLevel));
+    }
 }
+
+
