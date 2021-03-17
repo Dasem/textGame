@@ -33,7 +33,7 @@ public class Weapon extends Equipment {
         if (upgradeLevel == 0) {
             return weaponType.getTitle();
         } else {
-            return weaponType.getTitle() + " " + upgradeLevel;
+            return weaponType.getTitle() + " +" + upgradeLevel;
         }
     }
 

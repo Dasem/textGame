@@ -29,7 +29,7 @@ public class Armor extends Equipment {
         if (upgradeLevel == 0) {
             return armorType.getTitle();
         } else {
-            return armorType.getTitle() + " " + upgradeLevel;
+            return armorType.getTitle() + " +" + upgradeLevel;
         }
     }
 
