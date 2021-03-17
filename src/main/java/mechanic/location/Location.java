@@ -3,6 +3,7 @@ package mechanic.location;
 import com.google.common.collect.*;
 import mechanic.*;
 import menu.*;
+import utils.Dices;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,17 +17,22 @@ public class Location {
     private Position currentPosition;
     private final char[][] location;
     private final Collection<LocationSetting> locationSettings;
+    private static final int VISION_DEPTH = 3;
+    private int locationWidth;
+    private int locationHeight;
 
-    public Location(List<Event> eventList, String locationName, LocationSetting ... locationSettings) {
+    public Location(List<Event> eventList, String locationName, LocationSetting... locationSettings) {
         this.eventList = eventList;
         this.locationName = locationName;
         this.location = readLocation();
         this.locationSettings = Lists.newArrayList(locationSettings);
     }
 
-    public Location(String locationName, LocationSetting ... locationSettings) {
+    public Location(String locationName, LocationSetting... locationSettings) {
         this.locationName = locationName;
         this.location = readLocation();
+        this.locationWidth = location[0].length;
+        this.locationHeight = location.length;
         this.locationSettings = Lists.newArrayList(locationSettings);
     }
 
@@ -38,7 +44,7 @@ public class Location {
         currentPosition = startPosition;
         while (true) {
             List<Event> forDelete = new LinkedList<>();
-            for(Event event : eventList){
+            for (Event event : eventList) {
                 if (event instanceof EscapeEvent && event.checkPosition(currentPosition)) {
                     return (EscapeEvent) event;
                 }
@@ -52,6 +58,10 @@ public class Location {
 
             if (locationSettings.contains(LocationSetting.ENABLE_GPS)) {
                 printMap(true);
+            }
+
+            if (locationSettings.contains(LocationSetting.ENABLE_VISION)) {
+                printVision(false);
             }
 
             Menu locationMenu = new Menu("Выбор пути:");
@@ -68,6 +78,11 @@ public class Location {
             locationMenu.addItem(pathOptions.get(3), () -> {
                 System.out.println(startPosition.goDown(location));
             });
+            if (locationSettings.contains(LocationSetting.ENABLE_VISION)) {
+                locationMenu.addItem("Осмотреться", () -> {
+                    printVision(true);
+                });
+            }
             locationMenu.showAndChoose();
         }
     }
@@ -113,11 +128,37 @@ public class Location {
     }
 
     public void printMap(boolean gps) {
-        for (int row = 0; row < location.length; row++) {
-            for (int col = 0; col < location[row].length; col++) {
+        for (int row = 0; row < locationHeight; row++) {
+            for (int col = 0; col < locationWidth; col++) {
                 char cell = location[row][col];
                 if (gps && currentPosition.isSamePosition(row, col)) {
                     System.out.print('Ж');
+                } else {
+                    System.out.print(cell);
+                }
+            }
+            System.out.println();
+        }
+    }
+
+
+    // Отображает местность вокруг. Если параметр attention == true, то производим проверку на ловушки поблизости.
+    public void printVision(boolean attention) {
+        int startRow = Math.max(currentPosition.currentRow - VISION_DEPTH, 0)-1;
+        int startCol = Math.max(currentPosition.currentColumn - VISION_DEPTH,0)-1;
+        int endRow = Math.min(currentPosition.currentRow + VISION_DEPTH, locationHeight)+1;
+        int endCol = Math.min(currentPosition.currentColumn + VISION_DEPTH, locationWidth)+1;
+        for (int row = startRow; row < endRow; row++) {
+            for (int col = startCol; col < endCol; col++) {
+                char cell = location[row][col];
+                if (currentPosition.isSamePosition(row, col)) {
+                    System.out.print('Ж');
+                } else if (attention && cell == 'C') {
+                    if (Dices.diceD20() >= 10) {
+                        System.out.print(cell);
+                    } else {
+                        System.out.print(' ');
+                    }
                 } else {
                     System.out.print(cell);
                 }
@@ -134,7 +175,7 @@ public class Location {
         eventList.add(new Event(row, column, event));
     }
 
-    public void addActions(Event ... events) {
+    public void addActions(Event... events) {
         addActions(Lists.newArrayList(events));
     }
 

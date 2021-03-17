@@ -35,7 +35,6 @@ public class Level1 implements Levelable {
 
         Item map = new UsefulItem("Карта подземелья") {
             final Location location = startLabyrinth;
-
             {
                 itemMenu.addItem("Посмотреть карту", () -> {
                     location.printMap(false);
@@ -166,9 +165,7 @@ public class Level1 implements Levelable {
                 new EscapeEvent(4, 0, () -> { // западный выход
 
                 }),
-                new EscapeEvent(0, 6, () -> { // северный выход
-
-                })
+                new EscapeEvent(0, 6, this::goblinsArrows)
         ));
         rivergard.enterLocation(9, 8).escapeAction();
     }
@@ -206,7 +203,6 @@ public class Level1 implements Levelable {
     }
 
     public void findStartLabyrinthFight() {
-
         lor("Бродя по лабиринту, ты находишь враждебное существо...");
         Battler battler = Randomizer.randomize(
                 new ObjectAndProbability<>(new Wolf(), 5),
@@ -223,7 +219,6 @@ public class Level1 implements Levelable {
             Utils.endGame();
         } else {
             lor("Бой дался тебе нелегко, но ты чувствуешь в себе силы двигаться дальше");
-
         }
 
     }
@@ -279,5 +274,37 @@ public class Level1 implements Levelable {
             Character.getInstance().takeDamage(trapDamageOut);
             System.out.println("Вы получили " + trapDamageOut + " урона.");
         }
+    }
+
+    private void goblinsArrows() {
+//        lor("На выходе из города вы замечаете склочного дварфа, который отчитывает громилу стоящего у повозки.\n" +
+//                "Вы замечаете, что при виде вас у ворчуна появляется идея. Он подбегает к вам и предлагает выгодную сделку.\n" +
+//                "Дварф представляется Гандреном Роксикером, а громила стоящий у повозки это Сильдар Холлвинтер его телохранитель.\n" +
+//                "Гандрен просит вас вас доставить гружёную провизией повозку в поселение Фандалин, расположенное в паре дней пути к северо-востоку." +
+//                "Гандрен готов заплатить 50 золотых. Вы соглашаетесь.\n" +
+//                "...\n" +
+//                "Вы провели несколько последних дней, следуя по Главному тракту на север от Ривергарда, и только недавно\n" +
+//                "свернули по Триборской тропе на восток. До сих пор вы не встретили никаких препятствий, но эта территория может" +
+//                "быть опасна. Бандиты и преступники, как известно, бродят вдоль этой тропы.");
+
+        Location triborgTrail = new Location("triborgTrail", LocationSetting.ENABLE_VISION);
+
+        triborgTrail.addActions(Lists.newArrayList(
+                new Event(2, 6, this::findTrap),
+                new Event(2, 12, this::findTrap),
+                new Event(4, 13, () -> {
+                    System.out.println("Продвигаясь по тропе, вы замечаете, что кусты что-то обсуждают. И вдруг из говорящих кустов выпрыгивает банда гоблинов и нападает на вас.");
+                    Fight goblinEncounter = new Fight(Character.getInstance(), new Goblin()); //Сделать файт с бандой гоблинов, а не одним гоблином
+                    goblinEncounter.battle();
+                }),
+                new EscapeEvent(1, 14, () -> {
+                    System.out.println("Бродя по лесу вы замечаете пещеру. Вы заходите в неё.");
+                    //Начать
+                }),
+                new EscapeEvent(4, 14, () -> {
+                    // Свалить в Фандалин
+                })
+        ));
+        triborgTrail.enterLocation(4, 0).escapeAction();
     }
 }
