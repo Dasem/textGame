@@ -283,3 +283,5 @@ public class Level1 implements Levelable {
 
 
 }
+
+/*if ((rollResult + Character.getInstance().getStat().necessaryStat) > )*/
