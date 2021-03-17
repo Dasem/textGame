@@ -109,7 +109,7 @@ public class Character implements Battler {
         if (weapon == null) {
             return Dices.diceD4();
         } else {
-            return weapon.getWeaponType().getDicedDamage();
+            return weapon.getDicedDamage();
         }
     }
 

@@ -98,6 +98,7 @@ public class Level1 implements Levelable {
                 new Armor(ArmorType.MEDIUM_ARMOR),
                 new HealingPotion(HealingPotionType.LESSER_HEALING_POTION)
         );
+        Blacksmith blacksmith = new Blacksmith();
         QuestNPC bartender = new QuestNPC("KillGangBanger", "Bartender",
                 () -> System.out.println("Вас встречает статный мужчина средних лет с длинными рыжими волосами."),
                 () -> System.out.println("Вижу ты не из робких. Тут в городе назначена награда за голову одного засранца, сходи к доске объявлений, если тебе интересно."),
@@ -113,9 +114,9 @@ public class Level1 implements Levelable {
                     Character.getInstance().setFullRest();
                     System.out.println("Твоё хп: " + Character.getInstance().getCurrentHealth());
                 }, false),
-                new Event(5, 12, () -> { // кузня
+                new Event(5, 12, blacksmith::upgrade, false) // кузня
 
-                }),
+                ,
                 new Event(3, 12, () -> { // квест
                     lor("Ты видишь странную фигуру в плаще, которая подзывает тебя к себе\n" +
                             "Ты решаешь подойти к нему...\n" +

@@ -1,6 +1,7 @@
 package menu;
 
 public enum MenuItemType {
+    UPGRADE,
     CUSTOM,
     THROW_ITEM,
     EQUIP_ITEM,

@@ -20,6 +20,11 @@ public enum WeaponType {
         public int getCost() {
             return 80;
         }
+
+        @Override
+        public int getUpgradeCost() {
+            return getCost()*2;
+        }
     },
     DAGGER("Кинжал") {
         @Override
@@ -35,6 +40,11 @@ public enum WeaponType {
         @Override
         public int getCost() {
             return 15;
+        }
+
+        @Override
+        public int getUpgradeCost() {
+            return getCost()*2;
         }
     },
     STAFF("Посох") {
@@ -52,6 +62,11 @@ public enum WeaponType {
         public int getCost() {
             return 50;
         }
+
+        @Override
+        public int getUpgradeCost() {
+            return getCost()*2;
+        }
     },
     SWORD("Меч") {
         @Override
@@ -67,6 +82,11 @@ public enum WeaponType {
         @Override
         public int getCost() {
             return 40;
+        }
+
+        @Override
+        public int getUpgradeCost() {
+            return getCost()*2;
         }
     };
 
@@ -85,4 +105,6 @@ public enum WeaponType {
     abstract public int getDicedDamage();
 
     abstract public int getCost();
+
+    abstract public int getUpgradeCost();
 }
