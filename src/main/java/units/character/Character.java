@@ -10,6 +10,7 @@ import mechanic.quest.*;
 import mechanic.quest.task.DialogTask;
 import mechanic.quest.task.Task;
 import menu.*;
+import units.enemies.Enemy;
 import utils.*;
 
 import java.util.*;
@@ -18,18 +19,40 @@ import java.util.stream.*;
 public class Character implements Battler {
     private final static int DEFAULT_ARMOR_CLASS = 10;
     private String username;
-    private int currentHealth = getMaxHealth();
+    private int currentHealth;
     private Armor armor;
     private Weapon weapon;
-    private Stat attackStat;
     private final Inventory inventory = new Inventory();
     private final Collection<Quest> activeQuests = new ArrayList<>();
     private final Map<Stat, Integer> stats = new HashMap<>();
+    private int level = 1;
+    int [] levelThreshold = {0,300,600,1800,3800,7500,9000,11000,14000,16000,21000,15000,20000,20000,25000,30000,30000,40000,40000,50000,999999};
+    private int currentExp;
+    private int expToLvlUp = levelThreshold[level];
+
+    public void levelUp() {
+        if (currentExp >= expToLvlUp) {
+            currentExp -= expToLvlUp;
+            level += 1;
+        }
+    }
+
+    public void getExp() {
+        currentExp += 50;
+    }
+
 
     private static Character character;
 
     public static void createInstance(String username) {
-        Character.character = new Character(username);
+        character = new Character(username);
+        Character.getInstance().getStats().put(Stat.BODY, 12);
+        Character.getInstance().getStats().put(Stat.CHARISMA, 12);
+        Character.getInstance().getStats().put(Stat.INTELLIGENCE, 12);
+        Character.getInstance().getStats().put(Stat.AGILITY, 12);
+        Character.getInstance().getStats().put(Stat.STRENGTH, 14);
+        Character.getInstance().getStats().put(Stat.WISDOM, 12);
+        character.setFullRest();
     }
 
     public static Character getInstance() {
@@ -102,7 +125,7 @@ public class Character implements Battler {
 
     @Override
     public int getMaxHealth() {
-        return 10;
+        return 10 + factStat(Stat.BODY);
     }
 
     @Override
@@ -116,8 +139,7 @@ public class Character implements Battler {
 
     @Override
     public int getAttackModifier() {
-        //TODO: сделать поумнее (чтоб зависело от класса, например)
-        return Character.getInstance().factStat(Stat.AGILITY);
+        return factStat(weapon.weaponStat());
     }
 
     @Override
@@ -274,6 +296,7 @@ public class Character implements Battler {
                 System.out.println(c.getCurrentHealth() + "/" + c.getMaxHealth() + " HP");
                 System.out.println((c.getInventory().getMoney() + " Золота"));
                 System.out.println(c.getArmorClass() + " Защиты");
+                System.out.println(c.currentExp + "/" + c.expToLvlUp + "опыта.");
                 if (c.getArmor() != null) {
                     System.out.println(c.getArmor().getPrettyName());
                 } else System.out.println("Нет брони");

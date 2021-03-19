@@ -22,7 +22,7 @@ public enum WeaponType {
             return 80;
         }
 
-        public Stat getAttackStat() {return Stat.STRENGTH;}
+        public Stat getWeaponStat() {return Stat.STRENGTH;}
 
         @Override
         public int getUpgradeCost() {
@@ -45,7 +45,7 @@ public enum WeaponType {
             return 15;
         }
 
-        public Stat getAttackStat() {return Stat.AGILITY;}
+        public Stat getWeaponStat() {return Stat.AGILITY;}
 
         @Override
         public int getUpgradeCost() {
@@ -68,7 +68,7 @@ public enum WeaponType {
             return 50;
         }
 
-        public Stat getAttackStat() {return Stat.STRENGTH;}
+        public Stat getWeaponStat() {return Stat.STRENGTH;}
 
         @Override
         public int getUpgradeCost() {
@@ -91,7 +91,7 @@ public enum WeaponType {
             return 40;
         }
 
-        public Stat getAttackStat() {return Stat.STRENGTH;}
+        public Stat getWeaponStat() {return Stat.STRENGTH;}
 
         @Override
         public int getUpgradeCost() {
@@ -115,7 +115,7 @@ public enum WeaponType {
 
     abstract public int getCost();
 
-    abstract public Stat getAttackStat();
+    abstract public Stat getWeaponStat();
 
     abstract public int getUpgradeCost();
 }

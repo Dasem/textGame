@@ -2,6 +2,7 @@ package items.equipment;
 
 import menu.*;
 import units.character.Character;
+import units.character.Stat;
 
 public class Weapon extends Equipment {
 
@@ -60,6 +61,11 @@ public class Weapon extends Equipment {
         Character.getInstance().setWeapon(null);
 
     }
+
+    public Stat weaponStat() {
+        return weaponType.getWeaponStat();
+    }
+
 
     public String getPrettyName() {
         return "Оружие: " + getName() + "\nМакс урон: " + getWeaponDamage();

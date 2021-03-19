@@ -37,6 +37,7 @@ public class Trap {
 
         });
         trapMenu.addItem("Отступить", () -> {
+
             System.out.println("Вы скипаете ловушку =(");
         });
 
@@ -72,6 +73,10 @@ public class Trap {
 
     public String getTextTrapFail() {
         return trapType.textTrapFail();
+    }
+
+    public boolean getReverse() {
+        return trapType.reverse();
     }
 
 }
