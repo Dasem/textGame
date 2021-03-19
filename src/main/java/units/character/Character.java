@@ -158,6 +158,9 @@ public class Character implements Battler {
 
     @Override
     public BattleActionResult battleAction(List<Battler> possibleTargets) {
+        //todo: добавить атаку (сделать выбор моба, кого стукнуть), можно заюзать предмет, заклинание
+        // (можно добавить какой-нибудь рандомный фаербол который на всех енеми работает)
+        // + побег из боя
         List<Battler> opponents = BattleUtils.extractAliveOpponents(possibleTargets);
         return BattleUtils.doDirectAttack(this, opponents.get(0));
     }

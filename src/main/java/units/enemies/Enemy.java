@@ -10,7 +10,7 @@ import utils.*;
 
 import java.util.List;
 
-public abstract class Enemy implements Battler, Lootable, Deadable {
+public abstract class Enemy implements Battler, Lootable {
     int currentHealth = getMaxHealth();
     boolean friendly = false;
 

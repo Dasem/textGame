@@ -44,10 +44,10 @@ public class Bandit extends Enemy {
     public Collection<Item> getLoot() {
         Collection<Item> colItem = new ArrayList<>();
         List<ObjectAndProbability<Item>> loot = new ArrayList<>();
-        loot.add(new ObjectAndProbability<>( new HealingPotion(HealingPotionType.LESSER_HEALING_POTION),2));
-        loot.add(new ObjectAndProbability<> (new HealingPotion(HealingPotionType.LESSER_HEALING_POTION),2));
-        loot.add(new ObjectAndProbability<> ( new UselessItem("Бондана бандита"),2));
-        loot.add(new ObjectAndProbability<> ( new UselessItem("Дырявый сапог"),2));
+        loot.add(new ObjectAndProbability<>( new HealingPotion(HealingPotionType.LESSER_HEALING_POTION),1));
+        loot.add(new ObjectAndProbability<> (new HealingPotion(HealingPotionType.LESSER_HEALING_POTION),1));
+        loot.add(new ObjectAndProbability<> ( new UselessItem("Бондана бандита"),1));
+        loot.add(new ObjectAndProbability<> ( new UselessItem("Дырявый сапог"),1));
         int countItem = Randomizer.randomize(
                 new ObjectAndProbability<>(1, 3),
                 new ObjectAndProbability<>(2, 2),

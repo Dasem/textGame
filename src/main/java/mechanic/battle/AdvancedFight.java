@@ -32,7 +32,7 @@ public class AdvancedFight {
         while (!fightEnd) {
             for (Battler battler : initiativeLine) {
                 if (!battler.isDead()) {
-                    BattleActionResult battleActionResult = battler.battleAction(initiativeLine.stream().filter(battler1 -> !battler1.isDead()).collect(Collectors.toList()));
+                    BattleActionResult battleActionResult = battler.battleAction(initiativeLine);
                     System.out.println(battleActionResult.getBattleActionText());
                     if (battleActionResult.isEmergencyFightEnd()) {
                         fightEnd = true;
