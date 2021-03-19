@@ -39,6 +39,7 @@ public abstract class Equipment extends Item implements Upgradeable {
                 Character.getInstance().wasteMoney(this.getUpgradeCost());
                 System.out.println("Осталось " + Character.getInstance().getInventory().getMoney() + " Золота");
             }
+            else System.out.println("У вас не хватает денег для заточки...");
         }, MenuItemType.UPGRADE);
     }
 

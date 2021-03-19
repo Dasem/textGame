@@ -94,6 +94,7 @@ public abstract class Item implements Usable, Tradeable {
         return cost;
     }
 
+
     public TradeMenu getTradeMenu() {
         return tradeMenu;
     }

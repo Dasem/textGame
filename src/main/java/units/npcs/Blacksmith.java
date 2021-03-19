@@ -8,27 +8,31 @@ import units.character.Character;
 import com.google.common.collect.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Blacksmith extends NPC {
 
-    private final ArrayList<Item> tradeItems;
-
-    public Blacksmith(Item... tradeItems) {
-        this.tradeItems = Lists.newArrayList(tradeItems);
-    }
 
     public void upgrade() {
         MenuItem resultItem;
         do {
             Menu tradeMenu = new Menu("Меню кузницы", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
             tradeMenu.addItem("Заточка", () -> {
-                Menu upgradeMenu = new Menu("Заточить", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
-                for (Item item : Character.getInstance().getInventory().getItems()) {
-                    if (item instanceof Equipment) {
-                        Equipment equipment = (Equipment) item;
-                        MenuItem menuItem = upgradeMenu.addItem(equipment.getName(), null, MenuItemType.UPGRADE, equipment);
-                        menuItem.setChoosable(() -> equipment.upgrade(menuItem));
-                    }
+                Menu upgradeMenu = new Menu("Заточка", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
+                List<Equipment> equipments = Character.getInstance().getInventory().getItems().stream()
+                        .filter(item -> item instanceof Equipment)
+                        .map(item -> (Equipment) item)
+                        .collect(Collectors.toList());
+                for (Equipment equipment : equipments) {
+                    MenuItem menuItem = upgradeMenu.addItem(equipment.getName(), null, MenuItemType.UPGRADE, equipment);
+                    menuItem.setChoosable(() ->
+                            equipment.upgrade(menuItem)
+                    );
+
+
+                }
+                if (equipments.isEmpty()) {
+                    System.out.println("Точить нечего");
                 }
                 upgradeMenu.showAndChoose();
             });
