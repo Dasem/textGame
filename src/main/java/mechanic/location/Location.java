@@ -16,7 +16,7 @@ public class Location {
     private List<Event> eventList = new ArrayList<>();
     private final String locationName;
     private Position currentPosition;
-    private Position lastPosition;
+    private List<Position> positionsHistory = new ArrayList<>();
     private final char[][] location;
     private final Collection<LocationSetting> locationSettings;
     private static final int VISION_DEPTH = 3;
@@ -69,15 +69,19 @@ public class Location {
             Menu locationMenu = new Menu("Выбор пути:");
             List<String> pathOptions = startPosition.pathMenu(location);
             locationMenu.addItem(pathOptions.get(0), () -> {
+                positionsHistory.add(currentPosition.clone());
                 System.out.println(startPosition.goTop(location));
             });
             locationMenu.addItem(pathOptions.get(1), () -> {
+                positionsHistory.add(currentPosition.clone());
                 System.out.println(startPosition.goRight(location));
             });
             locationMenu.addItem(pathOptions.get(2), () -> {
+                positionsHistory.add(currentPosition.clone());
                 System.out.println(startPosition.goLeft(location));
             });
             locationMenu.addItem(pathOptions.get(3), () -> {
+                positionsHistory.add(currentPosition.clone());
                 System.out.println(startPosition.goDown(location));
             });
             locationMenu.showAndChoose();

@@ -95,4 +95,9 @@ public class Position {
     public boolean isSamePosition(int row, int col) {
         return currentRow == row && currentColumn == col;
     }
+
+    @Override
+    protected Position clone() {
+        return new Position(currentRow, currentColumn);
+    }
 }
