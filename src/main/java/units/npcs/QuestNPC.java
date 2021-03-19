@@ -5,8 +5,7 @@ import mechanic.quest.*;
 import units.character.Character;
 
 public class QuestNPC extends NPC{
-    private final Quest quest;
-    private String questId;
+    private final String questId;
     private final String taskId;
     private final Actionable greetings;
     private final Actionable withoutQuest;
@@ -15,7 +14,7 @@ public class QuestNPC extends NPC{
     private final Actionable questCompleted;
 
     public QuestNPC(String questId, String taskId, Actionable greetings, Actionable withoutQuest, Actionable questInProgress, Actionable dialogSuccess, Actionable questCompleted) {
-        this.quest = Character.getInstance().getQuestById(questId);
+        this.questId = questId;
         this.taskId = taskId;
         this.greetings = greetings;
         this.withoutQuest = withoutQuest;
@@ -26,14 +25,15 @@ public class QuestNPC extends NPC{
 
     public void doDialog() {
         greetings.doAction();
+        Quest quest = Character.getInstance().getQuestById(questId);
         if (quest == null) {
             withoutQuest.doAction();
         } else if (quest.isDone()) {
             questCompleted.doAction();
         } else {
             Character.getInstance().tryDialog(taskId,
-                    () -> dialogSuccess.doAction(),
-                    () -> questInProgress.doAction());
+                    dialogSuccess,
+                    questInProgress);
         }
     }
 }
