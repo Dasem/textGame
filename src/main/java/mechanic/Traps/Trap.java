@@ -1,5 +1,6 @@
 package mechanic.Traps;
 
+import mechanic.location.Location;
 import menu.Menu;
 import menu.MenuSetting;
 import units.character.Character;
@@ -10,11 +11,13 @@ import utils.Utils;
 public class Trap {
 
     private final TrapType trapType;
-    public Menu trapMenu = new Menu(() -> "Впереди ловушка. Что будешь делать?", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
+    private final Menu trapMenu = new Menu(() -> "Впереди ловушка. Что будешь делать?", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
+    private final Location location;
 
-    public Trap(TrapType trapType) {
+    public Trap(TrapType trapType, Location location) {
         addTrapMenu();
         this.trapType = trapType;
+        this.location = location;
     }
 
     private void addTrapMenu() {
@@ -32,15 +35,12 @@ public class Trap {
                 Character.getInstance().takeDamage((getTrapDamage() / 2));
                 System.out.println(getTextTrapFail());
                 System.out.println("Вы получаете " + trapDamageOut + " урона.");
-
             }
-
         });
         trapMenu.addItem("Отступить", () -> {
-
-            System.out.println("Вы скипаете ловушку =(");
+            System.out.println("Вы решаете отступить и пойти другим путём.");
+            location.goBack();
         });
-
     }
 
     public int getTrapDifficulty() {
@@ -79,5 +79,8 @@ public class Trap {
         return trapType.reverse();
     }
 
+    public Menu getTrapMenu() {
+        return trapMenu;
+    }
 }
 

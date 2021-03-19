@@ -88,6 +88,9 @@ public class Location {
         }
     }
 
+    public void goBack() {
+        currentPosition = positionsHistory.get(positionsHistory.size() - 1);
+    }
 
     private char[][] readLocation() {
         ClassLoader classLoader = this.getClass().getClassLoader();

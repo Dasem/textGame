@@ -30,17 +30,13 @@ public class Character implements Battler {
     private int currentExp;
     private int expToLvlUp = levelThreshold[level];
 
-    public void levelUp() {
+    public void getExp() {
+        currentExp += 50;
         if (currentExp >= expToLvlUp) {
             currentExp -= expToLvlUp;
             level += 1;
         }
     }
-
-    public void getExp() {
-        currentExp += 50;
-    }
-
 
     private static Character character;
 

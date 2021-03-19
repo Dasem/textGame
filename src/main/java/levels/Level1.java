@@ -44,8 +44,8 @@ public class Level1 implements Levelable {
 
         Character.getInstance().lootItem(map);
         startLabyrinth.addActions(
-                new Event(5, 2, this::findTrap),
-                new Event(1, 3, this::findTrap),
+                new Event(5, 2, () -> findTrap(startLabyrinth)),
+                new Event(1, 3, () -> findTrap(startLabyrinth)),
                 new Event(4, 1, this::findStartLabyrinthPotion),
                 new Event(4, 4, this::findStartLabyrinthArmor),
                 new Event(5, 3, this::findStartLabyrinthWeapon),
@@ -257,18 +257,21 @@ public class Level1 implements Levelable {
         Character.getInstance().loot(weapon);
     }
 
-    public void findTrap() {
+    public void findTrap(Location location) {
         int rollResult = Dices.diceD20();
         Trap trap = Randomizer.randomize(
-                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_EASY_TRAP),3),
-                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_MEDIUM_TRAP),2),
-                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_HARD_TRAP),1),
-                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_EASY_TRAP),3),
-                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_MEDIUM_TRAP),2),
-                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_HARD_TRAP),10000));
-        if (rollResult + (Character.getInstance().factStat(Stat.WISDOM)) >= trap.getTrapPerceptionThreshold()) {
+                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_EASY_TRAP, location),3),
+                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_MEDIUM_TRAP, location),2),
+                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_HARD_TRAP, location),1),
+                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_EASY_TRAP, location),3),
+                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_MEDIUM_TRAP, location),2),
+                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_HARD_TRAP, location),10000));
+        if (rollResult + Character.getInstance().factStat(Stat.WISDOM) + 15 >= trap.getTrapPerceptionThreshold()) {
             System.out.println(trap.getTextTrapNoticed());
-            trap.trapMenu.showAndChoose();
+            trap.getTrapMenu().showAndChoose();
+            if (trap.getReverse()) {
+
+            }
         } else {
             System.out.println(trap.getTextTrapNotNoticed());
             int trapDamageOut = trap.getTrapDamage();
@@ -280,19 +283,19 @@ public class Level1 implements Levelable {
     private void goblinsArrows() {
         lor("На выходе из города вы замечаете склочного дварфа, который отчитывает громилу стоящего у повозки.\n" +
                 "Вы замечаете, что при виде вас у ворчуна появляется идея. Он подбегает к вам и предлагает выгодную сделку.\n" +
-                "Дварф представляется Гандреном Роксикером, а громила стоящий у повозки это Сильдар Холлвинтер его телохранитель.\n" +
+                "Дварф представляется Гандреном Роксикером, а громила стоящий у повозки - Сильдаром Холлвинтером, телохранителем дварфа.\n" +
                 "Гандрен просит вас вас доставить гружёную провизией повозку в поселение Фандалин, расположенное в паре дней пути к северо-востоку." +
-                "Гандрен готов заплатить 50 золотых. Вы соглашаетесь.\n" +
+                "Он готов заплатить 50 золотых. Вы соглашаетесь.\n" +
                 "...\n" +
                 "Вы провели несколько последних дней, следуя по Главному тракту на север от Ривергарда, и только недавно\n" +
                 "свернули по Триборской тропе на восток. До сих пор вы не встретили никаких препятствий, но эта территория может" +
-                "быть опасна. Бандиты и преступники, как известно, бродят вдоль этой тропы.");
+                "быть опасна. Бандиты и преступники частенько бродят вдоль этой тропы.");
 
         Location triborgTrail = new Location("triborgTrail", LocationSetting.ENABLE_VISION);
 
         triborgTrail.addActions(Lists.newArrayList(
-                new Event(2, 6, this::findTrap),
-                new Event(2, 12, this::findTrap),
+                new Event(2, 6, () -> findTrap(triborgTrail)),
+                new Event(2, 12, () -> findTrap(triborgTrail)),
                 new Event(4, 13, () -> {
                     System.out.println("Продвигаясь по тропе, вы замечаете, что кусты что-то обсуждают. И вдруг из говорящих кустов выпрыгивает банда гоблинов и нападает на вас.");
                     Fight goblinEncounter = new Fight(Character.getInstance(), new Goblin()); //Сделать файт с бандой гоблинов, а не одним гоблином
