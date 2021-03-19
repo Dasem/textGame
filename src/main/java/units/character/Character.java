@@ -190,7 +190,8 @@ public class Character implements Battler {
 
     @Override
     public void died() {
-
+        System.out.println("Вы сдохли как тварь дрожащая!");
+        Utils.endGame();
     }
 
     public Weapon getWeapon() {

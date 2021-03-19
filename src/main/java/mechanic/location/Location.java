@@ -123,13 +123,19 @@ public class Location {
     }
 
     public void printMap(boolean gps) {
-        for (int row = 0; row < locationHeight; row++) {
-            for (int col = 0; col < locationWidth; col++) {
-                char cell = location[row][col];
-                if (gps && currentPosition.isSamePosition(row, col)) {
-                    System.out.print('Ж');
+        for (int row = -1; row <= locationHeight; row++) {
+            for (int col = -1; col <= locationWidth; col++) {
+                if (row == -1 || row == locationHeight) {
+                    System.out.print('~');
+                } else if (col == -1 || col == locationWidth) {
+                    System.out.print('|');
                 } else {
-                    System.out.print(cell);
+                    char cell = location[row][col];
+                    if (gps && currentPosition.isSamePosition(row, col)) {
+                        System.out.print('Ж');
+                    } else {
+                        System.out.print(cell);
+                    }
                 }
             }
             System.out.println();
@@ -139,17 +145,21 @@ public class Location {
 
     // Отображает местность вокруг. Если параметр attention == true, то производим проверку на ловушки поблизости.
     public void printVision() {
-        int startRow = Math.max(currentPosition.currentRow - VISION_DEPTH, 0);
-        int startCol = Math.max(currentPosition.currentColumn - VISION_DEPTH,0);
+        int startRow = Math.max(currentPosition.currentRow - VISION_DEPTH, 0) - 1;
+        int startCol = Math.max(currentPosition.currentColumn - VISION_DEPTH, 0) - 1;
         int endRow = Math.min(currentPosition.currentRow + VISION_DEPTH, locationHeight);
         int endCol = Math.min(currentPosition.currentColumn + VISION_DEPTH, locationWidth);
-        for (int row = startRow; row < endRow; row++) {
-            for (int col = startCol; col < endCol; col++) {
-                char cell = location[row][col];
-                if (currentPosition.isSamePosition(row, col)) {
-                    System.out.print('Ж');
+        for (int row = startRow; row <= endRow; row++) {
+            for (int col = startCol; col <= endCol; col++) {
+                if (row == startRow || row == endRow || col == startCol || col == endCol) {
+                    System.out.print('~');
                 } else {
-                    System.out.print(cell);
+                    char cell = location[row][col];
+                    if (currentPosition.isSamePosition(row, col)) {
+                        System.out.print('Ж');
+                    } else {
+                        System.out.print(cell);
+                    }
                 }
             }
             System.out.println();
