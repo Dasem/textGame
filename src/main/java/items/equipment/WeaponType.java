@@ -22,7 +22,7 @@ public enum WeaponType {
             return 80;
         }
 
-        public Stat getAttackStat() {return Stat.STRENGTH;}
+        public Stat getWeaponStat() {return Stat.STRENGTH;}
     },
     DAGGER("Кинжал") {
         @Override
@@ -40,7 +40,7 @@ public enum WeaponType {
             return 15;
         }
 
-        public Stat getAttackStat() {return Stat.AGILITY;}
+        public Stat getWeaponStat() {return Stat.AGILITY;}
     },
     STAFF("Посох") {
         @Override
@@ -58,7 +58,7 @@ public enum WeaponType {
             return 50;
         }
 
-        public Stat getAttackStat() {return Stat.STRENGTH;}
+        public Stat getWeaponStat() {return Stat.STRENGTH;}
     },
     SWORD("Меч") {
         @Override
@@ -76,7 +76,7 @@ public enum WeaponType {
             return 40;
         }
 
-        public Stat getAttackStat() {return Stat.STRENGTH;}
+        public Stat getWeaponStat() {return Stat.STRENGTH;}
     };
 
     private final String title;
@@ -95,5 +95,5 @@ public enum WeaponType {
 
     abstract public int getCost();
 
-    abstract public Stat getAttackStat();
+    abstract public Stat getWeaponStat();
 }

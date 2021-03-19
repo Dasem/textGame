@@ -2,6 +2,7 @@ package mechanic.location;
 
 import com.google.common.collect.*;
 import mechanic.*;
+import mechanic.Traps.TrapType;
 import menu.*;
 
 import java.io.BufferedReader;
@@ -14,6 +15,7 @@ public class Location {
     private List<Event> eventList = new ArrayList<>();
     private final String locationName;
     private Position currentPosition;
+    private Position lastPosition;
     private final char[][] location;
     private final Collection<LocationSetting> locationSettings;
 
@@ -76,7 +78,7 @@ public class Location {
     private char[][] readLocation() {
         ClassLoader classLoader = this.getClass().getClassLoader();
         File file = new File(classLoader.getResource(locationName).getFile());
-        int row = 0, column = 0;
+        int row = 0, column = 0, pastRow = 99, pastColumn = 99;
         try (FileReader fr = new FileReader(file)) {
             BufferedReader reader = new BufferedReader(fr);
             String line = reader.readLine();
@@ -97,12 +99,14 @@ public class Location {
             while ((intSymbol = reader.read()) != -1) {
                 char currentSymbol = (char) intSymbol;
                 if (currentSymbol == '\n') {
+                    pastRow = currentRow;
                     currentRow++;
                     currentColumn = 0;
                     continue;
                 }
                 if (currentColumn < column) {
                     location[currentRow][currentColumn] = currentSymbol;
+                    pastColumn = currentColumn;
                     currentColumn++;
                 }
             }
@@ -141,5 +145,5 @@ public class Location {
     public void addActions(Collection<Event> events) {
         eventList.addAll(events);
     }
-}
+        }
 
