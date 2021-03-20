@@ -160,7 +160,6 @@ public class Character implements Battler {
     public BattleActionResult battleAction(List<Battler> possibleTargets) {
         //todo: можно заюзать заклинание
         // (можно добавить какой-нибудь рандомный фаербол который на всех енеми работает)
-        // + побег из боя
         AtomicReference<BattleActionResult> result = new AtomicReference<>();
         List<Battler> aliveTargets = BattleUtils.extractAliveOpponents(possibleTargets);
 
@@ -209,9 +208,14 @@ public class Character implements Battler {
         }
 
         battleMenu.addAdditionalItem("Сбежать из боя", () -> {
-            //todo Добавить шанс
-            result.set(new BattleActionResult(Lists.newArrayList(), "Вы сбежали из боя",
-                    this, Lists.newArrayList(), true));
+            //todo Посоветоваться насчёт шанса
+            System.out.println("Бросаем кости...");
+            int luck = Dices.diceD12();
+            boolean isLucky = luck > 6;
+            String battleActionText = String.format("Вы выбросили %d " +
+                    (isLucky ? "и сбежали из боя" : ", вам не удалось избежать боя"), luck);
+            result.set(new BattleActionResult(Lists.newArrayList(), battleActionText,
+                    this, Lists.newArrayList(), isLucky));
             // Не стал делать списки null`ами, вдруг это что-нибудь сломает в месте их обработки. Пусть будут просто пустыми.
         });
 
