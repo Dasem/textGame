@@ -69,6 +69,8 @@ public class Menu {
         if (menuSettings.contains(MenuSetting.ADD_BACK_BUTTON)) {
             addAdditionalItem("Назад", () -> {
                 // do nothing
+                // Предложение Паши:
+                //parentMenuItem.getForMenu().showAndChoose();
             }, MenuItemType.BACK);
         }
     }

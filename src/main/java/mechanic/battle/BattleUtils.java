@@ -18,6 +18,7 @@ public class BattleUtils {
         return possibleTargets.stream().filter(battler -> !battler.isFriendly() && !battler.isDead()).collect(Collectors.toList());
     }
 
+
     public static BattleActionResult doDirectAttack(Battler battlerFrom, Battler battlerTo) {
         AccuracyLevel accuracyLevel = calculateAttack(battlerFrom, battlerTo);
         int damage = accuracyLevel.getTotalDamage(battlerFrom);

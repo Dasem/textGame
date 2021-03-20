@@ -10,10 +10,10 @@ import mechanic.quest.*;
 import mechanic.quest.task.DialogTask;
 import mechanic.quest.task.Task;
 import menu.*;
-import units.enemies.Enemy;
 import utils.*;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.*;
 
 public class Character implements Battler {
@@ -158,17 +158,66 @@ public class Character implements Battler {
 
     @Override
     public BattleActionResult battleAction(List<Battler> possibleTargets) {
-        //todo: добавить атаку (сделать выбор моба, кого стукнуть), можно заюзать предмет, заклинание
+        //todo: можно заюзать заклинание
         // (можно добавить какой-нибудь рандомный фаербол который на всех енеми работает)
         // + побег из боя
-        List<Battler> opponents = BattleUtils.extractAliveOpponents(possibleTargets);
-        return BattleUtils.doDirectAttack(this, opponents.get(0));
-    }
+        AtomicReference<BattleActionResult> result = new AtomicReference<>();
+        List<Battler> aliveTargets = BattleUtils.extractAliveOpponents(possibleTargets);
 
-//    @Override
-//    public BattleActionResult battleAction(List<Battler> possibleTargets) {
-//        return null;
-//    }
+        Menu battleMenu = new Menu("Выберите действие: ", MenuSetting.HIDE_CHARACTER_MENU);
+
+        Menu attackMenu = new Menu("Выберите цель для атаки: ",
+                MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
+        Menu inventoryMenu = new Menu("Выберите предмет для использования: ",
+                MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
+//      Menu spellMenu = new Menu("Выберите цель для лечения: ",
+//              MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
+
+        // Как могло быть:
+        //attackMenu.setParentMenuItem(battleMenu.addItem("Выбрать цель для атаки", attackMenu::showAndChoose));
+        //inventoryMenu.setParentMenuItem(battleMenu.addItem("Использовать предмет", inventoryMenu::showAndChoose));
+//      spellMenu.setParentMenuItem(battleMenu.addItem("Использовать способность", spellMenu::showAndChoose));
+        // Как стало:
+        attackMenu.setParentMenuItem(battleMenu.addItem("Выбрать цель для атаки", () -> {
+            if (attackMenu.showAndChoose().getChosenMenuItem().getMenuItemType() == MenuItemType.BACK)
+                attackMenu.getParentMenuItem().getForMenu().showAndChoose();
+        }));
+        inventoryMenu.setParentMenuItem(battleMenu.addItem("Использовать предмет", () -> {
+            if (inventoryMenu.showAndChoose().getChosenMenuItem().getMenuItemType() == MenuItemType.BACK)
+                inventoryMenu.getParentMenuItem().getForMenu().showAndChoose();
+        }));
+        // Предлагаю изменить реализацию кнопки "назад", а конкретно её лямбду, см. туда.
+        // + было бы удобно, чтобы она всегда была на 0.
+
+        for (Battler target : aliveTargets) {
+            if (!target.isFriendly()) {
+                attackMenu.addItem(target.getName(),
+                        () -> result.set(BattleUtils.doDirectAttack(this, target)));
+            }
+        }
+        for (Item item : getInventory().getItems()) {
+            // Эта циклическая зависимость отвратительна
+            MenuItem inventoryMenuItem = inventoryMenu.addItem(item.getName(), null);
+            inventoryMenuItem.setChoosable(() -> {
+                if (item.use(inventoryMenuItem).getChosenMenuItem().getMenuItemType() != MenuItemType.BACK)
+                    result.set(new BattleActionResult(Lists.newArrayList(),
+                            String.format("Использован предмет %s", item.getName()),
+                            this, Lists.newArrayList(this)));
+                else if (inventoryMenu.showAndChoose().getChosenMenuItem().getMenuItemType() == MenuItemType.BACK)
+                    inventoryMenu.getParentMenuItem().getForMenu().showAndChoose();
+            });
+        }
+
+        battleMenu.addAdditionalItem("Сбежать из боя", () -> {
+            //todo Добавить шанс
+            result.set(new BattleActionResult(Lists.newArrayList(), "Вы сбежали из боя",
+                    this, Lists.newArrayList(), true));
+            // Не стал делать списки null`ами, вдруг это что-нибудь сломает в месте их обработки. Пусть будут просто пустыми.
+        });
+
+        battleMenu.showAndChoose();
+        return result.get();
+    }
 
     @Override
     public int initiativeThrow() {
