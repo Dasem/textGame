@@ -33,6 +33,10 @@ public class MenuItem {
         return menuItemType;
     }
 
+    public boolean typeIsBack() {
+        return menuItemType == MenuItemType.BACK;
+    }
+
     public String getName() {
         return name;
     }

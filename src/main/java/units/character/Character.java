@@ -178,11 +178,11 @@ public class Character implements Battler {
 //      spellMenu.setParentMenuItem(battleMenu.addItem("Использовать способность", spellMenu::showAndChoose));
         // Как стало:
         attackMenu.setParentMenuItem(battleMenu.addItem("Выбрать цель для атаки", () -> {
-            if (attackMenu.showAndChoose().getChosenMenuItem().getMenuItemType() == MenuItemType.BACK)
+            if (attackMenu.showAndChoose().getChosenMenuItem().typeIsBack())
                 attackMenu.getParentMenuItem().getForMenu().showAndChoose();
         }));
         inventoryMenu.setParentMenuItem(battleMenu.addItem("Использовать предмет", () -> {
-            if (inventoryMenu.showAndChoose().getChosenMenuItem().getMenuItemType() == MenuItemType.BACK)
+            if (inventoryMenu.showAndChoose().getChosenMenuItem().typeIsBack())
                 inventoryMenu.getParentMenuItem().getForMenu().showAndChoose();
         }));
         // Предлагаю изменить реализацию кнопки "назад", а конкретно её лямбду, см. туда.
@@ -198,12 +198,13 @@ public class Character implements Battler {
             // Эта циклическая зависимость отвратительна
             MenuItem inventoryMenuItem = inventoryMenu.addItem(item.getName(), null);
             inventoryMenuItem.setChoosable(() -> {
-                if (item.use(inventoryMenuItem).getChosenMenuItem().getMenuItemType() != MenuItemType.BACK)
+                if (item.use(inventoryMenuItem).getChosenMenuItem().typeIsBack()) {
+                    if (inventoryMenu.showAndChoose().getChosenMenuItem().typeIsBack())
+                        inventoryMenu.getParentMenuItem().getForMenu().showAndChoose();
+                } else
                     result.set(new BattleActionResult(Lists.newArrayList(),
                             String.format("Использован предмет %s", item.getName()),
                             this, Lists.newArrayList(this)));
-                else if (inventoryMenu.showAndChoose().getChosenMenuItem().getMenuItemType() == MenuItemType.BACK)
-                    inventoryMenu.getParentMenuItem().getForMenu().showAndChoose();
             });
         }
 
