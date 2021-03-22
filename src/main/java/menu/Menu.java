@@ -102,6 +102,11 @@ public class Menu {
         menuItems.add(menuItem);
         return menuItem;
     }
+    public MenuItem addItem(Holder<String> calculatedName, Choosable choosable) {
+        MenuItem menuItem = new MenuItem(calculatedName, choosable, this);
+        menuItems.add(menuItem);
+        return menuItem;
+    }
 
     public MenuItem addItem(String name, Choosable choosable, MenuItemType menuItemType) {
         MenuItem menuItem = new MenuItem(name, choosable, menuItemType, null, this);

@@ -2,50 +2,106 @@ package units.character;
 
 
 import com.google.common.collect.Lists;
-import items.Item;
 import menu.Menu;
+import menu.MenuItem;
 import menu.MenuItemType;
 import menu.MenuSetting;
-import utils.Utils;
+import utils.Dices;
 
-import java.util.List;
-import java.util.Scanner;
+
+import java.util.*;
+
 
 public class StartStat {
     int statPoints = 27;
     int cost = 0;
-    List<Stat> stats  = Lists.newArrayList(Stat.values());
+    Map<Stat, Integer> zeroStats = new HashMap<>();
+    List<Stat> stats = Lists.newArrayList(Stat.values());
+    MenuItem resultItem;
+
     public void statEnter() {
-        while (statPoints != 0) {
-            Menu statMenu = new Menu("Распределение характеристик", MenuSetting.HIDE_CHARACTER_MENU);
-            for (Stat stat : stats) {
-                statMenu.addItem(stat.getName(), () -> {
-                    System.out.println(stat.getName()+":");
-                    int count = Integer.parseInt(Utils.sc.nextLine());
-                    for (int i = 8; i != count; i++) {
-                        if (i >= 13) {
-                            cost += 2;
+        for (Stat autoStat : stats) {
+            zeroStats.put(autoStat, 8);
+        }
+        Menu statMenu = new Menu("Распределение характеристик", MenuSetting.HIDE_CHARACTER_MENU);
+        for (Stat stat : stats) {
+            statMenu.addItem(() ->stat.getName() + " = " + zeroStats.get(stat), () -> {
+                do {
+                    Menu statChangeMenu = new Menu("Изменение " + stat.getName(), MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
+                    statChangeMenu.addItem("Повысить стату " + stat.getName(), () -> {
+                        if (zeroStats.get(stat) > 15) {
+                            System.out.println("Сейчас " + stat.getName() + " = " + zeroStats.get(stat));
+                            System.out.println("Больше нельзя");
                         } else {
-                            cost++;
+                            if (zeroStats.get(stat) >= 13) {
+                                zeroStats.put(stat, zeroStats.get(stat) + 1);
+                                cost += 2;
+                                System.out.println("Сейчас " + stat.getName() + " = " + zeroStats.get(stat));
+                            } else {
+                                zeroStats.put(stat, zeroStats.get(stat) + 1);
+                                cost++;
+                                System.out.println("Сейчас " + stat.getName() + " = " + zeroStats.get(stat));
+                            }
                         }
-                    }
-                    Character.getInstance().getStats().put(stat, count);
-                    stats.remove(stat);
-                    statPoints = statPoints - cost;
-                    System.out.println("Остадось " + statPoints + " очков");
+                        statPoints -= cost;
+                    });
+                    statChangeMenu.addItem("Понизить стату " + stat.getName(), () -> {
+                        if (zeroStats.get(stat) < 8) {
+                            System.out.println("Сейчас " + stat.getName() + " = " + zeroStats.get(stat));
+                            System.out.println("Меньше нельзя");
+                        } else {
+                            if (zeroStats.get(stat) >= 13) {
+                                zeroStats.put(stat, zeroStats.get(stat) - 1);
+                                cost += 2;
+                                System.out.println("Сейчас " + stat.getName() + " = " + zeroStats.get(stat));
+                            } else {
+                                zeroStats.put(stat, zeroStats.get(stat) - 1);
+                                cost++;
+                                System.out.println("Сейчас " + stat.getName() + " = " + zeroStats.get(stat));
+                            }
+                        }
+                        statPoints += cost;
+                    });
+                    System.out.println("Осталось " + statPoints + " очков");
+                    resultItem = statChangeMenu.showAndChoose().getChosenMenuItem();
                     cost = 0;
-                });
-            }
+                } while (resultItem.getMenuItemType() != MenuItemType.BACK);
+            });
+        }
+        statMenu.addItem("Рандом", this::statRandom);
+        while (statPoints != 0) {
             statMenu.showAndChoose();
+        }
+        Character.getInstance().getStats().putAll(zeroStats);
+
+    }
+
+    public void statRandom() {
+        //statMenu.addItem("Рандом", this::statRandom);
+        statPoints=0;
+        for (Stat stat : stats) {
+            int count;
+            int a = Dices.diceD6();
+            int b = Dices.diceD6();
+            int c = Dices.diceD6();
+            int d = Dices.diceD6();
+            count = a + b + c + d - min(a, b, c, d);
+            Character.getInstance().getStats().put(stat, count);
+            System.out.println(stat.getName() + " = " + Character.getInstance().getStats().get(stat));
         }
 
     }
-    public void statRandom() {
-        Menu randoStatMenu = new Menu("Рандомное распределение", MenuSetting.HIDE_CHARACTER_MENU);
-        for (Stat stat : stats) {
 
+    public static int min(int a, int b, int c, int d) {
 
-            randoStatMenu.showAndChoose();
+        if (a < b && a < c && a < d) {
+            return a;
+        } else if (b < a && b < c && b < d) {
+            return b;
+        } else if (c < a && c < b && c < d) {
+            return c;
+        } else {
+            return d;
         }
     }
 }
