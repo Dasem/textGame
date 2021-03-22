@@ -44,15 +44,14 @@ public class Character implements Battler {
 
     private static Character character;
 
-    public static void createInstance(String username) {
+    public static void createInstance() {
+        System.out.print("Введите имя персонажа: ");
+        String username = Utils.sc.nextLine();
         character = new Character(username);
-        Character.getInstance().getStats().put(Stat.BODY, 12);
-        Character.getInstance().getStats().put(Stat.CHARISMA, 12);
-        Character.getInstance().getStats().put(Stat.INTELLIGENCE, 12);
-        Character.getInstance().getStats().put(Stat.AGILITY, 12);
-        Character.getInstance().getStats().put(Stat.STRENGTH, 14);
-        Character.getInstance().getStats().put(Stat.WISDOM, 12);
-        character.setFullRest();
+        System.out.print("Задайте характеристики: ");
+        new StartStat().statEnter();
+
+        character.setFullRest(); // Отхилить после создания на фулл
     }
 
     public static Character getInstance() {

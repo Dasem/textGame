@@ -26,7 +26,6 @@ public class Level2 implements Levelable {
         housemenu.addItem("Постучать", this::roomInside);
         housemenu.addItem("Открыть дверь", this::roomInside);
         housemenu.showAndChoose();
-
     }
 
     private void roomInside() {

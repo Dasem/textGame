@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
         Menu startMenu = new Menu("Добро пожаловать в игру:", MenuSetting.HIDE_CHARACTER_MENU);
         startMenu.addItem("Новая игра", () -> {
-            createCharacter();
+            Character.createInstance();
             new Level1().startLevel();
             new Level2().startLevel();
         });
@@ -18,19 +18,5 @@ public class Main {
             System.out.println("Игра окончена");
         });
         startMenu.showAndChoose();
-    }
-
-    private static void createCharacter() {
-        System.out.print("Введите имя персонажа: ");
-        String username = Utils.sc.nextLine();
-        Character.createInstance(username);
-        System.out.print("Задайте характеристики: ");
-        //TODO: сделать распределение статов
-        Character.getInstance().getStats().put(Stat.BODY, 12);
-        Character.getInstance().getStats().put(Stat.CHARISMA, 12);
-        Character.getInstance().getStats().put(Stat.INTELLIGENCE, 12);
-        Character.getInstance().getStats().put(Stat.AGILITY, 12);
-        Character.getInstance().getStats().put(Stat.STRENGTH, 14);
-        Character.getInstance().getStats().put(Stat.WISDOM, 12);
     }
 }
