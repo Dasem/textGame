@@ -1,9 +1,8 @@
 package mechanic.battle;
 
 import com.google.common.collect.*;
-import units.character.*;
-import units.character.Character;
 import utils.*;
+import units.character.Character;
 
 import java.util.*;
 import java.util.stream.*;
@@ -28,23 +27,23 @@ public class BattleUtils {
         }
 
         String hpBar = "";
-        if (battlerTo instanceof units.character.Character) {
-            hpBar = units.character.Character.getInstance().getHpBar();
+        if (battlerTo instanceof Character) {
+            hpBar = Character.getInstance().getHpBar();
         }
-        BattleActionResult BattleActionResult = null;
+        BattleActionResult battleActionResult = null;
         switch (accuracyLevel) {
             case CRITICAL_HIT:
-                BattleActionResult = new BattleActionResult(deadBattlers, "Критический удар! \uD83D\uDD25 " + battlerFrom.getName() + " нанёс " + damage + " урона ⚔" + hpBar, battlerFrom, Lists.newArrayList(battlerTo));
+                battleActionResult = new BattleActionResult(deadBattlers, "Критический удар! \uD83D\uDD25 " + battlerFrom.getName() + " нанёс " + damage + " урона ⚔" + hpBar, battlerFrom, Lists.newArrayList(battlerTo));
                 break;
             case NORMAL_HIT:
-                BattleActionResult = new BattleActionResult(deadBattlers, battlerFrom.getName() + " нанёс " + damage + " урона ⚔" + hpBar, battlerFrom, Lists.newArrayList(battlerTo));
+                battleActionResult = new BattleActionResult(deadBattlers, battlerFrom.getName() + " нанёс " + damage + " урона ⚔" + hpBar, battlerFrom, Lists.newArrayList(battlerTo));
                 break;
             case MISS:
-                BattleActionResult = new BattleActionResult(deadBattlers, battlerFrom.getName() + " промахнулся", battlerFrom, Lists.newArrayList(battlerTo));
+                battleActionResult = new BattleActionResult(deadBattlers, battlerFrom.getName() + " промахнулся", battlerFrom, Lists.newArrayList(battlerTo));
                 break;
         }
 
-        return BattleActionResult;
+        return battleActionResult;
     }
 
     private static AccuracyLevel calculateAttack(Battler battlerFrom, Battler battlerTo) {
