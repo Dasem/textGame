@@ -310,19 +310,21 @@ public class Character implements Battler {
             menu.addAdditionalItem("Текущие задания", () -> {
                 Menu questMenu = new Menu("Задания:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
                 for (Quest quest : activeQuests) {
-                    questMenu.addItem(quest.getDescription(), () -> {
-                        Menu innerMenu = new Menu("Задание: ", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
-                        innerMenu.addItem("Просмотреть задачи", () -> {
-                            for (Task task : quest.getTasks()) {
-                                task.print();
-                            }
+                    if(!quest.isDone()){
+                        questMenu.addItem(quest.getDescription(), () -> {
+                            Menu innerMenu = new Menu("Задание: ", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
+                            innerMenu.addItem("Просмотреть задачи", () -> {
+                                for (Task task : quest.getTasks()) {
+                                    task.print();
+                                }
+                            });
+                            innerMenu.addItem("Отклонить", () -> {
+                                this.denyQuest(quest);
+                                System.out.println("Ты отколняешь задание");
+                            });
+                            innerMenu.showAndChoose();
                         });
-                        innerMenu.addItem("Отклонить", () -> {
-                            this.denyQuest(quest);
-                            System.out.println("Ты отколняешь задание");
-                        });
-                        innerMenu.showAndChoose();
-                    });
+                    }
                 }
                 questMenu.showAndChoose();
             }, MenuItemType.QUEST_LIST);

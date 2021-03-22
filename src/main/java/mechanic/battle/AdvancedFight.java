@@ -76,7 +76,7 @@ public class AdvancedFight {
                 List<Battler> battlersForReRoll = recursiveCalculateInitiative(battlersGroupedByInitiative.get(initiative).stream()
                         .map(battlerWithInitiativeThrow -> battlerWithInitiativeThrow.battler)
                         .collect(Collectors.toList()));
-                System.out.println("У юнитов " + StringUtils.join(battlersForReRoll.stream().map(Battler::getName), ", ") + " одинаковая инициатива: " + initiative + ", рероллим");
+                System.out.println("У юнитов " + StringUtils.join(battlersForReRoll.stream().map(Battler::getName).collect(Collectors.toList()), ", ") + " одинаковая инициатива: " + initiative + ", рероллим");
                 result.addAll(battlersForReRoll);
             }
         }
