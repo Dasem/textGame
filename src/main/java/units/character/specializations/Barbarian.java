@@ -1,9 +1,10 @@
 package units.character.specializations;
 
+import mechanic.dice.*;
 import units.character.Character;
 import units.character.Specialization;
 import units.character.Stat;
-import utils.Dices;
+
 
 public class Barbarian extends Specialization {
     @Override
@@ -12,13 +13,8 @@ public class Barbarian extends Specialization {
     }
 
     @Override
-    public int getHitDace() {
-        return Dices.diceD12();
-    }
-
-    @Override
-    public int getBasedHP() {
-        return 12 + Character.getInstance().factStat(Stat.BODY);
+    public Dice getHitDace() {
+        return Dice.D12;
     }
 
     @Override

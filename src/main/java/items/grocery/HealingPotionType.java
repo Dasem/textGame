@@ -1,13 +1,14 @@
 package items.grocery;
 
-import utils.Dices;
+import mechanic.dice.*;
+
 
 public enum HealingPotionType {
 
     LESSER_HEALING_POTION("Малое зелье лечения") {
         @Override
         public int heal() {
-            return Dices.diceD4() + 2;
+            return Dice.D4.roll() + 2;
         }
 
         @Override
@@ -18,7 +19,7 @@ public enum HealingPotionType {
     NORMAL_HEALING_POTION("Среднее зелье лечения") {
         @Override
         public int heal() {
-            return (4 * Dices.diceD4()) + 4;
+            return (4 * Dice.D4.roll()) + 4;
         }
 
         @Override
@@ -29,7 +30,7 @@ public enum HealingPotionType {
     GREATER_HEALING_POTION("Большое зелье лечения") {
         @Override
         public int heal() {
-            return (8 * Dices.diceD4()) + 8;
+            return (8 * Dice.D4.roll()) + 8;
         }
 
         @Override
@@ -40,7 +41,7 @@ public enum HealingPotionType {
     EXCELLENT_HEALING_POTION("Превосходное зелье лечения") {
         @Override
         public int heal() {
-            return (10 * Dices.diceD4()) + 20;
+            return (10 * Dice.D4.roll()) + 20;
         }
 
         @Override

@@ -7,6 +7,7 @@ import items.grocery.*;
 import mechanic.Traps.Trap;
 import mechanic.Traps.TrapType;
 import mechanic.battle.*;
+import mechanic.dice.*;
 import mechanic.location.*;
 import mechanic.quest.Reward;
 import mechanic.quest.Quest;
@@ -258,7 +259,7 @@ public class Level1 implements Levelable {
     }
 
     public void findTrap() {
-        int rollResult = Dices.diceD20();
+        int rollResult = Dice.D20.roll();
         Trap trap = Randomizer.randomize(
                 new ObjectAndProbability<>(new Trap(TrapType.AGILITY_EASY_TRAP),3),
                 new ObjectAndProbability<>(new Trap(TrapType.AGILITY_MEDIUM_TRAP),2),

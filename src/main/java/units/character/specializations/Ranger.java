@@ -1,9 +1,10 @@
 package units.character.specializations;
 
+import mechanic.dice.*;
 import units.character.Character;
 import units.character.Specialization;
 import units.character.Stat;
-import utils.Dices;
+
 
 public class Ranger extends Specialization {
 
@@ -14,13 +15,8 @@ public class Ranger extends Specialization {
     }
 
     @Override
-    public int getHitDace() {
-        return Dices.diceD10();
-    }
-
-    @Override
-    public int getBasedHP() {
-        return 10 + Character.getInstance().factStat(Stat.BODY);
+    public Dice getHitDace() {
+        return Dice.D10;
     }
 
     @Override

@@ -1,8 +1,9 @@
 package mechanic.Traps;
 
 import com.google.common.collect.Sets;
+import mechanic.dice.*;
 import units.character.Stat;
-import utils.Dices;
+
 
 import java.util.Set;
 
@@ -22,7 +23,7 @@ public enum TrapType {
         }
 
         public int trapDamage() {
-            return (1 + Dices.diceD4());
+            return (1 + Dice.D4.roll());
         }
 
         @Override
@@ -69,7 +70,7 @@ public enum TrapType {
         }
 
         public int trapDamage() {
-            return (1 + Dices.diceD4());
+            return (1 + Dice.D4.roll());
         }
 
         @Override
@@ -114,7 +115,7 @@ public enum TrapType {
         }
 
         public int trapDamage() {
-            return (1 + Dices.diceD6());
+            return (1 + Dice.D6.roll());
         }
 
         @Override
@@ -162,7 +163,7 @@ public enum TrapType {
         }
 
         public int trapDamage() {
-            return (1 + Dices.diceD4());
+            return (1 + Dice.D4.roll());
         }
 
         @Override
@@ -210,7 +211,7 @@ public enum TrapType {
         }
 
         public int trapDamage() {
-            return (1 + Dices.diceD4());
+            return (1 + Dice.D4.roll());
         }
 
         @Override
@@ -257,7 +258,7 @@ public enum TrapType {
         }
 
         public int trapDamage() {
-            return (1 + Dices.diceD6());
+            return (1 + Dice.D6.roll());
         }
 
         @Override

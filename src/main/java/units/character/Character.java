@@ -6,6 +6,7 @@ import items.equipment.*;
 import items.grocery.*;
 import mechanic.Actionable;
 import mechanic.battle.*;
+import mechanic.dice.*;
 import mechanic.quest.*;
 import mechanic.quest.task.DialogTask;
 import mechanic.quest.task.Task;
@@ -131,7 +132,7 @@ public class Character implements Battler {
     @Override
     public int getOnHitDamage() {
         if (weapon == null) {
-            return Dices.diceD4();
+            return Dice.D4.roll();
         } else {
             return weapon.getDicedDamage();
         }
@@ -172,7 +173,7 @@ public class Character implements Battler {
 
     @Override
     public int initiativeThrow() {
-        int initiative = Dices.diceD20() + Character.getInstance().factStat(Stat.AGILITY);
+        int initiative = Dice.D20.roll() + Character.getInstance().factStat(Stat.AGILITY);
         Utils.suspense(250);
         System.out.println(this.getName() + " Бросил на инициативу " + initiative);
         return initiative;

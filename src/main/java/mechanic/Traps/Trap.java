@@ -1,10 +1,10 @@
 package mechanic.Traps;
 
+import mechanic.dice.*;
 import menu.Menu;
 import menu.MenuSetting;
 import units.character.Character;
 import units.character.Stat;
-import utils.Dices;
 import utils.Utils;
 
 public class Trap {
@@ -19,7 +19,7 @@ public class Trap {
 
     private void addTrapMenu() {
         trapMenu.addItem("Пройти ловушку", () -> {
-            int rollResult = Dices.diceD20();
+            int rollResult = Dice.D20.roll();
             System.out.println("Вы совершаете проверку характеристики: " + getTrapStat().getName() + ".");
             Utils.suspense();
             System.out.println("Ваш результат: " + (rollResult + Character.getInstance().factStat(getTrapStat())));

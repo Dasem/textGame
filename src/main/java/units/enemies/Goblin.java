@@ -4,7 +4,8 @@ import items.*;
 import items.grocery.HealingPotion;
 import items.grocery.HealingPotionType;
 import items.grocery.UselessItem;
-import utils.Dices;
+
+import mechanic.dice.*;
 import utils.random.ObjectAndProbability;
 import utils.random.Randomizer;
 
@@ -24,7 +25,7 @@ public class Goblin extends Enemy {
 
     @Override
     public int getOnHitDamage() {
-        return Dices.diceD4();
+        return Dice.D4.roll();
     }
 
     @Override
