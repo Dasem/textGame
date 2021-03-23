@@ -13,7 +13,9 @@ public abstract class Specialization {
        return getHitDace().getNumber() + Character.getInstance().factStat(Stat.BODY);
     }
 
-    abstract public int getIncreaseHP();
+    public int getIncreaseHP(){
+        return (getHitDace().getNumber())/2 + 1 + Character.getInstance().factStat(Stat.BODY);
+    }
 
     abstract public Stat getBasedCharacteristicSpell();
 

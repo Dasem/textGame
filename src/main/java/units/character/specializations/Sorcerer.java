@@ -19,11 +19,6 @@ public class Sorcerer extends Specialization {
     }
 
     @Override
-    public int getIncreaseHP() {
-        return 0;
-    }
-
-    @Override
     public Stat getBasedCharacteristicSpell() {
         return null;
     }

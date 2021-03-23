@@ -18,11 +18,6 @@ public class Rogue extends Specialization {
     }
 
     @Override
-    public int getIncreaseHP() {
-        return 0;
-    }
-
-    @Override
     public Stat getBasedCharacteristicSpell() {
         return null;
     }

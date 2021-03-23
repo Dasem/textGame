@@ -20,11 +20,6 @@ public class Ranger extends Specialization {
     }
 
     @Override
-    public int getIncreaseHP() {
-        return 0;
-    }
-
-    @Override
     public Stat getBasedCharacteristicSpell() {
         return null;
     }

@@ -16,11 +16,6 @@ public class Druid extends Specialization {
     public Dice getHitDace() {return Dice.D8;}
 
     @Override
-    public int getIncreaseHP() {
-        return 0;
-    }
-
-    @Override
     public Stat getBasedCharacteristicSpell() {
         return null;
     }
