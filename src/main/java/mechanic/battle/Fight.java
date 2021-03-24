@@ -1,5 +1,6 @@
 package mechanic.battle;
 
+import mechanic.dice.*;
 import units.Lootable;
 import units.character.Character;
 import units.character.Stat;
@@ -91,7 +92,7 @@ public class Fight {
     }
 
     public AccuracyLevel calculateAttack(Battler battlerFrom, Battler battlerTo) {
-        int d20Result = Dices.diceD20();
+        int d20Result = Dice.D20.roll();
         int fullAttackModifier = d20Result + battlerFrom.getAttackModifier();
         int fullArmorClass = battlerTo.getArmorClass();
         if (d20Result == 20) {

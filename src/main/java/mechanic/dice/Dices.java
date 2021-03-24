@@ -1,8 +1,11 @@
-package utils;
+package mechanic.dice;
+
+
+import utils.Utils;
 
 import java.util.Random;
 
-public class Dices {
+public  class Dices {
 
     public static int diceD4() {
         int min = 1;
@@ -50,3 +53,5 @@ public class Dices {
         return Utils.random.nextInt(max + 1 - min) + min;
     }
 }
+
+

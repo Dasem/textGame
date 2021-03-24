@@ -4,7 +4,7 @@ import com.google.common.collect.*;
 import mechanic.*;
 import mechanic.Traps.TrapType;
 import menu.*;
-import utils.Dices;
+
 
 import java.io.BufferedReader;
 import java.io.File;

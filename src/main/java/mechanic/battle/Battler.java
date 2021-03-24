@@ -1,6 +1,7 @@
 package mechanic.battle;
 
-import utils.Dices;
+import mechanic.dice.*;
+
 import utils.Utils;
 
 import java.util.*;
@@ -27,7 +28,7 @@ public interface Battler {
     BattleActionResult battleAction(List<Battler> possibleTargets);
 
     default int initiativeThrow() {
-        int initiative = Dices.diceD20();
+        int initiative = Dice.D20.roll();
         Utils.suspense(250);
         System.out.println(this.getName() + " Бросил на инициативу " + initiative);
         return initiative;

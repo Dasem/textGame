@@ -1,9 +1,10 @@
 package units.character.specializations;
 
+import mechanic.dice.*;
 import units.character.Character;
 import units.character.Specialization;
 import units.character.Stat;
-import utils.Dices;
+
 
 public class Cleric extends Specialization {
 
@@ -13,18 +14,8 @@ public class Cleric extends Specialization {
     }
 
     @Override
-    public int getHitDace() {
-        return Dices.diceD8();
-    }
-
-    @Override
-    public int getBasedHP() {
-        return 8 + Character.getInstance().factStat(Stat.BODY);
-    }
-
-    @Override
-    public int getIncreaseHP() {
-        return 0;
+    public Dice getHitDace() {
+        return Dice.D8;
     }
 
     @Override
