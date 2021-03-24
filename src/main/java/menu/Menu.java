@@ -39,7 +39,7 @@ public class Menu {
                 for (MenuItem menuItem : menuItems) {
                     menuItem.show(menuItems.indexOf(menuItem) + 1);
                 }
-                if (!additionalMenuItems.isEmpty()) {
+                if (!additionalMenuItems.isEmpty() && !menuSettings.contains(MenuSetting.HIDE_ADDITIONAL_MENU)) {
                     System.out.println("*************"); // разделение между доп. меню и основным
                     for (MenuItem menuItem : additionalMenuItems) {
                         menuItem.show(menuItems.size() + additionalMenuItems.indexOf(menuItem) + 1);

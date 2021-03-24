@@ -14,7 +14,7 @@ public class Level2 implements Levelable {
     @Override
     public void startLevel() {
         System.out.println("Идя по тропе ты натыкаешься на одиноко стоящий дом");
-        Menu menu = new Menu("Что ты выберешь: ");
+        LorMenu menu = new LorMenu("Что ты выберешь: ");
         menu.addItem("Подойти", this::aloneHouse);
         menu.addItem("Пройти мимо", this::track);
         menu.showAndChoose();
@@ -22,7 +22,7 @@ public class Level2 implements Levelable {
 
     private void aloneHouse() {
         Utils.lor("Ты подходишь к двери и видишь, что дверь приоткрыта");
-        Menu housemenu = new Menu("Что ты выберешь: ");
+        LorMenu housemenu = new LorMenu("Что ты выберешь: ");
         housemenu.addItem("Постучать", this::roomInside);
         housemenu.addItem("Открыть дверь", this::roomInside);
         housemenu.showAndChoose();
@@ -32,7 +32,7 @@ public class Level2 implements Levelable {
         Utils.lor("Почти дотянувшись до двери она волшебным образом отворяется и ты видишь перед собой пустую комнату\n" +
                 "Ты замечаешь свёрток бумаги, лежащий на полу и решаешь посмотреть, что в нём");
         Utils.lor("Развернув свёрток ты видишь порошок синего цвета и кулон с волчьей пастью");
-        Menu rollmenu = new Menu("Что ты выберешь: ");
+        LorMenu rollmenu = new LorMenu("Что ты выберешь: ");
         rollmenu.addItem("Взять его", () -> {
             Character.getInstance().lootItem(new QuestItem("Бумажный свёрток", 1));
             Utils.lor("Ты кладёшь бумажный свёрток к себе в инвентарь");
@@ -82,7 +82,7 @@ public class Level2 implements Levelable {
                 "Как только ты открываешь рот, чтобы спросить что здесь происходит, мальчишка уже убежал вглубь города");
         Utils.lor("Ты спрашиваешь у прохожих где найти эту корчму и отправляешься к ней\n" +
                 "На входе Пивной кружки стоит громила...");
-        Menu menu = new Menu("Что ты выберешь:");
+        LorMenu menu = new LorMenu("Что ты выберешь:");
         menu.addItem("Подойти к нему и сказать, что Волчица искала тебя", () -> {
                     Utils.lor("Ты подходишь к громиле и говоришь, что тебя искала Волчица:");
                     Utils.lor("Он молча кивает и указывает тебе на дверь возле стойки корчмаря");
@@ -104,7 +104,7 @@ public class Level2 implements Levelable {
         Utils.lor("Открыв дверь, ты видишь узкую лестницу, ведущую вверх. " +
                 "Почти поднявшись на верх до вас доносится очень громкий звук удара о какой-то предмет и приближающиеся к вам шаги.");
         Utils.lor("Большая дубовая дверь открывается и перед вашим взором является фигура в плаще, которая направляется к тебе...");
-        Menu menu = new Menu("Что ты выберешь");
+        LorMenu menu = new LorMenu("Что ты выберешь");
         menu.addItem("Стоять на месте", () -> {
             Utils.lor("Явно разъярённая личность толкает тебя плечом и ,что-то бормоча себя под нос, спускается вниз");
             Character.getInstance().takeDamage(1);
@@ -123,7 +123,7 @@ public class Level2 implements Levelable {
         QuestItem scroll = Character.getInstance().findQuestItemByInventory(1); //todo доделать сайдквест
         Utils.lor("Ты видишь перед собой женщину и она тебе что-то говорит... ");
         if (scroll != null) {
-            Menu menu = new Menu("Что ты выберешь");
+            LorMenu menu = new LorMenu("Что ты выберешь");
             menu.addItem("Отдать", () -> {
                 Character.getInstance().getInventory().removeItem(scroll);
                 Utils.lor("Ты отдаёшь свёрток и что-то происходит");
