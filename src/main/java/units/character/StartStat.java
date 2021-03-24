@@ -29,7 +29,7 @@ public class StartStat {
                 do {
                     Menu statChangeMenu = new Menu("Изменение " + stat.getName(), MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
                     statChangeMenu.addItem("Повысить стату " + stat.getName(), () -> {
-                        if (zeroStats.get(stat) > 15) {
+                        if (zeroStats.get(stat) >= 15) {
                             System.out.println("Сейчас " + stat.getName() + " = " + zeroStats.get(stat));
                             System.out.println("Больше нельзя");
                         } else {
@@ -46,11 +46,11 @@ public class StartStat {
                         statPoints -= cost;
                     });
                     statChangeMenu.addItem("Понизить стату " + stat.getName(), () -> {
-                        if (zeroStats.get(stat) < 8) {
+                        if (zeroStats.get(stat) <= 8) {
                             System.out.println("Сейчас " + stat.getName() + " = " + zeroStats.get(stat));
                             System.out.println("Меньше нельзя");
                         } else {
-                            if (zeroStats.get(stat) >= 13) {
+                            if (zeroStats.get(stat) > 13) {
                                 zeroStats.put(stat, zeroStats.get(stat) - 1);
                                 cost += 2;
                                 System.out.println("Сейчас " + stat.getName() + " = " + zeroStats.get(stat));
@@ -86,8 +86,8 @@ public class StartStat {
             int c = Dices.diceD6();
             int d = Dices.diceD6();
             count = a + b + c + d - min(a, b, c, d);
-            Character.getInstance().getStats().put(stat, count);
-            System.out.println(stat.getName() + " = " + Character.getInstance().getStats().get(stat));
+            zeroStats.put(stat, count);
+            System.out.println(stat.getName() + " = " + zeroStats.get(stat));
         }
 
     }
