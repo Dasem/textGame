@@ -40,6 +40,8 @@ public class Spider extends Enemy {
         return 12;
     }
 
+    public int mobExp() {return 56;}
+
     @Override
     public Collection<Item> getLoot() {
         Collection<Item> colItem = new ArrayList<>();
@@ -62,7 +64,7 @@ public class Spider extends Enemy {
 
     @Override
     public String getName() {
-        return "Spider";
+        return "Паук";
     }
 
 

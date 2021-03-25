@@ -19,6 +19,8 @@ public interface Battler {
 
     int getArmorClass();
 
+    int mobExp();
+
     boolean isFriendly();
 
     default boolean isDead() {

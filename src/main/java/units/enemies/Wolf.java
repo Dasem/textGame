@@ -38,7 +38,8 @@ public class Wolf extends Enemy {
         return 13;
     }
 
-    public int expGive() {return 50;}
+    @Override
+    public int mobExp() {return 75;}
 
     @Override
     public Collection<Item> getLoot() {

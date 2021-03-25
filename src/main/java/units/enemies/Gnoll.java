@@ -39,6 +39,8 @@ public class Gnoll extends Enemy {
         return 15;
     }
 
+    public int mobExp() {return 75;}
+
     @Override
     public Collection<Item> getLoot() {
         Collection<Item> colItem = new ArrayList<>();
@@ -61,7 +63,7 @@ public class Gnoll extends Enemy {
 
     @Override
     public String getName() {
-        return "Gnoll";
+        return "Гнолл";
     }
 
 

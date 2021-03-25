@@ -40,6 +40,8 @@ public class Skeleton extends Enemy {
         return 13;
     }
 
+    public int mobExp() {return 75;}
+
     @Override
     public Collection<Item> getLoot() {
         Collection<Item> colItem = new ArrayList<>();
@@ -62,7 +64,7 @@ public class Skeleton extends Enemy {
 
     @Override
     public String getName() {
-        return "Skeleton";
+        return "Скелет";
     }
 
 

@@ -31,18 +31,6 @@ public class Character implements Battler {
     private int currentExp;
     private int expToLvlUp = levelThreshold[level];
 
-    public void levelUp() {
-        if (currentExp >= expToLvlUp) {
-            currentExp -= expToLvlUp;
-            level += 1;
-        }
-    }
-
-    public void getExp() {
-        currentExp += 50;
-    }
-
-
     private static Character character;
 
     public static void createInstance() {
@@ -109,6 +97,17 @@ public class Character implements Battler {
         this.inventory.addItems(item);
     }
 
+    public void getExp(int exp) {
+        character.currentExp += exp;
+        System.out.println("Вы получили " + exp + " опыта.");
+        while (currentExp/expToLvlUp > 0) {
+            currentExp -= expToLvlUp;
+            level += 1;
+            expToLvlUp = levelThreshold[level];
+            System.out.println("Вы достигли " + level + " уровня!");
+        }
+    }
+
     @Override
     public int getCurrentHealth() {
         return currentHealth;
@@ -150,6 +149,11 @@ public class Character implements Battler {
         } else {
             return getArmor().getArmorType().getArmorClass();
         }
+    }
+
+    @Override
+    public int mobExp() {
+        return 0;
     }
 
     @Override
@@ -354,7 +358,7 @@ public class Character implements Battler {
                 System.out.println(c.getCurrentHealth() + "/" + c.getMaxHealth() + " HP");
                 System.out.println((c.getInventory().getMoney() + " Золота"));
                 System.out.println(c.getArmorClass() + " Защиты");
-                System.out.println(c.currentExp + "/" + c.expToLvlUp + "опыта.");
+                System.out.println(c.currentExp + "/" + c.expToLvlUp + " опыта.");
                 if (c.getArmor() != null) {
                     System.out.println(c.getArmor().getPrettyName());
                 } else System.out.println("Нет брони");
