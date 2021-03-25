@@ -30,6 +30,8 @@ public abstract class Enemy implements Battler, Lootable {
 
     @Override
     public void died() {
+        Character.getInstance().getExp(25);
+        System.out.println("Вы получили 25 опыта");
         for(Quest quest : Character.getInstance().getActiveQuests()){
             List<Task> tasks = quest.getTasks();
             for (int i = 0; i < tasks.size(); i++) {
@@ -48,4 +50,7 @@ public abstract class Enemy implements Battler, Lootable {
         List<Battler> opponents = BattleUtils.extractAliveAllies(possibleTargets);
         return BattleUtils.doDirectAttack(this, opponents.get(0));
     }
+
+
+
 }

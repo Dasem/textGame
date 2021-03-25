@@ -43,12 +43,16 @@ public class AdvancedFight {
                         break;
                     }
                     if (BattleUtils.extractAliveOpponents(initiativeLine).isEmpty()) {
+                        for (Battler deadBattler : battleActionResult.getDeadBattlers()) {
+                            Character.getInstance().getExp(deadBattler.mobExp());
+                        }
                         fightEnd = true;
                         break;
                     }
                 }
             }
         }
+
     }
 
     private void fillInitiativeLine() {

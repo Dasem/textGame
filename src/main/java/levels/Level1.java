@@ -208,7 +208,7 @@ public class Level1 implements Levelable {
         Battler battler = Randomizer.randomize(
                 new ObjectAndProbability<>(new Wolf(), 5),
                 new ObjectAndProbability<>(new Goblin(), 10),
-                new ObjectAndProbability<>(new Sanya(), 1),
+                new ObjectAndProbability<>(new Sanya(), 10000),
                 new ObjectAndProbability<>(new Spider(), 3),
                 new ObjectAndProbability<>(new Skeleton(), 3),
                 new ObjectAndProbability<>(new Gnoll(), 1)
@@ -265,8 +265,8 @@ public class Level1 implements Levelable {
                 new ObjectAndProbability<>(new Trap(TrapType.AGILITY_HARD_TRAP, location),1),
                 new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_EASY_TRAP, location),3),
                 new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_MEDIUM_TRAP, location),2),
-                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_HARD_TRAP, location),10000));
-        if (rollResult + Character.getInstance().factStat(Stat.WISDOM) + 15 >= trap.getTrapPerceptionThreshold()) {
+                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_HARD_TRAP, location),1));
+        if (rollResult + Character.getInstance().factStat(Stat.WISDOM) >= trap.getTrapPerceptionThreshold()) {
             System.out.println(trap.getTextTrapNoticed());
             trap.getTrapMenu().showAndChoose();
             if (trap.getReverse()) {

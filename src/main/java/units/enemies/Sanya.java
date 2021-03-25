@@ -37,6 +37,8 @@ public class Sanya extends Enemy {
         return 10;
     }
 
+    public int mobExp() {return 100;}
+
     @Override
     public Collection<Item> getLoot() {
         Collection<Item> colItem = new ArrayList<>();
@@ -44,7 +46,7 @@ public class Sanya extends Enemy {
         loot.add(new ObjectAndProbability<>( new HealingPotion(HealingPotionType.LESSER_HEALING_POTION),2));
         loot.add(new ObjectAndProbability<> (new HealingPotion(HealingPotionType.LESSER_HEALING_POTION),2));
         loot.add(new ObjectAndProbability<> ( new UselessItem("Ухо Сани"),2));
-        loot.add(new ObjectAndProbability<> ( new UselessItem("Ухо Сани"),2));
+        loot.add(new ObjectAndProbability<> ( new UselessItem("Кудрявый волос"),2));
         int countItem = Randomizer.randomize(
                 new ObjectAndProbability<>(1, 3),
                 new ObjectAndProbability<>(2, 2),
