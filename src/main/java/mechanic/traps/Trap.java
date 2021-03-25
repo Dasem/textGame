@@ -1,4 +1,4 @@
-package mechanic.Traps;
+package mechanic.traps;
 
 import mechanic.dice.*;
 import menu.Menu;

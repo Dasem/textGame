@@ -2,11 +2,11 @@ package units.character;
 
 
 import com.google.common.collect.Lists;
+import mechanic.dice.*;
 import menu.Menu;
 import menu.MenuItem;
 import menu.MenuItemType;
 import menu.MenuSetting;
-import utils.Dices;
 
 
 import java.util.*;
@@ -77,14 +77,14 @@ public class StartStat {
     }
 
     public void statRandom() {
-        //statMenu.addItem("Рандом", this::statRandom);
         statPoints=0;
+        Dice d6 = Dice.D6;
         for (Stat stat : stats) {
             int count;
-            int a = Dices.diceD6();
-            int b = Dices.diceD6();
-            int c = Dices.diceD6();
-            int d = Dices.diceD6();
+            int a = d6.roll();
+            int b = d6.roll();
+            int c = d6.roll();
+            int d = d6.roll();
             count = a + b + c + d - min(a, b, c, d);
             zeroStats.put(stat, count);
             System.out.println(stat.getName() + " = " + zeroStats.get(stat));

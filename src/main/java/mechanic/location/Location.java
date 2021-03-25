@@ -2,7 +2,6 @@ package mechanic.location;
 
 import com.google.common.collect.*;
 import mechanic.*;
-import mechanic.Traps.TrapType;
 import menu.*;
 
 

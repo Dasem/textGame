@@ -1,6 +1,5 @@
 package mechanic.dice;
 
-import utils.*;
 
 public enum Dice {
     D4(4, Dices::diceD4),
@@ -11,11 +10,8 @@ public enum Dice {
     D20(20, Dices::diceD20),
     D100(100, Dices::diceD100);
 
-
-
-
-    private int number;
-    private Rollable roll;
+    private final int number;
+    private final Rollable roll;
 
     Dice(int number, Rollable roll) {
         this.number = number;
@@ -29,6 +25,4 @@ public enum Dice {
     public int getNumber() {
         return number;
     }
-
-
 }

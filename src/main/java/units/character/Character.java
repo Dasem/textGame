@@ -139,6 +139,7 @@ public class Character implements Battler {
 
     @Override
     public int getAttackModifier() {
+        //TODO: если бьёшь рукой, оно падает (weapon == null)
         return factStat(weapon.weaponStat());
     }
 

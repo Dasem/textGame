@@ -18,6 +18,4 @@ public abstract class Specialization {
     }
 
     abstract public Stat getBasedCharacteristicSpell();
-
-
 }

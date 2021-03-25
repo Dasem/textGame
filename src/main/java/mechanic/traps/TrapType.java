@@ -1,11 +1,7 @@
-package mechanic.Traps;
+package mechanic.traps;
 
-import com.google.common.collect.Sets;
 import mechanic.dice.*;
 import units.character.Stat;
-
-
-import java.util.Set;
 
 public enum TrapType {
 
