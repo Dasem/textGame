@@ -258,7 +258,7 @@ public class Level1 implements Levelable {
         Character.getInstance().loot(weapon);
     }
 
-    public void findTrap() {
+    public void findTrap(Location location) {
         int rollResult = Dice.D20.roll();
         Trap trap = Randomizer.randomize(
                 new ObjectAndProbability<>(new Trap(TrapType.AGILITY_EASY_TRAP, location),3),
