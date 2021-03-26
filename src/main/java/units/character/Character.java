@@ -43,7 +43,8 @@ public class Character implements Battler {
         character = new Character(username);
         System.out.print("Задайте характеристики: ");
         new StartStat().statEnter();
-
+        System.out.print("Выберите класс персонажа: ");
+        chooseSpecialization();
         character.setFullRest(); // Отхилить после создания на фулл
     }
 
