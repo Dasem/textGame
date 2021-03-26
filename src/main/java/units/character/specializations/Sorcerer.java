@@ -9,8 +9,8 @@ import units.character.Stat;
 public class Sorcerer extends Specialization {
 
     @Override
-    public Stat getMainStat() {
-        return null;
+    public String getName() {
+        return "Чародей";
     }
 
     @Override

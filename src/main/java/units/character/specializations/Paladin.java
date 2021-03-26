@@ -8,9 +8,11 @@ import units.character.Stat;
 
 public class Paladin extends Specialization {
     @Override
-    public Stat getMainStat() {
-        return null;
+    public String getName() {
+        return "Паладин";
     }
+
+
 
     @Override
     public Dice getHitDace() {

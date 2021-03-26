@@ -5,7 +5,7 @@ import mechanic.dice.Dice;
 
 public abstract class Specialization {
 
-    abstract public Stat getMainStat();
+    abstract public String getName();
 
     abstract public Dice getHitDace();
 

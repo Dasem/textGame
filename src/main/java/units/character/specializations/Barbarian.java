@@ -7,10 +7,6 @@ import units.character.Stat;
 
 
 public class Barbarian extends Specialization {
-    @Override
-    public Stat getMainStat() {
-        return null;
-    }
 
     @Override
     public Dice getHitDace() {
@@ -22,5 +18,8 @@ public class Barbarian extends Specialization {
         return null;
     }
 
-
+    @Override
+    public String getName() {
+        return "Варвар";
+    }
 }

@@ -8,9 +8,11 @@ import units.character.Stat;
 
 public class Bard extends Specialization {
     @Override
-    public Stat getMainStat() {
-        return null;
+    public String getName() {
+        return "Бард";
     }
+
+
 
     @Override
     public Dice getHitDace() {

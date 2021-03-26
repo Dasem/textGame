@@ -10,9 +10,10 @@ public class Ranger extends Specialization {
 
 
     @Override
-    public Stat getMainStat() {
-        return null;
+    public String getName() {
+        return "Следопыт";
     }
+
 
     @Override
     public Dice getHitDace() {

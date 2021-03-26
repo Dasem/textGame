@@ -18,6 +18,10 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.*;
 
 public class Character implements Battler {
+
+    private Specialization specialization;
+
+
     private final static int DEFAULT_ARMOR_CLASS = 10;
     private String username;
     private int currentHealth;
@@ -27,7 +31,7 @@ public class Character implements Battler {
     private final Collection<Quest> activeQuests = new ArrayList<>();
     private final Map<Stat, Integer> stats = new HashMap<>();
     private int level = 1;
-    int [] levelThreshold = {0,300,600,1800,3800,7500,9000,11000,14000,16000,21000,15000,20000,20000,25000,30000,30000,40000,40000,50000,999999};
+    int[] levelThreshold = {0, 300, 600, 1800, 3800, 7500, 9000, 11000, 14000, 16000, 21000, 15000, 20000, 20000, 25000, 30000, 30000, 40000, 40000, 50000, 999999};
     private int currentExp;
     private int expToLvlUp = levelThreshold[level];
 
@@ -100,7 +104,7 @@ public class Character implements Battler {
     public void getExp(int exp) {
         character.currentExp += exp;
         System.out.println("Вы получили " + exp + " опыта.");
-        while (currentExp/expToLvlUp > 0) {
+        while (currentExp / expToLvlUp > 0) {
             currentExp -= expToLvlUp;
             level += 1;
             expToLvlUp = levelThreshold[level];
@@ -124,7 +128,7 @@ public class Character implements Battler {
 
     @Override
     public int getMaxHealth() {
-        return 10 + factStat(Stat.BODY);
+        return Character.getInstance().getSpecialization().getBasedHP(); //TODO правильно ли
     }
 
     @Override
@@ -365,8 +369,8 @@ public class Character implements Battler {
                 if (c.getWeapon() != null) {
                     System.out.println(c.getWeapon().getPrettyName());
                 } else System.out.println("Нет оружия");
-                for(Stat stat : Stat.values()){
-                    System.out.println(stat.getName()+" "+getStat(stat));
+                for (Stat stat : Stat.values()) {
+                    System.out.println(stat.getName() + " " + getStat(stat));
                 }
             });
             characterMenu.addItem("Снаряжение", () -> {
@@ -395,7 +399,7 @@ public class Character implements Battler {
             menu.addAdditionalItem("Текущие задания", () -> {
                 Menu questMenu = new Menu("Задания:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
                 for (Quest quest : activeQuests) {
-                    if(!quest.isDone()){
+                    if (!quest.isDone()) {
                         questMenu.addItem(quest.getDescription(), () -> {
                             Menu innerMenu = new Menu("Задание: ", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
                             innerMenu.addItem("Просмотреть задачи", () -> {
@@ -452,4 +456,25 @@ public class Character implements Battler {
         }
         return false;
     }
+
+    public Specialization getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(Specialization specialization) {
+        this.specialization = specialization;
+    }
+
+    public static void chooseSpecialization(){
+        Menu menu = new Menu("Меню выбора Специализации");
+        Specializations [] specializations = Specializations.values();
+        for(Specializations special : specializations){
+            MenuItem menuItem = menu.addItem(special.getName(), ()-> Character.getInstance().setSpecialization(special.getSpecialization()));
+
+        }
+        menu.showAndChoose();
+
+    }
+
 }
+

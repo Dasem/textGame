@@ -9,9 +9,10 @@ import units.character.Stat;
 public class Wizard extends Specialization {
 
     @Override
-    public Stat getMainStat() {
-        return null;
+    public String getName() {
+        return "Волшебник";
     }
+
 
     @Override
     public Dice getHitDace() {

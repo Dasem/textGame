@@ -9,9 +9,11 @@ import units.character.Stat;
 public class Cleric extends Specialization {
 
     @Override
-    public Stat getMainStat() {
-        return null;
+    public String getName() {
+        return "Жрец";
     }
+
+
 
     @Override
     public Dice getHitDace() {

@@ -9,9 +9,11 @@ import units.character.Stat;
 public class Monk extends Specialization {
 
     @Override
-    public Stat getMainStat() {
-        return null;
+    public String getName() {
+        return "Монах";
     }
+
+
 
     @Override
     public Dice getHitDace() {
