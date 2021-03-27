@@ -32,11 +32,4 @@ public abstract class Enemy extends Unit implements Lootable {
             }
         }
     }
-
-    @Override
-    public BattleActionResult battleAction(List<Battler> possibleTargets) {
-        Utils.suspense();
-        List<Battler> opponents = BattleUtils.extractAliveAllies(possibleTargets);
-        return BattleUtils.doDirectAttack(this, opponents.get(0));
-    }
 }

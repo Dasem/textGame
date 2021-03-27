@@ -1,6 +1,11 @@
 package units;
 
+import mechanic.battle.BattleActionResult;
+import mechanic.battle.BattleUtils;
 import mechanic.battle.Battler;
+import utils.Utils;
+
+import java.util.List;
 
 public abstract class Unit implements Battler {
 
@@ -39,5 +44,12 @@ public abstract class Unit implements Battler {
         } else {
             this.currentHealth = Math.min(currentHealth, getMaxHealth());
         }
+    }
+
+    @Override
+    public BattleActionResult battleAction(List<Battler> possibleTargets) {
+        Utils.suspense();
+        List<Battler> opponents = BattleUtils.extractAliveOpponents(this, possibleTargets);
+        return BattleUtils.doDirectAttack(this, opponents.get(0));
     }
 }

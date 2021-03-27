@@ -61,7 +61,7 @@ public class Fraction {
     }
 
     public boolean isAlly(Fraction fraction) {
-        return allies.contains(fraction);
+        return this.equals(fraction) || allies.contains(fraction);
     }
 
     public boolean isAlly(String fractionName) {

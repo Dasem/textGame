@@ -9,13 +9,13 @@ import java.util.stream.*;
 
 public class BattleUtils {
 
-    public static List<Battler> extractAliveAllies(List<Battler> possibleTargets) {
-        return possibleTargets.stream().filter(battler -> battler.isFriendlyTo(Character.getInstance())
+    public static List<Battler> extractAliveAllies(Battler toBattler, List<Battler> possibleTargets) {
+        return possibleTargets.stream().filter(battler -> battler.isFriendlyTo(toBattler)
                 && !battler.isDead()).collect(Collectors.toList());
     }
 
-    public static List<Battler> extractAliveOpponents(List<Battler> possibleTargets) {
-        return possibleTargets.stream().filter(battler -> !battler.isFriendlyTo(Character.getInstance())
+    public static List<Battler> extractAliveOpponents(Battler toBattler, List<Battler> possibleTargets) {
+        return possibleTargets.stream().filter(battler -> !battler.isFriendlyTo(toBattler)
                 && !battler.isDead()).collect(Collectors.toList());
     }
 
