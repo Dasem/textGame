@@ -2,6 +2,7 @@ package mechanic.battle;
 
 import mechanic.dice.*;
 
+import units.Fraction;
 import utils.Utils;
 
 import java.util.*;
@@ -21,7 +22,11 @@ public interface Battler {
 
     int mobExp();
 
-    boolean isFriendly();
+    Fraction getFraction();
+
+    void setFraction(Fraction fraction);
+
+    boolean isFriendlyTo(Battler battler);
 
     default boolean isDead() {
         return getCurrentHealth() == 0;

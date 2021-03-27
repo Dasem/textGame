@@ -2,9 +2,7 @@ package mechanic.battle;
 
 import com.google.common.collect.*;
 import mechanic.dice.*;
-import units.character.*;
 import units.character.Character;
-import utils.*;
 
 import java.util.*;
 import java.util.stream.*;
@@ -12,11 +10,13 @@ import java.util.stream.*;
 public class BattleUtils {
 
     public static List<Battler> extractAliveAllies(List<Battler> possibleTargets) {
-        return possibleTargets.stream().filter(battler -> battler.isFriendly() && !battler.isDead()).collect(Collectors.toList());
+        return possibleTargets.stream().filter(battler -> battler.isFriendlyTo(Character.getInstance())
+                && !battler.isDead()).collect(Collectors.toList());
     }
 
     public static List<Battler> extractAliveOpponents(List<Battler> possibleTargets) {
-        return possibleTargets.stream().filter(battler -> !battler.isFriendly() && !battler.isDead()).collect(Collectors.toList());
+        return possibleTargets.stream().filter(battler -> !battler.isFriendlyTo(Character.getInstance())
+                && !battler.isDead()).collect(Collectors.toList());
     }
 
     public static BattleActionResult doDirectAttack(Battler battlerFrom, Battler battlerTo) {

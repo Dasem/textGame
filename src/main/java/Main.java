@@ -1,5 +1,6 @@
 import levels.*;
 import menu.*;
+import units.Fraction;
 import units.character.*;
 import units.character.Character;
 import utils.*;
@@ -11,12 +12,11 @@ public class Main {
         Menu startMenu = new Menu("Добро пожаловать в игру:", MenuSetting.HIDE_CHARACTER_MENU);
         startMenu.addItem("Новая игра", () -> {
             Character.createInstance();
+            Fraction.allInit();
             new Level1().startLevel();
             new Level2().startLevel();
         });
-        startMenu.addItem("Выход", () -> {
-            System.out.println("Игра окончена");
-        });
+        startMenu.addItem("Выход", () -> System.out.println("Игра окончена"));
         startMenu.showAndChoose();
     }
 }

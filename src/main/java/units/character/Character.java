@@ -11,13 +11,15 @@ import mechanic.quest.*;
 import mechanic.quest.task.DialogTask;
 import mechanic.quest.task.Task;
 import menu.*;
+import units.Fraction;
+import units.Unit;
 import utils.*;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.*;
 
-public class Character implements Battler {
+public class Character extends Unit {
 
     private Specialization specialization;
 
@@ -53,6 +55,8 @@ public class Character implements Battler {
     }
 
     private Character(String username) {
+        //todo красивее
+        super(Fraction.getByName("ГГ"));
         this.username = username;
     }
 
@@ -162,7 +166,7 @@ public class Character implements Battler {
     }
 
     @Override
-    public boolean isFriendly() {
+    public boolean isFriendlyTo(Battler battler) {
         return true;
     }
 
@@ -186,7 +190,7 @@ public class Character implements Battler {
         battleMenu.addItem("Использовать предмет", inventoryMenu::showAndChoose);
 
         for (Battler target : aliveTargets) {
-            if (!target.isFriendly()) {
+            if (!target.isFriendlyTo(character)) {
                 attackMenu.addItem(target.getName(),
                         () -> result.set(BattleUtils.doDirectAttack(this, target)));
             }
