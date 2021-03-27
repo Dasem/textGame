@@ -196,8 +196,7 @@ public class Character implements Battler {
             MenuItem inventoryMenuItem = inventoryMenu.addItem(item.getName(), null);
             inventoryMenuItem.setChoosable(() -> {
                 if (item.use(inventoryMenuItem).getChosenMenuItem().typeIsBack()) {
-                    if (inventoryMenu.showAndChoose().getChosenMenuItem().typeIsBack())
-                        inventoryMenu.getParentMenuItem().getForMenu().showAndChoose();
+                    inventoryMenu.showAndChoose();
                 } else
                     result.set(new BattleActionResult(Lists.newArrayList(),
                             String.format("Использован предмет %s", item.getName()),
