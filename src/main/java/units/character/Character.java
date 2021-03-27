@@ -182,21 +182,8 @@ public class Character implements Battler {
 //      Menu spellMenu = new Menu("Выберите цель для лечения: ",
 //              MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
 
-        // Как могло быть:
-        //attackMenu.setParentMenuItem(battleMenu.addItem("Выбрать цель для атаки", attackMenu::showAndChoose));
-        //inventoryMenu.setParentMenuItem(battleMenu.addItem("Использовать предмет", inventoryMenu::showAndChoose));
-//      spellMenu.setParentMenuItem(battleMenu.addItem("Использовать способность", spellMenu::showAndChoose));
-        // Как стало:
-        attackMenu.setParentMenuItem(battleMenu.addItem("Выбрать цель для атаки", () -> {
-            if (attackMenu.showAndChoose().getChosenMenuItem().typeIsBack())
-                attackMenu.getParentMenuItem().getForMenu().showAndChoose();
-        }));
-        inventoryMenu.setParentMenuItem(battleMenu.addItem("Использовать предмет", () -> {
-            if (inventoryMenu.showAndChoose().getChosenMenuItem().typeIsBack())
-                inventoryMenu.getParentMenuItem().getForMenu().showAndChoose();
-        }));
-        // Предлагаю изменить реализацию кнопки "назад", а конкретно её лямбду, см. туда.
-        // + было бы удобно, чтобы она всегда была на 0.
+        battleMenu.addItem("Выбрать цель для атаки", attackMenu::showAndChoose);
+        battleMenu.addItem("Использовать предмет", inventoryMenu::showAndChoose);
 
         for (Battler target : aliveTargets) {
             if (!target.isFriendly()) {
@@ -218,19 +205,19 @@ public class Character implements Battler {
             });
         }
 
+        //battleMenu.addAdditionalItem("Автобой", () -> {});
+
         battleMenu.addAdditionalItem("Сбежать из боя", () -> {
-            //todo Посоветоваться насчёт шанса
-            System.out.println("Бросаем кости...");
-            int luck = Dices.diceD12();
-            boolean isLucky = luck > 6;
-            String battleActionText = String.format("Вы выбросили %d " +
-                    (isLucky ? "и сбежали из боя" : ", вам не удалось избежать боя"), luck);
-            result.set(new BattleActionResult(Lists.newArrayList(), battleActionText,
+            boolean isLucky = Dice.D20.roll() > 6;
+            result.set(new BattleActionResult(Lists.newArrayList(),
+                    isLucky ? "Вы сбежали из боя" : "Вам не удалось избежать боя",
                     this, Lists.newArrayList(), isLucky));
             // Не стал делать списки null`ами, вдруг это что-нибудь сломает в месте их обработки. Пусть будут просто пустыми.
         });
 
-        battleMenu.showAndChoose();
+        do {
+            battleMenu.showAndChoose();
+        } while (attackMenu.getChosenMenuItem().typeIsBack() || inventoryMenu.getChosenMenuItem().typeIsBack());
         return result.get();
     }
 

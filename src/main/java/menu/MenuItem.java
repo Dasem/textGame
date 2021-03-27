@@ -44,8 +44,12 @@ public class MenuItem {
         return menuItemType;
     }
 
+    public boolean typeIs(MenuItemType menuItemType) {
+        return this.menuItemType == menuItemType;
+    }
+
     public boolean typeIsBack() {
-        return menuItemType == MenuItemType.BACK;
+        return typeIs(MenuItemType.BACK);
     }
 
     public String getName() {
