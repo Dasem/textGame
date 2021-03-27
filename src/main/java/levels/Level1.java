@@ -37,9 +37,7 @@ public class Level1 implements Levelable {
         Item map = new UsefulItem("Карта подземелья") {
             final Location location = startLabyrinth;
             {
-                itemMenu.addItem("Посмотреть карту", () -> {
-                    location.printMap(false);
-                });
+                itemMenu.addItem("Посмотреть карту", () -> location.printMap(false));
             }
         };
 
@@ -67,12 +65,8 @@ public class Level1 implements Levelable {
             rivergard();
             System.out.println("Перед твоим взором расстилаются огромные ворота города Ривергард");
         });
-        menu.addItem("Литориан", () -> {
-            litorian();
-        });
-        menu.addItem("Зачарованный лес", () -> {
-            enchantedForest();
-        });
+        menu.addItem("Литориан", this::litorian);
+        menu.addItem("Зачарованный лес", this::enchantedForest);
         menu.showAndChoose();
 
         System.out.println("Поздравляю! Ты закончил первый уровень. Вот тебе плюшки.");
@@ -82,7 +76,7 @@ public class Level1 implements Levelable {
         System.out.println("На своём пути к Ривергарду, ты видишь одинокого гоблина...");
         Utils.suspense(1500);
         System.out.println("Кажется, начинается битва:");
-        Fight fight = new Fight(Character.getInstance(), new Goblin());
+        AdvancedFight fight = new AdvancedFight(new Goblin());
         fight.battle();
         if (Character.getInstance().getCurrentHealth() <= 0) {
             System.out.println("Ты убит гоблином. пресс F");
@@ -129,7 +123,7 @@ public class Level1 implements Levelable {
                 }, true),
                 new Event(3, 11, () -> { // генг-бенг
                     System.out.println("Из стайки бандитов выходит один из них, кажется он хочет выделится...");
-                    Fight gangbang = new Fight(Character.getInstance(), new Bandit() {
+                    AdvancedFight gangbang = new AdvancedFight(new Bandit() {
                         @Override
                         public String getName() {
                             return "Амброз Джакис";
@@ -152,14 +146,16 @@ public class Level1 implements Levelable {
                                 () -> {
                                 }
                         );
-                        quest.addTask(new MobTask("Амброз Джакис", 1, "Убить Амброза Джакиса на восточной стороне Ривергарда.", () -> {
-                            quest.addTask(new DialogTask("Bartender", "Поговорите с хозяином таверны, чтобы получить награду.")).print();
-                        })).print();
+                        quest.addTask(new MobTask("Амброз Джакис", 1,
+                                "Убить Амброза Джакиса на восточной стороне Ривергарда.",
+                                () -> quest.addTask(new DialogTask("Bartender",
+                                        "Поговорите с хозяином таверны, чтобы получить награду."))
+                                        .print())).print();
                         Character.getInstance().acceptQuest(quest);
                     });
-                    menu.addItem("Нет", () -> {
-                        System.out.println("На тебя смотрит пьянчуга и говорит: \"Ха, обоссался?! Дед сам с ним разделается!\", - и срывает объявление.");
-                    });
+                    menu.addItem("Нет", () ->
+                            System.out.println("На тебя смотрит пьянчуга и говорит: " +
+                                    "\"Ха, обоссался?! Дед сам с ним разделается!\", - и срывает объявление."));
                     menu.showAndChoose();
                 }),
                 new Event(1, 4, bartender::doDialog, false),
@@ -194,7 +190,7 @@ public class Level1 implements Levelable {
     }
 
     private void fightWithWolf() {
-        Fight fight = new Fight(Character.getInstance(), new Wolf());
+        AdvancedFight fight = new AdvancedFight(new Wolf());
         fight.battle();
         if (Character.getInstance().getCurrentHealth() <= 0) {
             lor("Ты убит волком. пресс F");
@@ -299,7 +295,7 @@ public class Level1 implements Levelable {
                 new Event(2, 12, () -> findTrap(triborgTrail)),
                 new Event(4, 13, () -> {
                     System.out.println("Продвигаясь по тропе, вы замечаете, что кусты что-то обсуждают. И вдруг из говорящих кустов выпрыгивает банда гоблинов и нападает на вас.");
-                    Fight goblinEncounter = new Fight(Character.getInstance(), new Goblin()); //Сделать файт с бандой гоблинов, а не одним гоблином
+                    AdvancedFight goblinEncounter = new AdvancedFight(new Goblin()); //Сделать файт с бандой гоблинов, а не одним гоблином
                     goblinEncounter.battle();
                 }),
                 new EscapeEvent(1, 14, () -> {

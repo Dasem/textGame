@@ -11,20 +11,21 @@ import mechanic.quest.*;
 import mechanic.quest.task.DialogTask;
 import mechanic.quest.task.Task;
 import menu.*;
+import units.Fraction;
+import units.Unit;
 import utils.*;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.*;
 
-public class Character implements Battler {
+public class Character extends Unit {
 
     private Specialization specialization;
 
 
     private final static int DEFAULT_ARMOR_CLASS = 10;
     private String username;
-    private int currentHealth;
     private Armor armor;
     private Weapon weapon;
     private final Inventory inventory = new Inventory();
@@ -34,6 +35,7 @@ public class Character implements Battler {
     int[] levelThreshold = {0, 300, 600, 1800, 3800, 7500, 9000, 11000, 14000, 16000, 21000, 15000, 20000, 20000, 25000, 30000, 30000, 40000, 40000, 50000, 999999};
     private int currentExp;
     private int expToLvlUp = levelThreshold[level];
+    private boolean autobattle = false;
 
     private static Character character;
 
@@ -53,6 +55,8 @@ public class Character implements Battler {
     }
 
     private Character(String username) {
+        //todo красивее
+        super(Fraction.getByName("ГГ"));
         this.username = username;
     }
 
@@ -114,20 +118,6 @@ public class Character implements Battler {
     }
 
     @Override
-    public int getCurrentHealth() {
-        return currentHealth;
-    }
-
-    @Override
-    public void setCurrentHealth(int currentHealth) {
-        if (currentHealth < 0) {
-            this.currentHealth = 0;
-        } else {
-            this.currentHealth = Math.min(currentHealth, getMaxHealth());
-        }
-    }
-
-    @Override
     public int getMaxHealth() {
         return Character.getInstance().getSpecialization().getBasedHP(); //TODO правильно ли
     }
@@ -162,76 +152,69 @@ public class Character implements Battler {
     }
 
     @Override
-    public boolean isFriendly() {
-        return true;
-    }
-
-    @Override
     public BattleActionResult battleAction(List<Battler> possibleTargets) {
         //todo: можно заюзать заклинание
         // (можно добавить какой-нибудь рандомный фаербол который на всех енеми работает)
-        AtomicReference<BattleActionResult> result = new AtomicReference<>();
-        List<Battler> aliveTargets = BattleUtils.extractAliveOpponents(possibleTargets);
+        if (autobattle) {
+            BattleActionResult result = super.battleAction(possibleTargets);
+            if (BattleUtils.extractAliveOpponents(character, possibleTargets).isEmpty())
+                autobattle = false;
+            return result;
+        } else {
+            AtomicReference<BattleActionResult> result = new AtomicReference<>();
+            List<Battler> aliveTargets = BattleUtils.extractAliveOpponents(character, possibleTargets);
 
-        Menu battleMenu = new Menu("Выберите действие: ", MenuSetting.HIDE_CHARACTER_MENU);
+            Menu battleMenu = new Menu("Выберите действие: ", MenuSetting.HIDE_CHARACTER_MENU);
 
-        Menu attackMenu = new Menu("Выберите цель для атаки: ",
-                MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
-        Menu inventoryMenu = new Menu("Выберите предмет для использования: ",
-                MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
+            Menu attackMenu = new Menu("Выберите цель для атаки: ",
+                    MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
+            Menu inventoryMenu = new Menu("Выберите предмет для использования: ",
+                    MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
 //      Menu spellMenu = new Menu("Выберите цель для лечения: ",
 //              MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
 
-        // Как могло быть:
-        //attackMenu.setParentMenuItem(battleMenu.addItem("Выбрать цель для атаки", attackMenu::showAndChoose));
-        //inventoryMenu.setParentMenuItem(battleMenu.addItem("Использовать предмет", inventoryMenu::showAndChoose));
-//      spellMenu.setParentMenuItem(battleMenu.addItem("Использовать способность", spellMenu::showAndChoose));
-        // Как стало:
-        attackMenu.setParentMenuItem(battleMenu.addItem("Выбрать цель для атаки", () -> {
-            if (attackMenu.showAndChoose().getChosenMenuItem().typeIsBack())
-                attackMenu.getParentMenuItem().getForMenu().showAndChoose();
-        }));
-        inventoryMenu.setParentMenuItem(battleMenu.addItem("Использовать предмет", () -> {
-            if (inventoryMenu.showAndChoose().getChosenMenuItem().typeIsBack())
-                inventoryMenu.getParentMenuItem().getForMenu().showAndChoose();
-        }));
-        // Предлагаю изменить реализацию кнопки "назад", а конкретно её лямбду, см. туда.
-        // + было бы удобно, чтобы она всегда была на 0.
+            battleMenu.addItem("Выбрать цель для атаки", attackMenu::showAndChoose);
+            battleMenu.addItem("Использовать предмет", inventoryMenu::showAndChoose);
 
-        for (Battler target : aliveTargets) {
-            if (!target.isFriendly()) {
-                attackMenu.addItem(target.getName(),
-                        () -> result.set(BattleUtils.doDirectAttack(this, target)));
+            for (Battler target : aliveTargets) {
+                if (!target.isFriendlyTo(character)) {
+                    attackMenu.addItem(target.getName(),
+                            () -> result.set(BattleUtils.doDirectAttack(character, target)));
+                }
             }
-        }
-        for (Item item : getInventory().getItems()) {
-            // Эта циклическая зависимость отвратительна
-            MenuItem inventoryMenuItem = inventoryMenu.addItem(item.getName(), null);
-            inventoryMenuItem.setChoosable(() -> {
-                if (item.use(inventoryMenuItem).getChosenMenuItem().typeIsBack()) {
-                    if (inventoryMenu.showAndChoose().getChosenMenuItem().typeIsBack())
-                        inventoryMenu.getParentMenuItem().getForMenu().showAndChoose();
-                } else
-                    result.set(new BattleActionResult(Lists.newArrayList(),
-                            String.format("Использован предмет %s", item.getName()),
-                            this, Lists.newArrayList(this)));
+
+            for (Item item : getInventory().getItems()) {
+                // Эта циклическая зависимость отвратительна
+                MenuItem inventoryMenuItem = inventoryMenu.addItem(item.getName(), null);
+                inventoryMenuItem.setChoosable(() -> {
+                    if (item.use(inventoryMenuItem).getChosenMenuItem().typeIsBack()) {
+                        inventoryMenu.showAndChoose();
+                    } else
+                        result.set(new BattleActionResult(Lists.newArrayList(),
+                                String.format("Использован предмет %s", item.getName()),
+                                this, Lists.newArrayList(this)));
+                });
+            }
+
+            battleMenu.addAdditionalItem("Автобой", () -> {
+                autobattle = true;
+                result.set(super.battleAction(possibleTargets));
             });
+
+            battleMenu.addAdditionalItem("Сбежать из боя", () -> {
+                boolean isLucky = Dice.D20.roll() > 6;
+                result.set(new BattleActionResult(Lists.newArrayList(),
+                        isLucky ? "Вы сбежали из боя" : "Вам не удалось избежать боя",
+                        this, Lists.newArrayList(), isLucky));
+                // Не стал делать списки null`ами, вдруг это что-нибудь сломает в месте их обработки. Пусть будут просто пустыми.
+            });
+
+            do {
+                battleMenu.showAndChoose();
+            } while (attackMenu.getChosenMenuItem() != null && attackMenu.getChosenMenuItem().typeIsBack() ||
+                    inventoryMenu.getChosenMenuItem() != null && inventoryMenu.getChosenMenuItem().typeIsBack());
+            return result.get();
         }
-
-        battleMenu.addAdditionalItem("Сбежать из боя", () -> {
-            //todo Посоветоваться насчёт шанса
-            System.out.println("Бросаем кости...");
-            int luck = Dices.diceD12();
-            boolean isLucky = luck > 6;
-            String battleActionText = String.format("Вы выбросили %d " +
-                    (isLucky ? "и сбежали из боя" : ", вам не удалось избежать боя"), luck);
-            result.set(new BattleActionResult(Lists.newArrayList(), battleActionText,
-                    this, Lists.newArrayList(), isLucky));
-            // Не стал делать списки null`ами, вдруг это что-нибудь сломает в месте их обработки. Пусть будут просто пустыми.
-        });
-
-        battleMenu.showAndChoose();
-        return result.get();
     }
 
     @Override

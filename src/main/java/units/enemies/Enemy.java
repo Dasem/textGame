@@ -10,22 +10,12 @@ import utils.*;
 
 import java.util.List;
 
-public abstract class Enemy implements Battler, Lootable {
-    int currentHealth = getMaxHealth();
-    boolean friendly = false;
+public abstract class Enemy extends Unit implements Lootable {
 
-    @Override
-    public void setCurrentHealth(int currentHealth) {
-        if (currentHealth < 0) {
-            this.currentHealth = 0;
-        } else {
-            this.currentHealth = Math.min(currentHealth, getMaxHealth());
-        }
-    }
-
-    @Override
-    public boolean isFriendly() {
-        return friendly;
+    protected Enemy() {
+        //todo красивее
+        super(Fraction.getByName("Враги"));
+        currentHealth = getMaxHealth();
     }
 
     @Override
@@ -34,8 +24,7 @@ public abstract class Enemy implements Battler, Lootable {
         System.out.println("Вы получили 25 опыта");
         for(Quest quest : Character.getInstance().getActiveQuests()){
             List<Task> tasks = quest.getTasks();
-            for (int i = 0; i < tasks.size(); i++) {
-                Task task = tasks.get(i);
+            for (Task task : tasks) {
                 if (task instanceof MobTask) {
                     MobTask mobTask = (MobTask) task;
                     mobTask.killWithId(getName());
@@ -43,14 +32,4 @@ public abstract class Enemy implements Battler, Lootable {
             }
         }
     }
-
-    @Override
-    public BattleActionResult battleAction(List<Battler> possibleTargets) {
-        Utils.suspense();
-        List<Battler> opponents = BattleUtils.extractAliveAllies(possibleTargets);
-        return BattleUtils.doDirectAttack(this, opponents.get(0));
-    }
-
-
-
 }

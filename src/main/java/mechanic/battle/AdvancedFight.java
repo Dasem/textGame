@@ -42,7 +42,7 @@ public class AdvancedFight {
                         fightEnd = true;
                         break;
                     }
-                    if (BattleUtils.extractAliveOpponents(initiativeLine).isEmpty()) {
+                    if (BattleUtils.extractAliveOpponents(Character.getInstance(), initiativeLine).isEmpty()) {
                         for (Battler deadBattler : battleActionResult.getDeadBattlers()) {
                             Character.getInstance().getExp(deadBattler.mobExp());
                         }
