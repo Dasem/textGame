@@ -217,7 +217,8 @@ public class Character implements Battler {
 
         do {
             battleMenu.showAndChoose();
-        } while (attackMenu.getChosenMenuItem().typeIsBack() || inventoryMenu.getChosenMenuItem().typeIsBack());
+        } while (attackMenu.getChosenMenuItem() != null && attackMenu.getChosenMenuItem().typeIsBack() ||
+                inventoryMenu.getChosenMenuItem() != null && inventoryMenu.getChosenMenuItem().typeIsBack());
         return result.get();
     }
 
