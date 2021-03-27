@@ -191,6 +191,7 @@ public class Character implements Battler {
                         () -> result.set(BattleUtils.doDirectAttack(this, target)));
             }
         }
+
         for (Item item : getInventory().getItems()) {
             // Эта циклическая зависимость отвратительна
             MenuItem inventoryMenuItem = inventoryMenu.addItem(item.getName(), null);

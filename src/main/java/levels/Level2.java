@@ -59,7 +59,7 @@ public class Level2 implements Levelable {
                 new ObjectAndProbability<>(new Skeleton(), 3),
                 new ObjectAndProbability<>(new Gnoll(), 1)
         );
-        Fight fight = new Fight(Character.getInstance(), battler);
+        AdvancedFight fight = new AdvancedFight(battler);
         fight.battle();
         if (Character.getInstance().getCurrentHealth() <= 0) {
             Utils.lor("Ты погиб так и не узнав, что за секреты таит в себе этот свёрток.\n" +
@@ -128,9 +128,8 @@ public class Level2 implements Levelable {
                 Character.getInstance().getInventory().removeItem(scroll);
                 Utils.lor("Ты отдаёшь свёрток и что-то происходит");
             });
-            menu.addItem("Не отдавать", () -> {
-                Utils.lor("Ты не отдаёшь свёрток и просходит что-то, отличное от первого");
-            });
+            menu.addItem("Не отдавать", () ->
+                    Utils.lor("Ты не отдаёшь свёрток и просходит что-то, отличное от первого"));
             menu.showAndChoose();
 
         }
