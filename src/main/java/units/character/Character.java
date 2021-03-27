@@ -36,6 +36,9 @@ public class Character extends Unit {
     private int currentExp;
     private int expToLvlUp = levelThreshold[level];
     private boolean autobattle = false;
+    {
+        setFraction(Fraction.HERO);
+    }
 
     private static Character character;
 
@@ -55,8 +58,6 @@ public class Character extends Unit {
     }
 
     private Character(String username) {
-        //todo красивее
-        super(Fraction.getByName("ГГ"));
         this.username = username;
     }
 
@@ -157,12 +158,13 @@ public class Character extends Unit {
         // (можно добавить какой-нибудь рандомный фаербол который на всех енеми работает)
         if (autobattle) {
             BattleActionResult result = super.battleAction(possibleTargets);
-            if (BattleUtils.extractAliveOpponents(character, possibleTargets).isEmpty())
+            if (BattleUtils.extractAliveOpponents(this, possibleTargets).isEmpty()) {
                 autobattle = false;
+            }
             return result;
         } else {
             AtomicReference<BattleActionResult> result = new AtomicReference<>();
-            List<Battler> aliveTargets = BattleUtils.extractAliveOpponents(character, possibleTargets);
+            List<Battler> aliveTargets = BattleUtils.extractAliveOpponents(this, possibleTargets);
 
             Menu battleMenu = new Menu("Выберите действие: ", MenuSetting.HIDE_CHARACTER_MENU);
 
@@ -172,6 +174,10 @@ public class Character extends Unit {
                     MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
 //      Menu spellMenu = new Menu("Выберите цель для лечения: ",
 //              MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
+            //todo: Не совсем согласен с целью для лечения. Скорее так:
+            // -> Использование заклинания
+            // -> <выбор заклинания, возможно оно будет лечить>
+            // -> <выбор цели для заклинания, если требуется (в общем случае просто дальше работает сам скилл, хз что ему там нужно будет)>
 
             battleMenu.addItem("Выбрать цель для атаки", attackMenu::showAndChoose);
             battleMenu.addItem("Использовать предмет", inventoryMenu::showAndChoose);

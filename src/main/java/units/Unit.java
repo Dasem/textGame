@@ -12,10 +12,6 @@ public abstract class Unit implements Battler {
     protected int currentHealth;
     private Fraction fraction;
 
-    protected Unit(Fraction fraction) {
-        this.fraction = fraction;
-    }
-
     @Override
     public void setFraction(Fraction fraction) {
         this.fraction = fraction;
@@ -28,9 +24,13 @@ public abstract class Unit implements Battler {
 
     @Override
     public boolean isFriendlyTo(Battler battler) {
-        return fraction.isAlly(battler);
+        return fraction.getRelationTo(battler) == Relation.ALLY;
     }
 
+    @Override
+    public boolean isEnemyTo(Battler battler) {
+        return fraction.getRelationTo(battler) == Relation.OPPONENT;
+    }
 
     @Override
     public int getCurrentHealth() {

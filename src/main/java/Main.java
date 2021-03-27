@@ -11,7 +11,6 @@ public class Main {
     public static void main(String[] args) {
         Menu startMenu = new Menu("Добро пожаловать в игру:", MenuSetting.HIDE_CHARACTER_MENU);
         startMenu.addItem("Новая игра", () -> {
-            Fraction.allInit();
             Character.createInstance();
             new Level1().startLevel();
             new Level2().startLevel();
