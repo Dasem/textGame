@@ -192,7 +192,7 @@ public class Character extends Unit {
         for (Battler target : aliveTargets) {
             if (!target.isFriendlyTo(character)) {
                 attackMenu.addItem(target.getName(),
-                        () -> result.set(BattleUtils.doDirectAttack(this, target)));
+                        () -> result.set(BattleUtils.doDirectAttack(character, target)));
             }
         }
 
