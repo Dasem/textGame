@@ -9,13 +9,25 @@ import java.util.stream.*;
 
 public class BattleUtils {
 
+    /**
+     * Достаёт живых союзников для баттлера (напр.: для гоблина союзником будет другой гоблин, мб не всегда)
+     * @param toBattler баттлер, для которого ищутся противники
+     * @param possibleTargets участники сражения
+     * @return все живые противники
+     */
     public static List<Battler> extractAliveAllies(Battler toBattler, List<Battler> possibleTargets) {
         return possibleTargets.stream().filter(battler -> battler.isFriendlyTo(toBattler)
                 && !battler.isDead()).collect(Collectors.toList());
     }
 
+    /**
+     * Достаёт живых противников для баттлера (напр.: для гоблинов противником будет герой, мб не всегда)
+     * @param toBattler баттлер, для которого ищутся противники
+     * @param possibleTargets участники сражения
+     * @return все живые противники
+     */
     public static List<Battler> extractAliveOpponents(Battler toBattler, List<Battler> possibleTargets) {
-        return possibleTargets.stream().filter(battler -> !battler.isFriendlyTo(toBattler)
+        return possibleTargets.stream().filter(battler -> battler.isEnemyTo(toBattler)
                 && !battler.isDead()).collect(Collectors.toList());
     }
 

@@ -8,74 +8,40 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class Fraction {
+import static units.Relation.*;
+
+public enum Fraction {
+    // ATTENTION! не менять попусту порядок в перечислении, влияет на логику взаимоотношений фракций
+    // при необходимости возможно добавить ordinal'ы и перенести со встроенного порядка на кастомный
+    HERO("Герой"),
+    ENEMIES("Враги");
+
+    /**
+     * Описаны отношения между фракциями в том же порядке, что и перечисление выше.
+     *
+     * Например:
+     * {ALLY, OPPONENT},
+     * {OPPONENT, ALLY}
+     * означает, что:
+     *      * HERO (индекс в перечислении 0) союзник сам себе (индекс 0)
+     *      * ENEMIES (индекс в перечислении 1) противник герою (индекс 0)
+     * Также это работает и в обратную сторону.
+     * При необходимости есть возможность сделать чтобы "Союзность" была односторонней.
+     */
+    Relation[][] fractionsRelations = new Relation[][]{
+            {ALLY, OPPONENT},
+            {OPPONENT, ALLY}
+    };
 
     private final String name;
-    private final List<Fraction> allies;
-    private final List<Fraction> enemies;
 
-    private final static List<Fraction> all = new ArrayList<>();
-
-    public static void allInit()
-    {
-        Fraction gg = new Fraction("ГГ");
-        Fraction mobs = new Fraction("Враги");
-        gg.addEnemies(mobs);
-    }
-
-    public Fraction(String name)
-    {
-        this(name, new ArrayList<>(), new ArrayList<>());
-    }
-
-    public Fraction(String name, List<Fraction> allies, List<Fraction> enemies) {
+    Fraction(String name) {
         this.name = name;
-        this.allies = allies;
-        this.enemies = enemies;
-        all.add(this);
     }
 
     public String getName() { return name; }
 
-    public List<Fraction> getAllies() {
-        return allies;
-    }
-
-    public List<Fraction> getEnemies() {
-        return enemies;
-    }
-
-    private void addAlliesOrEnemies(boolean allies, Fraction ... fractions) {
-        (allies ? this.allies : enemies).addAll(Arrays.stream(fractions).collect(Collectors.toList()));
-        for (Fraction fraction : fractions) {
-            (allies ? fraction.allies : fraction.enemies).add(this);
-        }
-    }
-
-    public void addAllies(Fraction ... fractions) {
-        addAlliesOrEnemies(true, fractions);
-    }
-
-    public void addEnemies(Fraction ... fractions) {
-        addAlliesOrEnemies(false, fractions);
-    }
-
-    public boolean isAlly(Fraction fraction) {
-        return this.equals(fraction) || allies.contains(fraction);
-    }
-
-    public boolean isAlly(String fractionName) {
-        return allies.contains(getByName(fractionName));
-    }
-
-    public boolean isAlly(Battler battler) {
-        return isAlly(battler.getFraction());
-    }
-
-    public static Fraction getByName(String name) {
-        return all.stream().filter((fraction) -> fraction.name.equals(name)).findFirst().orElseGet(() -> {
-            System.out.println("Фракция " + name + " не найдена.");
-            return null;
-        });
+    public Relation getRelationTo(Battler battler) {
+        return fractionsRelations[ordinal()][battler.getFraction().ordinal()];
     }
 }

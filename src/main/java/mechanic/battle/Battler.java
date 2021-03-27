@@ -28,6 +28,8 @@ public interface Battler {
 
     boolean isFriendlyTo(Battler battler);
 
+    boolean isEnemyTo(Battler battler);
+
     default boolean isDead() {
         return getCurrentHealth() == 0;
     }

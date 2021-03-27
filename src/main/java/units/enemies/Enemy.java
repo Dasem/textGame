@@ -12,9 +12,8 @@ import java.util.List;
 
 public abstract class Enemy extends Unit implements Lootable {
 
-    protected Enemy() {
-        //todo красивее
-        super(Fraction.getByName("Враги"));
+    {
+        setFraction(Fraction.ENEMIES);
         currentHealth = getMaxHealth();
     }
 
@@ -22,7 +21,7 @@ public abstract class Enemy extends Unit implements Lootable {
     public void died() {
         Character.getInstance().getExp(25);
         System.out.println("Вы получили 25 опыта");
-        for(Quest quest : Character.getInstance().getActiveQuests()){
+        for (Quest quest : Character.getInstance().getActiveQuests()) {
             List<Task> tasks = quest.getTasks();
             for (Task task : tasks) {
                 if (task instanceof MobTask) {
