@@ -11,20 +11,11 @@ import utils.*;
 import java.util.List;
 
 public abstract class Enemy extends Unit implements Lootable {
-    int currentHealth = getMaxHealth();
 
     protected Enemy() {
         //todo красивее
         super(Fraction.getByName("Враги"));
-    }
-
-    @Override
-    public void setCurrentHealth(int currentHealth) {
-        if (currentHealth < 0) {
-            this.currentHealth = 0;
-        } else {
-            this.currentHealth = Math.min(currentHealth, getMaxHealth());
-        }
+        currentHealth = getMaxHealth();
     }
 
     @Override
@@ -48,7 +39,4 @@ public abstract class Enemy extends Unit implements Lootable {
         List<Battler> opponents = BattleUtils.extractAliveAllies(possibleTargets);
         return BattleUtils.doDirectAttack(this, opponents.get(0));
     }
-
-
-
 }

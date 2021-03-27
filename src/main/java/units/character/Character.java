@@ -26,7 +26,6 @@ public class Character extends Unit {
 
     private final static int DEFAULT_ARMOR_CLASS = 10;
     private String username;
-    private int currentHealth;
     private Armor armor;
     private Weapon weapon;
     private final Inventory inventory = new Inventory();
@@ -114,20 +113,6 @@ public class Character extends Unit {
             level += 1;
             expToLvlUp = levelThreshold[level];
             System.out.println("Вы достигли " + level + " уровня!");
-        }
-    }
-
-    @Override
-    public int getCurrentHealth() {
-        return currentHealth;
-    }
-
-    @Override
-    public void setCurrentHealth(int currentHealth) {
-        if (currentHealth < 0) {
-            this.currentHealth = 0;
-        } else {
-            this.currentHealth = Math.min(currentHealth, getMaxHealth());
         }
     }
 
