@@ -120,7 +120,7 @@ public class Character extends Unit {
 
     @Override
     public int getMaxHealth() {
-        return Character.getInstance().getSpecialization().getBasedHP(); //TODO правильно ли
+        return Character.getInstance().getSpecialization().getBasedHP();
     }
 
     @Override
@@ -134,8 +134,8 @@ public class Character extends Unit {
 
     @Override
     public int getAttackModifier() {
-        //TODO: если бьёшь рукой, оно падает (weapon == null)
-        return factStat(weapon.weaponStat());
+        return weapon != null ? factStat(weapon.weaponStat()) : 0;
+
     }
 
     @Override
@@ -349,6 +349,7 @@ public class Character extends Unit {
             characterMenu.addItem("Информация о персонаже", () -> {
                 Character c = Character.getInstance();
                 System.out.println("Меня зовут " + c.getName());
+                System.out.println("Мой класс "+ Character.getInstance().specialization.getName());
                 System.out.println(c.getCurrentHealth() + "/" + c.getMaxHealth() + " HP");
                 System.out.println((c.getInventory().getMoney() + " Золота"));
                 System.out.println(c.getArmorClass() + " Защиты");
@@ -455,11 +456,11 @@ public class Character extends Unit {
         this.specialization = specialization;
     }
 
-    public static void chooseSpecialization(){
+    public static void chooseSpecialization() {
         Menu menu = new Menu("Меню выбора Специализации");
-        Specializations [] specializations = Specializations.values();
-        for(Specializations special : specializations){
-            MenuItem menuItem = menu.addItem(special.getName(), ()-> Character.getInstance().setSpecialization(special.getSpecialization()));
+        Specializations[] specializations = Specializations.values();
+        for (Specializations special : specializations) {
+            MenuItem menuItem = menu.addItem(special.getName(), () -> Character.getInstance().setSpecialization(special.getSpecialization()));
 
         }
         menu.showAndChoose();
