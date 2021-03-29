@@ -7,6 +7,7 @@ import items.grocery.*;
 import mechanic.Actionable;
 import mechanic.battle.*;
 import mechanic.dice.Dice;
+import mechanic.location.*;
 import mechanic.quest.*;
 import mechanic.quest.task.DialogTask;
 import mechanic.quest.task.Task;
@@ -33,7 +34,10 @@ public class Character extends Unit {
     private final Map<Stat, Integer> stats = new HashMap<>();
     private int level = 1;
     private int currentExp;
-    private boolean autoBattle = false; // todo: не должно быть в персонаже
+    private Position currentPosition;
+    private final List<Position> positionsHistory = new ArrayList<>();
+    private boolean autoBattle = false;
+
     {
         setFraction(Fraction.HERO);
     }
@@ -108,7 +112,6 @@ public class Character extends Unit {
     public void gainExp(int exp) {
         character.currentExp += exp;
         System.out.println("Вы получили " + exp + " опыта.");
-        // Реализовано через деление чтобы можно было получать по N уровней за раз
         setupActualLevel();
         System.out.println("Вы достигли " + level + " уровня!");
     }
@@ -216,10 +219,10 @@ public class Character extends Unit {
             });
 
             battleMenu.addAdditionalItem("Сбежать из боя", () -> {
-                boolean isLucky = Dice.D20.roll() > 6;
+                boolean escaped = Dice.D20.roll() > 6;
                 result.set(new BattleActionResult(Lists.newArrayList(),
-                        isLucky ? "Вы сбежали из боя" : "Вам не удалось избежать боя",
-                        this, Lists.newArrayList(), isLucky));
+                        escaped ? "Вы сбежали из боя" : "Вам не удалось избежать боя",
+                        this, Lists.newArrayList(), escaped));
                 // Не стал делать списки null`ами, вдруг это что-нибудь сломает в месте их обработки. Пусть будут просто пустыми.
             });
 
@@ -474,12 +477,29 @@ public class Character extends Unit {
 
     }
 
+    public void goBack() {
+        System.out.println("Вы отступили!");
+        Character.getInstance().setCurrentPosition(positionsHistory.get(positionsHistory.size() - 1));
+    }
+
     public int getCurrentExp() {
         return currentExp;
     }
 
     public int getLevel() {
         return level;
+    }
+
+    public List<Position> getPositionsHistory() {
+        return positionsHistory;
+    }
+
+    public Position getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public void setCurrentPosition(Position currentPosition) {
+        this.currentPosition = currentPosition;
     }
 }
 

@@ -3,6 +3,7 @@ package mechanic.location;
 import com.google.common.collect.*;
 import mechanic.Actionable;
 import menu.*;
+import units.character.Character;
 
 
 import java.io.BufferedReader;
@@ -14,8 +15,6 @@ import java.util.*;
 public class Location {
     private List<Event> eventList = new ArrayList<>();
     private final String locationName;
-    private Position currentPosition;
-    private final List<Position> positionsHistory = new ArrayList<>();
     private final char[][] location;
     private final Collection<LocationSetting> locationSettings;
     private static final int VISION_DEPTH = 3;
@@ -38,19 +37,19 @@ public class Location {
     }
 
     public EscapeEvent enterLocation(int row, int col) {
-        return enterLocation(new Position(row, col));
+        return enterLocation(new Position(row, col, this));
     }
 
     public EscapeEvent enterLocation(Position startPosition) {
-        currentPosition = startPosition;
+        setCharacterPosition(startPosition);
         while (true) {
             List<Event> forDelete = new LinkedList<>();
             for (Event event : eventList) {
-                if (event instanceof EscapeEvent && event.checkPosition(currentPosition)) {
+                if (event instanceof EscapeEvent && event.checkPosition(getCharacterPosition())) {
                     return (EscapeEvent) event;
                 }
 
-                boolean runned = event.checkPositionAndRunEvent(currentPosition);
+                boolean runned = event.checkPositionAndRunEvent(getCharacterPosition());
                 if (event.isSingleTime() && runned) {
                     forDelete.add(event);
                 }
@@ -68,17 +67,12 @@ public class Location {
             Menu locationMenu = new Menu("Выбор пути:");
             for (PathDirection direction : PathDirection.values()) {
                 locationMenu.addItem(direction.getIcon(), () -> {
-                    positionsHistory.add(currentPosition.clone());
-                    currentPosition.goInDirection(direction, location);
+                    Character.getInstance().getPositionsHistory().add(getCharacterPosition().clone());
+                    getCharacterPosition().goInDirection(direction, location);
                 });
             }
             locationMenu.showAndChoose();
         }
-    }
-
-    public void goBack() {
-        System.out.println("Вы отступили!");
-        currentPosition = positionsHistory.get(positionsHistory.size() - 1);
     }
 
     private char[][] readLocation() {
@@ -129,7 +123,7 @@ public class Location {
                     System.out.print('|');
                 } else {
                     char cell = location[row][col];
-                    if (gps && currentPosition.isSamePosition(row, col)) {
+                    if (gps && getCharacterPosition().isSamePosition(row, col)) {
                         System.out.print('Ж');
                     } else {
                         System.out.print(cell);
@@ -143,17 +137,17 @@ public class Location {
 
     // Отображает местность вокруг. Если параметр attention == true, то производим проверку на ловушки поблизости.
     public void printVision() {
-        int startRow = Math.max(currentPosition.currentRow - VISION_DEPTH, 0) - 1;
-        int startCol = Math.max(currentPosition.currentColumn - VISION_DEPTH, 0) - 1;
-        int endRow = Math.min(currentPosition.currentRow + VISION_DEPTH, locationHeight);
-        int endCol = Math.min(currentPosition.currentColumn + VISION_DEPTH, locationWidth);
+        int startRow = Math.max(getCharacterPosition().currentRow - VISION_DEPTH, 0) - 1;
+        int startCol = Math.max(getCharacterPosition().currentColumn - VISION_DEPTH, 0) - 1;
+        int endRow = Math.min(getCharacterPosition().currentRow + VISION_DEPTH, locationHeight);
+        int endCol = Math.min(getCharacterPosition().currentColumn + VISION_DEPTH, locationWidth);
         for (int row = startRow; row <= endRow; row++) {
             for (int col = startCol; col <= endCol; col++) {
                 if (row == startRow || row == endRow || col == startCol || col == endCol) {
                     System.out.print('~');
                 } else {
                     char cell = location[row][col];
-                    if (currentPosition.isSamePosition(row, col)) {
+                    if (getCharacterPosition().isSamePosition(row, col)) {
                         System.out.print('Ж');
                     } else {
                         System.out.print(cell);
@@ -164,8 +158,12 @@ public class Location {
         }
     }
 
-    public Position getCurrentPosition() {
-        return currentPosition;
+    public Position getCharacterPosition() {
+        return Character.getInstance().getCurrentPosition();
+    }
+
+    public void setCharacterPosition(Position position) {
+        Character.getInstance().setCurrentPosition(position);
     }
 
     public void addAction(int row, int column, Actionable event) {

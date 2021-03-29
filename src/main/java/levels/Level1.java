@@ -43,8 +43,8 @@ public class Level1 implements Levelable {
 
         Character.getInstance().lootItem(map);
         startLabyrinth.addActions(
-                new Event(5, 2, () -> findTrap(startLabyrinth)),
-                new Event(1, 3, () -> findTrap(startLabyrinth)),
+                new Event(5, 2, this::findTrap),
+                new Event(1, 3, this::findTrap),
                 new Event(4, 1, this::findStartLabyrinthPotion),
                 new Event(4, 4, this::findStartLabyrinthArmor),
                 new Event(5, 3, this::findStartLabyrinthWeapon),
@@ -254,15 +254,15 @@ public class Level1 implements Levelable {
         Character.getInstance().loot(weapon);
     }
 
-    public void findTrap(Location location) {
+    public void findTrap() {
         int rollResult = Dice.D20.roll();
         Trap trap = Randomizer.randomize(
-                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_EASY_TRAP, location),3),
-                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_MEDIUM_TRAP, location),2),
-                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_HARD_TRAP, location),1),
-                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_EASY_TRAP, location),3),
-                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_MEDIUM_TRAP, location),2),
-                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_HARD_TRAP, location),1));
+                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_EASY_TRAP),3),
+                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_MEDIUM_TRAP),2),
+                new ObjectAndProbability<>(new Trap(TrapType.AGILITY_HARD_TRAP),1),
+                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_EASY_TRAP),3),
+                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_MEDIUM_TRAP),2),
+                new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_HARD_TRAP),1));
         if (rollResult + Character.getInstance().factStat(Stat.WISDOM) >= trap.getTrapPerceptionThreshold()) {
             System.out.println(trap.getTextTrapNoticed());
             trap.getTrapMenu().showAndChoose();
@@ -291,8 +291,8 @@ public class Level1 implements Levelable {
         Location triborgTrail = new Location("triborgTrail", LocationSetting.ENABLE_VISION);
 
         triborgTrail.addActions(Lists.newArrayList(
-                new Event(2, 6, () -> findTrap(triborgTrail)),
-                new Event(2, 12, () -> findTrap(triborgTrail)),
+                new Event(2, 6, this::findTrap),
+                new Event(2, 12, this::findTrap),
                 new Event(4, 13, () -> {
                     System.out.println("Продвигаясь по тропе, вы замечаете, что кусты что-то обсуждают. И вдруг из говорящих кустов выпрыгивает банда гоблинов и нападает на вас.");
                     AdvancedFight goblinEncounter = new AdvancedFight(new Goblin()); //Сделать файт с бандой гоблинов, а не одним гоблином

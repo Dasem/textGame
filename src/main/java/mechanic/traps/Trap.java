@@ -12,12 +12,10 @@ public class Trap {
 
     private final TrapType trapType;
     private final Menu trapMenu = new Menu(() -> "Впереди ловушка. Что будешь делать?", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
-    private final Location location;
 
-    public Trap(TrapType trapType, Location location) {
+    public Trap(TrapType trapType) {
         addTrapMenu();
         this.trapType = trapType;
-        this.location = location;
     }
 
     private void addTrapMenu() {
@@ -39,7 +37,7 @@ public class Trap {
         });
         trapMenu.addItem("Отступить", () -> {
             System.out.println("Вы решаете отступить и пойти другим путём.");
-            location.goBack();
+            Character.getInstance().goBack();
         });
     }
 

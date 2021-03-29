@@ -5,10 +5,12 @@ import java.util.*;
 public class Position {
     public int currentRow;
     public int currentColumn;
+    public Location location;
 
-    public Position(int currentRow, int currentColumn) {
+    public Position(int currentRow, int currentColumn, Location location) {
         this.currentRow = currentRow;
         this.currentColumn = currentColumn;
+        this.location = location;
     }
 
     public void goInDirection(PathDirection direction, char[][] location){
@@ -39,6 +41,6 @@ public class Position {
 
     @Override
     protected Position clone() {
-        return new Position(currentRow, currentColumn);
+        return new Position(currentRow, currentColumn, location);
     }
 }
