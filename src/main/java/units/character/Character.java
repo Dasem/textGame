@@ -6,7 +6,7 @@ import items.equipment.*;
 import items.grocery.*;
 import mechanic.Actionable;
 import mechanic.battle.*;
-import mechanic.dice.*;
+import mechanic.dice.Dice;
 import mechanic.quest.*;
 import mechanic.quest.task.DialogTask;
 import mechanic.quest.task.Task;
