@@ -58,10 +58,13 @@ public class AdvancedFight {
     private void fillInitiativeLine() {
         List<Battler> wantToInitiativeThrow = Lists.newArrayList(battlers); // 1: batl1, batl2; 2: batl3, batl4; 5: batl5
         wantToInitiativeThrow.add(Character.getInstance());
-        initiativeLine = recursiveCalculateInitiative(wantToInitiativeThrow);
+        initiativeLine = recursiveCalculateInitiative(wantToInitiativeThrow, 0);
     }
 
-    private List<Battler> recursiveCalculateInitiative(List<Battler> wantToInitiativeThrow) {
+    private List<Battler> recursiveCalculateInitiative(List<Battler> wantToInitiativeThrow, int reRollDeep) {
+        if (reRollDeep > 0) {
+            System.out.println("У юнитов " + StringUtils.join(wantToInitiativeThrow.stream().map(Battler::getName).collect(Collectors.toList()), ", ") + " одинаковая инициатива, рероллим");
+        }
         Map<Integer, List<BattlerWithInitiativeThrow>> battlersGroupedByInitiative = wantToInitiativeThrow.stream()
                 .map(BattlerWithInitiativeThrow::new)
                 // Сортируем список батлеров с их инициативой по инициативе
@@ -79,8 +82,7 @@ public class AdvancedFight {
                 // Если у нас больше баттлеров по этой инициативе, значит делаем дальнейший реролл таким же путём
                 List<Battler> battlersForReRoll = recursiveCalculateInitiative(battlersGroupedByInitiative.get(initiative).stream()
                         .map(battlerWithInitiativeThrow -> battlerWithInitiativeThrow.battler)
-                        .collect(Collectors.toList()));
-                System.out.println("У юнитов " + StringUtils.join(battlersForReRoll.stream().map(Battler::getName).collect(Collectors.toList()), ", ") + " одинаковая инициатива: " + initiative + ", рероллим");
+                        .collect(Collectors.toList()), reRollDeep +1);
                 result.addAll(battlersForReRoll);
             }
         }
