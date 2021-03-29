@@ -66,28 +66,29 @@ public class Location {
             }
 
             Menu locationMenu = new Menu("Выбор пути:");
-            List<String> pathOptions = startPosition.pathMenu(location);
+            List<String> pathOptions = currentPosition.pathMenu(location);
             locationMenu.addItem(pathOptions.get(0), () -> {
                 positionsHistory.add(currentPosition.clone());
-                System.out.println(startPosition.goTop(location));
+                System.out.println(currentPosition.goTop(location));
             });
             locationMenu.addItem(pathOptions.get(1), () -> {
                 positionsHistory.add(currentPosition.clone());
-                System.out.println(startPosition.goRight(location));
+                System.out.println(currentPosition.goRight(location));
             });
             locationMenu.addItem(pathOptions.get(2), () -> {
                 positionsHistory.add(currentPosition.clone());
-                System.out.println(startPosition.goLeft(location));
+                System.out.println(currentPosition.goLeft(location));
             });
             locationMenu.addItem(pathOptions.get(3), () -> {
                 positionsHistory.add(currentPosition.clone());
-                System.out.println(startPosition.goDown(location));
+                System.out.println(currentPosition.goDown(location));
             });
             locationMenu.showAndChoose();
         }
     }
 
     public void goBack() {
+        System.out.println("Вы отступили!");
         currentPosition = positionsHistory.get(positionsHistory.size() - 1);
     }
 
@@ -191,5 +192,5 @@ public class Location {
     public void addActions(Collection<Event> events) {
         eventList.addAll(events);
     }
-        }
+}
 
