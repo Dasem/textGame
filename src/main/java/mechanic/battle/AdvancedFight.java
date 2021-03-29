@@ -44,7 +44,7 @@ public class AdvancedFight {
                     }
                     if (BattleUtils.extractAliveOpponents(Character.getInstance(), initiativeLine).isEmpty()) {
                         for (Battler deadBattler : battleActionResult.getDeadBattlers()) {
-                            Character.getInstance().getExp(deadBattler.mobExp());
+                            Character.getInstance().gainExp(deadBattler.mobExp());
                         }
                         fightEnd = true;
                         break;

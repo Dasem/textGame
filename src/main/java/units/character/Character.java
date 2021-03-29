@@ -11,6 +11,7 @@ import mechanic.quest.*;
 import mechanic.quest.task.DialogTask;
 import mechanic.quest.task.Task;
 import menu.*;
+import service.*;
 import units.Fraction;
 import units.Unit;
 import utils.*;
@@ -23,7 +24,6 @@ public class Character extends Unit {
 
     private Specialization specialization;
 
-
     private final static int DEFAULT_ARMOR_CLASS = 10;
     private String username;
     private Armor armor;
@@ -32,10 +32,8 @@ public class Character extends Unit {
     private final Collection<Quest> activeQuests = new ArrayList<>();
     private final Map<Stat, Integer> stats = new HashMap<>();
     private int level = 1;
-    int[] levelThreshold = {0, 300, 600, 1800, 3800, 7500, 9000, 11000, 14000, 16000, 21000, 15000, 20000, 20000, 25000, 30000, 30000, 40000, 40000, 50000, 999999};
     private int currentExp;
-    private int expToLvlUp = levelThreshold[level];
-    private boolean autobattle = false;
+    private boolean autoBattle = false; // todo: не должно быть в персонаже
     {
         setFraction(Fraction.HERO);
     }
@@ -107,14 +105,24 @@ public class Character extends Unit {
         this.inventory.addItems(item);
     }
 
-    public void getExp(int exp) {
+    public void gainExp(int exp) {
         character.currentExp += exp;
         System.out.println("Вы получили " + exp + " опыта.");
-        while (currentExp / expToLvlUp > 0) {
-            currentExp -= expToLvlUp;
-            level += 1;
-            expToLvlUp = levelThreshold[level];
-            System.out.println("Вы достигли " + level + " уровня!");
+        // Реализовано через деление чтобы можно было получать по N уровней за раз
+        setupActualLevel();
+        System.out.println("Вы достигли " + level + " уровня!");
+    }
+
+    private int expForLevelUp() {
+        return LevelService.CHARACTER_LEVEL_THRESHOLD[level];
+    }
+
+    public void setupActualLevel() {
+        for (int i = 0; i < LevelService.CHARACTER_LEVEL_THRESHOLD.length; i++) {
+            if (currentExp < LevelService.CHARACTER_LEVEL_THRESHOLD[i]) {
+                level = i;
+                return;
+            }
         }
     }
 
@@ -156,10 +164,10 @@ public class Character extends Unit {
     public BattleActionResult battleAction(List<Battler> possibleTargets) {
         //todo: можно заюзать заклинание
         // (можно добавить какой-нибудь рандомный фаербол который на всех енеми работает)
-        if (autobattle) {
+        if (autoBattle) {
             BattleActionResult result = super.battleAction(possibleTargets);
             if (BattleUtils.extractAliveOpponents(this, possibleTargets).isEmpty()) {
-                autobattle = false;
+                autoBattle = false;
             }
             return result;
         } else {
@@ -203,7 +211,7 @@ public class Character extends Unit {
             }
 
             battleMenu.addAdditionalItem("Автобой", () -> {
-                autobattle = true;
+                autoBattle = true;
                 result.set(super.battleAction(possibleTargets));
             });
 
@@ -349,11 +357,11 @@ public class Character extends Unit {
             characterMenu.addItem("Информация о персонаже", () -> {
                 Character c = Character.getInstance();
                 System.out.println("Меня зовут " + c.getName());
-                System.out.println("Мой класс "+ Character.getInstance().specialization.getName());
+                System.out.println("Мой класс "+ c.getSpecialization().getName());
                 System.out.println(c.getCurrentHealth() + "/" + c.getMaxHealth() + " HP");
                 System.out.println((c.getInventory().getMoney() + " Золота"));
                 System.out.println(c.getArmorClass() + " Защиты");
-                System.out.println(c.currentExp + "/" + c.expToLvlUp + " опыта.");
+                System.out.println(c.currentExp + "/" + expForLevelUp() + " опыта.");
                 if (c.getArmor() != null) {
                     System.out.println(c.getArmor().getPrettyName());
                 } else System.out.println("Нет брони");
@@ -460,12 +468,18 @@ public class Character extends Unit {
         Menu menu = new Menu("Меню выбора Специализации");
         Specializations[] specializations = Specializations.values();
         for (Specializations special : specializations) {
-            MenuItem menuItem = menu.addItem(special.getName(), () -> Character.getInstance().setSpecialization(special.getSpecialization()));
-
+            menu.addItem(special.getName(), () -> Character.getInstance().setSpecialization(special.getSpecialization()));
         }
         menu.showAndChoose();
 
     }
 
+    public int getCurrentExp() {
+        return currentExp;
+    }
+
+    public int getLevel() {
+        return level;
+    }
 }
 

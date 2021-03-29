@@ -1,12 +1,10 @@
 package units.enemies;
 
-import mechanic.battle.*;
 import mechanic.quest.Quest;
 import mechanic.quest.task.MobTask;
 import mechanic.quest.task.Task;
 import units.*;
 import units.character.Character;
-import utils.*;
 
 import java.util.List;
 
@@ -19,7 +17,7 @@ public abstract class Enemy extends Unit implements Lootable {
 
     @Override
     public void died() {
-        Character.getInstance().getExp(25);
+        Character.getInstance().gainExp(25);
         System.out.println("Вы получили 25 опыта");
         for (Quest quest : Character.getInstance().getActiveQuests()) {
             List<Task> tasks = quest.getTasks();
