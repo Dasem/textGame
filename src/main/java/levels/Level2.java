@@ -59,7 +59,7 @@ public class Level2 implements Levelable {
                 new ObjectAndProbability<>(new Skeleton(), 3),
                 new ObjectAndProbability<>(new Gnoll(), 1)
         );
-        AdvancedFight fight = new AdvancedFight(battler);
+        Fight fight = new Fight(battler);
         fight.battle();
         if (Character.getInstance().getCurrentHealth() <= 0) {
             Utils.lor("Ты погиб так и не узнав, что за секреты таит в себе этот свёрток.\n" +

@@ -1,107 +1,106 @@
 package mechanic.battle;
 
-import mechanic.dice.*;
-import units.Lootable;
+import com.google.common.collect.*;
+import org.apache.commons.lang3.*;
 import units.character.Character;
-import units.character.Stat;
-import units.enemies.*;
-import utils.*;
 
+import java.util.*;
+import java.util.stream.*;
+
+/**
+ * Сражение между персонажем и списком противников
+ */
 public class Fight {
-    private final Battler battler1;
-    private final Battler battler2;
+    private final List<Battler> battlers;
+    private List<Battler> initiativeLine;
 
-    public Fight(Battler battler1, Battler battler2) {
-        this.battler1 = battler1;
-        this.battler2 = battler2;
+    public Fight(List<Battler> battlers) {
+        this.battlers = battlers;
+    }
+
+    public Fight(Battler ... battlers) {
+        this.battlers = Lists.newArrayList(battlers);
+    }
+
+    public Fight(Battler battler) {
+        this.battlers = Lists.newArrayList(battler);
     }
 
     public void battle() {
-        boolean hitOnBattler2 = hitBattler1();
-        Battler deadBattler;
-        while (true) {
-            AttackResult attack = hitOnBattler(hitOnBattler2);
-            System.out.println(attack.getAttackText());
-            Utils.suspense();
-            if (attack.isKill()) {
-                deadBattler = attack.getDefender();
-                break;
+        fillInitiativeLine();
+        boolean fightEnd = false;
+        while (!fightEnd) {
+            for (Battler battler : initiativeLine) {
+                if (!battler.isDead()) {
+                    BattleActionResult battleActionResult = battler.battleAction(initiativeLine);
+                    System.out.println(battleActionResult.getBattleActionText());
+                    if (battleActionResult.isEmergencyFightEnd()) {
+                        fightEnd = true;
+                        break;
+                    }
+                    if (Character.getInstance().isDead()) {
+                        fightEnd = true;
+                        break;
+                    }
+                    if (BattleUtils.extractAliveOpponents(Character.getInstance(), initiativeLine).isEmpty()) {
+                        for (Battler deadBattler : battleActionResult.getDeadBattlers()) {
+                            Character.getInstance().gainExp(deadBattler.mobExp());
+                        }
+                        fightEnd = true;
+                        break;
+                    }
+                }
             }
-            AttackResult counterAttack = hitOnBattler(!hitOnBattler2);
-            System.out.println(counterAttack.getAttackText());
-            Utils.suspense(700);
-            if (counterAttack.isKill()) {
-                deadBattler = counterAttack.getDefender();
-                break;
+        }
+
+    }
+
+    private void fillInitiativeLine() {
+        List<Battler> wantToInitiativeThrow = Lists.newArrayList(battlers); // 1: batl1, batl2; 2: batl3, batl4; 5: batl5
+        wantToInitiativeThrow.add(Character.getInstance());
+        initiativeLine = recursiveCalculateInitiative(wantToInitiativeThrow, 0);
+    }
+
+    private List<Battler> recursiveCalculateInitiative(List<Battler> wantToInitiativeThrow, int reRollDeep) {
+        if (reRollDeep > 0) {
+            System.out.println("У юнитов " + StringUtils.join(wantToInitiativeThrow.stream().map(Battler::getName).collect(Collectors.toList()), ", ") + " одинаковая инициатива, рероллим");
+        }
+        Map<Integer, List<BattlerWithInitiativeThrow>> battlersGroupedByInitiative = wantToInitiativeThrow.stream()
+                .map(BattlerWithInitiativeThrow::new)
+                // Сортируем список батлеров с их инициативой по инициативе
+                .sorted()
+                // Группируем баттлеров по инициативе
+                .collect(Collectors.groupingBy(battlerWithInitiativeThrow -> battlerWithInitiativeThrow.rolledInitiative));
+        // Собираем уже отсортированный список баттлеров по инцициативе, которую перероллили по необходимости
+        ArrayList<Battler> result = new ArrayList<>();
+        List<Integer> sortedInitiative = battlersGroupedByInitiative.keySet().stream().sorted((o1, o2) -> o2 - o1).collect(Collectors.toList());
+        for (int initiative : sortedInitiative) {
+            // Если у нас 1 элемент в группе, значит конкурентов батлеру нет и мы пихаем его в список с чистой совестью на своё место
+            if (battlersGroupedByInitiative.get(initiative).size() == 1) {
+                result.add(battlersGroupedByInitiative.get(initiative).get(0).battler);
+            } else {
+                // Если у нас больше баттлеров по этой инициативе, значит делаем дальнейший реролл таким же путём
+                List<Battler> battlersForReRoll = recursiveCalculateInitiative(battlersGroupedByInitiative.get(initiative).stream()
+                        .map(battlerWithInitiativeThrow -> battlerWithInitiativeThrow.battler)
+                        .collect(Collectors.toList()), reRollDeep +1);
+                result.addAll(battlersForReRoll);
             }
         }
-        System.out.println(deadBattler.getName() + " мёртв ☠");
-        deadBattler.died();
-
-        if (deadBattler instanceof Lootable) {
-            Character.getInstance().loot(((Lootable) deadBattler).getLoot());
-        }
+        return result;
     }
 
-    private AttackResult hitOnBattler(boolean hitOnBattler2) {
-        if (hitOnBattler2) {
-            return getAttackResult(battler1, battler2);
-        } else {
-            return getAttackResult(battler2, battler1);
-        }
-    }
+    static class BattlerWithInitiativeThrow implements Comparable<BattlerWithInitiativeThrow> {
+        int rolledInitiative;
+        Battler battler;
 
-    private AttackResult getAttackResult(Battler battlerFrom, Battler battlerTo) {
-        AccuracyLevel accuracyLevel = calculateAttack(battlerFrom, battlerTo);
-        int damage = accuracyLevel.getTotalDamage(battlerFrom);
-        boolean isDead = battlerTo.takeDamage(damage);
-
-        String hpBar = "";
-        if (battlerTo instanceof Character) {
-            hpBar = Character.getInstance().getHpBar();
-        }
-        AttackResult attackResult = null;
-        switch (accuracyLevel) {
-            case CRITICAL_HIT:
-                attackResult = new AttackResult(isDead, "Критический удар! \uD83D\uDD25 " + battlerFrom.getName() + " нанёс " + damage + " урона ⚔" + hpBar, battlerFrom, battlerTo);
-                break;
-            case NORMAL_HIT:
-                attackResult = new AttackResult(isDead, battlerFrom.getName() + " нанёс " + damage + " урона ⚔" + hpBar, battlerFrom, battlerTo);
-                break;
-            case MISS:
-                attackResult =  new AttackResult(false, battlerFrom.getName() + " промахнулся", battlerFrom, battlerTo);
-                break;
+        public BattlerWithInitiativeThrow(Battler battler) {
+            this.battler = battler;
+            this.rolledInitiative = battler.initiativeThrow();
         }
 
-        return attackResult;
-    }
-
-    private boolean hitBattler1() {
-        //TODO: W3st125 Сделать через instanceof
-        /*if (battler1 instanceof Character) {
-
-        }*/
-        int initiativBattler1 = battler1.initiativeThrow();
-        int initiativBattler2 = battler2.initiativeThrow();
-        while (initiativBattler1 == initiativBattler2) {
-            System.out.println("Реролл...");
-            initiativBattler1 = battler1.initiativeThrow() + Character.getInstance().factStat(Stat.AGILITY);
-            initiativBattler2 = battler2.initiativeThrow();
-        }
-        return initiativBattler1 > initiativBattler2;
-    }
-
-    public AccuracyLevel calculateAttack(Battler battlerFrom, Battler battlerTo) {
-        int d20Result = Dice.D20.roll();
-        int fullAttackModifier = d20Result + battlerFrom.getAttackModifier();
-        int fullArmorClass = battlerTo.getArmorClass();
-        if (d20Result == 20) {
-            return AccuracyLevel.CRITICAL_HIT;
-        } else if (fullAttackModifier >= fullArmorClass) {
-            return AccuracyLevel.NORMAL_HIT;
-        } else {
-            return AccuracyLevel.MISS;
+        @Override
+        public int compareTo(BattlerWithInitiativeThrow o) {
+            return this.rolledInitiative - o.rolledInitiative;
         }
     }
 }
-

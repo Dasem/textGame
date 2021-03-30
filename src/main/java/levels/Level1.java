@@ -80,7 +80,7 @@ public class Level1 implements Levelable {
         System.out.println("На своём пути к Ривергарду, ты видишь одинокого гоблина...");
         Utils.suspense(1500);
         System.out.println("Кажется, начинается битва:");
-        AdvancedFight fight = new AdvancedFight(new Goblin());
+        Fight fight = new Fight(new Goblin());
         fight.battle();
         if (Character.getInstance().getCurrentHealth() <= 0) {
             System.out.println("Ты убит гоблином. пресс F");
@@ -127,7 +127,7 @@ public class Level1 implements Levelable {
                 }, true),
                 new Event(3, 11, () -> { // генг-бенг
                     System.out.println("Из стайки бандитов выходит один из них, кажется он хочет выделится...");
-                    AdvancedFight gangbang = new AdvancedFight(new Bandit() {
+                    Fight gangbang = new Fight(new Bandit() {
                         @Override
                         public String getName() {
                             return "Амброз Джакис";
@@ -194,7 +194,7 @@ public class Level1 implements Levelable {
     }
 
     private void fightWithWolf() {
-        AdvancedFight fight = new AdvancedFight(new Wolf());
+        Fight fight = new Fight(new Wolf());
         fight.battle();
         if (Character.getInstance().getCurrentHealth() <= 0) {
             lor("Ты убит волком. пресс F");
@@ -214,7 +214,7 @@ public class Level1 implements Levelable {
                 new ObjectAndProbability<>(new Skeleton(), 3),
                 new ObjectAndProbability<>(new Gnoll(), 1)
         );
-        AdvancedFight fight = new AdvancedFight(battler);
+        Fight fight = new Fight(battler);
         fight.battle();
         if (Character.getInstance().getCurrentHealth() <= 0) {
             lor("В глубинах лабиринта ты погиб. Причиной твоей смерти стал '" + battler.getName() + "'");
@@ -269,7 +269,7 @@ public class Level1 implements Levelable {
                 new ObjectAndProbability<>(new Trap(TrapType.STRENGTH_HARD_TRAP),1));
         if (rollResult + Character.getInstance().factStat(Stat.WISDOM) >= trap.getTrapPerceptionThreshold()) {
             System.out.println(trap.getTextTrapNoticed());
-            trap.getTrapMenu().showAndChoose();
+            trap.generateTrapMenu().showAndChoose();
             if (trap.getReverse()) {
 
             }
@@ -299,7 +299,7 @@ public class Level1 implements Levelable {
                 new Event(2, 12, this::findTrap),
                 new Event(4, 13, () -> {
                     System.out.println("Продвигаясь по тропе, вы замечаете, что кусты что-то обсуждают. И вдруг из говорящих кустов выпрыгивает банда гоблинов и нападает на вас.");
-                    AdvancedFight goblinEncounter = new AdvancedFight(new Goblin()); //Сделать файт с бандой гоблинов, а не одним гоблином
+                    Fight goblinEncounter = new Fight(new Goblin()); //Сделать файт с бандой гоблинов, а не одним гоблином
                     goblinEncounter.battle();
                 }),
                 new EscapeEvent(1, 14, () -> {

@@ -11,14 +11,13 @@ import utils.Utils;
 public class Trap {
 
     private final TrapType trapType;
-    private final Menu trapMenu = new Menu("Впереди ловушка. Что будешь делать?", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
 
     public Trap(TrapType trapType) {
-        addTrapMenu();
         this.trapType = trapType;
     }
 
-    private void addTrapMenu() {
+    public Menu generateTrapMenu() {
+        Menu trapMenu = new Menu("Впереди ловушка. Что будешь делать?", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
         trapMenu.addItem("Пройти ловушку", () -> {
             int rollResult = Dice.D20.roll();
             System.out.println("Вы совершаете проверку характеристики: " + getTrapStat().getName() + ".");
@@ -39,6 +38,7 @@ public class Trap {
             System.out.println("Вы решаете отступить и пойти другим путём.");
             Character.getInstance().goBack();
         });
+        return trapMenu;
     }
 
     public int getTrapDifficulty() {
@@ -75,10 +75,6 @@ public class Trap {
 
     public boolean getReverse() {
         return trapType.reverse();
-    }
-
-    public Menu getTrapMenu() {
-        return trapMenu;
     }
 }
 
