@@ -1,11 +1,8 @@
 package units.npcs;
 
-import items.*;
 import items.equipment.Equipment;
-import items.equipment.Weapon;
 import menu.*;
 import units.character.Character;
-import com.google.common.collect.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,12 +21,7 @@ public class Blacksmith extends NPC {
                         .map(item -> (Equipment) item)
                         .collect(Collectors.toList());
                 for (Equipment equipment : equipments) {
-                    MenuItem menuItem = upgradeMenu.addItem(equipment.getName(), null, MenuItemType.UPGRADE, equipment);
-                    menuItem.setChoosable(() ->
-                            equipment.upgrade(menuItem)
-                    );
-
-
+                    upgradeMenu.addItem(equipment.getName(), () -> equipment.generateUpgradeMenu().showAndChoose(), MenuItemType.UPGRADE);
                 }
                 if (equipments.isEmpty()) {
                     System.out.println("Точить нечего");

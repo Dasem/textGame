@@ -6,6 +6,7 @@ import menu.*;
 import units.character.Character;
 
 import java.util.*;
+import java.util.concurrent.atomic.*;
 
 public class Trader extends NPC {
 
@@ -15,37 +16,46 @@ public class Trader extends NPC {
         this.tradeItems = Lists.newArrayList(tradeItems);
     }
 
+    /**
+     * Меню торговли:
+     * 1. Покупка
+     * 2. Продажа
+     * ... ->
+     * Покупка:
+     * 1. Предмет 1
+     * 2. Предмет 2
+     * ... ->
+     * Меню покупки:
+     * 1. Купить
+     * 2. Назад
+     * ...
+     * Аналогично с продажей
+     */
     public void trade() {
         MenuItem resultItem;
         do {
-            Menu tradeMenu = new Menu("Меню торговли", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
-            tradeMenu.addItem("Покупка", () -> {
+            Menu traderMenu = new Menu("Меню торговли", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
+            traderMenu.addItem("Покупка", () -> {
                 Menu buyMenu = new Menu("Покупка", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
+                AtomicReference<TradeMenu> itemBuyMenu = new AtomicReference<>();
                 for (Item item : tradeItems) {
-                    MenuItem menuItem = buyMenu.addItem(item.getName(), null, MenuItemType.BUY, item);
-                    menuItem.setChoosable(() -> item.trade(menuItem));
+                    buyMenu.addItem(item.getName(), () -> itemBuyMenu.set((TradeMenu) item.generateBuyMenu().showAndChoose()), MenuItemType.BUY);
                 }
-                Object maybeItem = buyMenu.showAndChoose().getChosenMenuItem().getCallbackObject();
-                if (maybeItem instanceof Item) {
-                    Item item = (Item) maybeItem;
-                    if (item.getTradeMenu().isSuccess()) {
-                        tradeItems.remove(item);
-                    }
+                if (itemBuyMenu.get().isSuccess()) {
+                    tradeItems.remove(itemBuyMenu.get().getTradedItem());
                 }
             });
-            tradeMenu.addItem("Продажа", () -> {
+            traderMenu.addItem("Продажа", () -> {
                 Menu sellMenu = new Menu("Продажа", MenuSetting.ADD_BACK_BUTTON, MenuSetting.HIDE_CHARACTER_MENU);
+                AtomicReference<TradeMenu> itemSellMenu = new AtomicReference<>();
                 for (Item item : Character.getInstance().getInventory().getItems()) {
-                    MenuItem menuItem = sellMenu.addItem(item.getName(), null, MenuItemType.SELL, item);
-                    menuItem.setChoosable(() -> item.trade(menuItem));
+                    sellMenu.addItem(item.getName(), () -> itemSellMenu.set((TradeMenu) item.generateSellMenu().showAndChoose()), MenuItemType.SELL);
                 }
-                Object maybeItem = sellMenu.showAndChoose().getChosenMenuItem().getCallbackObject();
-                if (maybeItem instanceof Item) {
-                    Item item = (Item) maybeItem;
-                    tradeItems.add(item);
+                if (itemSellMenu.get().isSuccess()) {
+                    tradeItems.add(itemSellMenu.get().getTradedItem());
                 }
             });
-            resultItem = tradeMenu.showAndChoose().getChosenMenuItem();
+            resultItem = traderMenu.showAndChoose().getChosenMenuItem();
         } while (resultItem.getMenuItemType() != MenuItemType.BACK);
     }
 }

@@ -1,14 +1,14 @@
 package menu;
 
+import items.*;
+
 public class TradeMenu extends Menu{
     public TradeMenu(String title, MenuSetting... menuSettings) {
         super(title, menuSettings);
     }
 
-    public TradeMenu(Holder<String> titleHolder, MenuSetting... menuSettings) {
-        super(titleHolder, menuSettings);
-    }
-    private boolean success ;
+    private boolean success;
+    private Item tradedItem;
 
     public boolean isSuccess() {
         return success;
@@ -16,5 +16,13 @@ public class TradeMenu extends Menu{
 
     public void setSuccess(boolean success) {
         this.success = success;
+    }
+
+    public Item getTradedItem() {
+        return tradedItem;
+    }
+
+    public void setTradedItem(Item tradedItem) {
+        this.tradedItem = tradedItem;
     }
 }

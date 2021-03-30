@@ -36,8 +36,12 @@ public class Level1 implements Levelable {
 
         Item map = new UsefulItem("Карта подземелья") {
             final Location location = startLabyrinth;
-            {
-                itemMenu.addItem("Посмотреть карту", () -> location.printMap(false));
+
+            @Override
+            public Menu generateUseMenu() {
+                Menu menu = super.generateUseMenu();
+                menu.addItem("Посмотреть карту", () -> location.printMap(false));
+                return menu;
             }
         };
 

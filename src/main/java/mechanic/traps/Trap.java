@@ -11,7 +11,7 @@ import utils.Utils;
 public class Trap {
 
     private final TrapType trapType;
-    private final Menu trapMenu = new Menu(() -> "Впереди ловушка. Что будешь делать?", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
+    private final Menu trapMenu = new Menu("Впереди ловушка. Что будешь делать?", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
 
     public Trap(TrapType trapType) {
         addTrapMenu();

@@ -76,9 +76,8 @@ public class Character extends Unit {
         while (!existedItems.isEmpty()) {
             Menu lootMenu = new Menu("Вы нашли предметы:", MenuSetting.HIDE_CHARACTER_MENU);
             for (Item item : existedItems) {
-                MenuItem menuItem = lootMenu.addItem(item.getName(), null);
-                menuItem.setChoosable(() -> {
-                    Menu use = item.use(menuItem);
+                lootMenu.addItem(item.getName(), () -> {
+                    Menu use = item.generateUseMenu().showAndChoose();
                     if (use.getChosenMenuItem().getMenuItemType() != MenuItemType.BACK) {
                         existedItems.remove(item);
                     }
@@ -202,9 +201,8 @@ public class Character extends Unit {
 
             for (Item item : getInventory().getItems()) {
                 // Эта циклическая зависимость отвратительна
-                MenuItem inventoryMenuItem = inventoryMenu.addItem(item.getName(), null);
-                inventoryMenuItem.setChoosable(() -> {
-                    if (item.use(inventoryMenuItem).getChosenMenuItem().typeIsBack()) {
+                inventoryMenu.addItem(item.getName(), () -> {
+                    if (item.generateUseMenu().showAndChoose().getChosenMenuItem().typeIsBack()) {
                         inventoryMenu.showAndChoose();
                     } else
                         result.set(new BattleActionResult(Lists.newArrayList(),
@@ -303,11 +301,11 @@ public class Character extends Unit {
         return currentHealth == 0;
     }
 
-    public void removeIfEquipped(Equipment equipment) {
-        if (equipment == weapon) {
+    public void removeIfEquipped(Item item) {
+        if (item == weapon) {
             weapon = null;
         }
-        if (equipment == armor) {
+        if (item == armor) {
             armor = null;
         }
     }

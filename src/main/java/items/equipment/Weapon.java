@@ -8,12 +8,8 @@ public class Weapon extends Equipment {
 
     WeaponType weaponType;
 
-
-
-
     public Weapon(WeaponType weaponType) {
         this.weaponType = weaponType;
-        addWeaponMenu();
         this.cost = weaponType.getCost();
     }
 
@@ -39,26 +35,19 @@ public class Weapon extends Equipment {
     }
 
 
-    private void addWeaponMenu() {
-        equipMenuItem();
-    }
-
     @Override
-    protected void equipMenuItem() {
-        itemMenu.addItem("Использовать это оружие", () -> {
-            this.equipWeapon();
-            System.out.println("Вы взяли '" + this.getName() + "', его максимальный урон: " + this.getWeaponDamage());
-            Character.getInstance().getInventory().removeItem(this);
-        }, MenuItemType.EQUIP_ITEM);
+    protected void addEquipMenuItem(Menu menu) {
+        if (!Character.getInstance().isEquipped(this)) {
+            menu.addItem("Использовать это оружие", () -> {
+                this.equipWeapon();
+                System.out.println("Вы взяли '" + this.getName() + "', его максимальный урон: " + this.getWeaponDamage());
+                Character.getInstance().getInventory().removeItem(this);
+            }, MenuItemType.EQUIP_ITEM);
+        }
     }
 
     public void equipWeapon() {
         Character.getInstance().setWeapon(this);
-
-    }
-
-    public void removeWeapon() {
-        Character.getInstance().setWeapon(null);
 
     }
 

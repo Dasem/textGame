@@ -4,7 +4,7 @@ public class MenuItem {
     private final Menu forMenu;
     private String name;
     private Holder<String> calculatedName;
-    private Choosable choosable;
+    private final Choosable choosable;
     private MenuItemType menuItemType = MenuItemType.CUSTOM;
     private Object callbackObject;
 
@@ -28,11 +28,10 @@ public class MenuItem {
         this.forMenu = forMenu;
     }
 
-    public MenuItem(String name, Choosable choosable, MenuItemType menuItemType, Object callbackObject, Menu forMenu) {
+    public MenuItem(String name, Choosable choosable, MenuItemType menuItemType, Menu forMenu) {
         this.name = name;
         this.choosable = choosable;
         this.menuItemType = menuItemType;
-        this.callbackObject = callbackObject;
         this.forMenu = forMenu;
     }
 
@@ -62,9 +61,5 @@ public class MenuItem {
 
     public Menu getForMenu() {
         return forMenu;
-    }
-
-    public void setChoosable(Choosable choosable) {
-        this.choosable = choosable;
     }
 }

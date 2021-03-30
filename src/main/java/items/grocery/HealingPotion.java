@@ -1,6 +1,7 @@
 package items.grocery;
 
 import items.*;
+import menu.*;
 import units.character.Character;
 
 public class HealingPotion extends Item {
@@ -9,17 +10,19 @@ public class HealingPotion extends Item {
 
     public HealingPotion(HealingPotionType healingPotionType) {
         this.healingPotionType = healingPotionType;
-        addPotionMenu();
         this.cost = healingPotionType.getCost();
     }
 
-    private void addPotionMenu() {
-        itemMenu.addItem("Выпить", () -> {
+    @Override
+    public Menu generateUseMenu() {
+        Menu menu = super.generateUseMenu();
+        menu.addItem("Выпить", () -> {
             int heal = getHeal();
             Character.getInstance().healing(heal);
             System.out.println("Ну выпил и выпил, чё бубнить-то, захилен на " + heal + " ХП." + Character.getInstance().getHpBar());
             Character.getInstance().getInventory().removeItem(this);
         });
+        return menu;
     }
 
     private int getHeal() {

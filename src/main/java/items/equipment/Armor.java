@@ -7,16 +7,12 @@ public class Armor extends Equipment {
 
     private final ArmorType armorType;
 
-
-
-
     public ArmorType getArmorType() {
         return armorType;
     }
 
     public Armor(ArmorType armorType) {
         this.armorType = armorType;
-        addArmorMenu();
         this.cost = armorType.getCost();
     }
 
@@ -33,16 +29,8 @@ public class Armor extends Equipment {
         }
     }
 
-    private void addArmorMenu() {
-        equipMenuItem();
-    }
-
     public void equipArmor() {
         Character.getInstance().setArmor(this);
-    }
-
-    public void removeArmor() {
-        Character.getInstance().setArmor(null);
     }
 
     public String getPrettyName() {
@@ -50,12 +38,14 @@ public class Armor extends Equipment {
     }
 
     @Override
-    protected void equipMenuItem() {
-        itemMenu.addItem("Надеть эту броню", () -> {
-            this.equipArmor();
-            System.out.println("Вы надеваете доспех. Ваш класс доспеха теперь равен: " + this.getArmorClass());
-            Character.getInstance().getInventory().removeItem(this);
-        }, MenuItemType.EQUIP_ITEM);
+    protected void addEquipMenuItem(Menu menu) {
+        if (!Character.getInstance().isEquipped(this)) {
+            menu.addItem("Надеть эту броню", () -> {
+                this.equipArmor();
+                System.out.println("Вы надеваете доспех. Ваш класс доспеха теперь равен: " + this.getArmorClass());
+                Character.getInstance().getInventory().removeItem(this);
+            }, MenuItemType.EQUIP_ITEM);
+        }
     }
 
     @Override
@@ -65,7 +55,7 @@ public class Armor extends Equipment {
 
     @Override
     protected int getUpgradeCost() {
-        return (int) (armorType.getUpgradeCost()*Math.pow(3,upgradeLevel));
+        return (int) (armorType.getUpgradeCost() * Math.pow(3, upgradeLevel));
     }
 }
 

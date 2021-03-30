@@ -6,14 +6,11 @@ import units.character.Character;
 import utils.*;
 
 import java.util.*;
-import java.util.stream.*;
 
 public class Menu {
-    private String title;
-    private Holder<String> titleHolder;
+    private final String title;
     private final List<MenuItem> menuItems = new ArrayList<>();
     private final List<MenuItem> additionalMenuItems = new ArrayList<>();
-    private MenuItem parentMenuItem = null;
     private MenuItem chosenMenuItem = null;
 
     Set<MenuSetting> menuSettings;
@@ -22,16 +19,7 @@ public class Menu {
         return showAndChoose(this.menuItems, this.additionalMenuItems);
     }
 
-    public Menu showAndChoose(Item item) {
-        List<MenuItem> filteredMenuItems = this.menuItems.stream().filter(item.getMenuFilters()).collect(Collectors.toList());
-        List<MenuItem> filteredAdditionalMenuItems = this.additionalMenuItems.stream().filter(item.getMenuFilters()).collect(Collectors.toList());
-        return showAndChoose(filteredMenuItems, filteredAdditionalMenuItems);
-    }
-
     private Menu showAndChoose(List<MenuItem> menuItems, List<MenuItem> additionalMenuItems) {
-        if (title == null) {
-            title = titleHolder.get();
-        }
         while (true) {
             try {
                 System.out.println("\n--------------\n"); // разделение между действиями
@@ -81,22 +69,12 @@ public class Menu {
         addAdditionalMenu();
     }
 
-    public Menu(Holder<String> titleHolder, MenuSetting ... menuSettings) {
-        this.titleHolder = titleHolder;
-        this.menuSettings = Sets.newHashSet(menuSettings);
-        addAdditionalMenu();
-    }
-
     public void addAdditionalItem(String name, Choosable choosable) {
         additionalMenuItems.add(new MenuItem(name, choosable, this));
     }
 
     public void addAdditionalItem(String name, Choosable choosable, MenuItemType menuItemType) {
-        additionalMenuItems.add(new MenuItem(name, choosable, menuItemType, null, this));
-    }
-
-    public void addAdditionalItem(String name, Choosable choosable, MenuItemType menuItemType, Object callbackObject) {
-        additionalMenuItems.add(new MenuItem(name, choosable, menuItemType, callbackObject, this));
+        additionalMenuItems.add(new MenuItem(name, choosable, menuItemType, this));
     }
 
     public MenuItem addItem(String name, Choosable choosable) {
@@ -111,37 +89,19 @@ public class Menu {
     }
 
     public MenuItem addItem(String name, Choosable choosable, MenuItemType menuItemType) {
-        MenuItem menuItem = new MenuItem(name, choosable, menuItemType, null, this);
-        menuItems.add(menuItem);
-        return menuItem;
-    }
-
-    public MenuItem addItem(String name, Choosable choosable, MenuItemType menuItemType, Object callbackObject) {
-        MenuItem menuItem = new MenuItem(name, choosable, menuItemType, callbackObject, this);
+        MenuItem menuItem = new MenuItem(name, choosable, menuItemType, this);
         menuItems.add(menuItem);
         return menuItem;
     }
 
     public MenuItem addItem(Item item) {
-        MenuItem menuItem = new MenuItem(item.getName(), null, this);
-        menuItem.setChoosable(() -> item.use(menuItem));
+        MenuItem menuItem = new MenuItem(item.getName(), () -> item.generateUseMenu().showAndChoose(), this);
         menuItems.add(menuItem);
         return menuItem;
-    }
-
-    public Set<MenuSetting> getMenuSettings() {
-        return menuSettings;
     }
 
     public MenuItem getChosenMenuItem() {
         return chosenMenuItem;
     }
 
-    public MenuItem getParentMenuItem() {
-        return parentMenuItem;
-    }
-
-    public void setParentMenuItem(MenuItem parentMenuItem) {
-        this.parentMenuItem = parentMenuItem;
-    }
 }
