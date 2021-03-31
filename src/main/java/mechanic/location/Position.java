@@ -3,6 +3,7 @@ package mechanic.location;
 import java.util.*;
 
 public class Position {
+    // TODO: обернуть в геттеры и сеттеры
     public int currentRow;
     public int currentColumn;
     public Location location;

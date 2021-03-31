@@ -39,16 +39,11 @@ public class Weapon extends Equipment {
     protected void addEquipMenuItem(Menu menu) {
         if (!Character.getInstance().isEquipped(this)) {
             menu.addItem("Использовать это оружие", () -> {
-                this.equipWeapon();
+                Character.getInstance().equip(this);
                 System.out.println("Вы взяли '" + this.getName() + "', его максимальный урон: " + this.getWeaponDamage());
                 Character.getInstance().getInventory().removeItem(this);
             }, MenuItemType.EQUIP_ITEM);
         }
-    }
-
-    public void equipWeapon() {
-        Character.getInstance().setWeapon(this);
-
     }
 
     public Stat weaponStat() {
@@ -60,7 +55,6 @@ public class Weapon extends Equipment {
         return "Оружие: " + getName() + "\nМакс урон: " + getWeaponDamage();
 
     }
-
 
     @Override
     protected String getPrettyClassName() {

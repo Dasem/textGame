@@ -63,6 +63,11 @@ public class Character extends Unit {
         this.username = username;
     }
 
+    // TODO: только для тестов, по хорошему потом нормально поменять
+    public static void createTestInstance() {
+        character = new Character("test");
+    }
+
     public void loot(Item... lootableItems) {
         loot(Lists.newArrayList(lootableItems));
     }
@@ -106,6 +111,15 @@ public class Character extends Unit {
 
     public void lootItems(Collection<Item> item) {
         this.inventory.addItems(item);
+    }
+
+    public void equip(Equipment equipment) {
+        if (equipment instanceof Weapon) {
+            Character.getInstance().setWeapon((Weapon) equipment);
+        }
+        if (equipment instanceof Armor) {
+            Character.getInstance().setArmor((Armor) equipment);
+        }
     }
 
     public void gainExp(int exp) {
