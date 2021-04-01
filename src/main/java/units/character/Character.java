@@ -228,14 +228,20 @@ public class Character extends Unit {
             battleMenu.addAdditionalItem("Автобой", () -> {
                 autoBattle = true;
                 result.set(super.battleAction(possibleTargets));
+                if (BattleUtils.extractAliveOpponents(this, possibleTargets).isEmpty()) {
+                    autoBattle = false;
+                }
             });
 
             battleMenu.addAdditionalItem("Сбежать из боя", () -> {
-                boolean escaped = Dice.D20.roll() > 6;
-                result.set(new BattleActionResult(Lists.newArrayList(),
-                        escaped ? "Вы сбежали из боя" : "Вам не удалось избежать боя",
-                        this, Lists.newArrayList(), escaped));
-                // Не стал делать списки null`ами, вдруг это что-нибудь сломает в месте их обработки. Пусть будут просто пустыми.
+                if (Dice.D20.roll() > 6){
+                    result.set(new BattleActionResult(Lists.newArrayList(), "Вы сбежали из боя",
+                            this, Lists.newArrayList(), true));
+                    goBack();
+                } else {
+                    result.set(new BattleActionResult(Lists.newArrayList(), "Вам не удалось избежать боя",
+                            this, Lists.newArrayList(), false));
+                }
             });
 
             do {
