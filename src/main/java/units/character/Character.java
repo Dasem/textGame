@@ -23,19 +23,19 @@ import java.util.stream.*;
 
 public class Character extends Unit {
 
-    private Specialization specialization;
+    @lombok.Getter @lombok.Setter private Specialization specialization;
 
     private final static int DEFAULT_ARMOR_CLASS = 10;
     private String username;
-    private Armor armor;
-    private Weapon weapon;
-    private final Inventory inventory = new Inventory();
-    private final Collection<Quest> activeQuests = new ArrayList<>();
-    private final Map<Stat, Integer> stats = new HashMap<>();
-    private int level = 1;
-    private int currentExp;
-    private Position currentPosition;
-    private final List<Position> positionsHistory = new ArrayList<>();
+    @lombok.Getter @lombok.Setter private Armor armor;
+    @lombok.Getter @lombok.Setter private Weapon weapon;
+    @lombok.Getter private final Inventory inventory = new Inventory();
+    @lombok.Getter private final Collection<Quest> activeQuests = new ArrayList<>();
+    @lombok.Getter private final Map<Stat, Integer> stats = new HashMap<>();
+    @lombok.Getter private int level = 1;
+    @lombok.Getter private int currentExp;
+    @lombok.Getter @lombok.Setter private Position currentPosition;
+    @lombok.Getter private final List<Position> positionsHistory = new ArrayList<>();
     private boolean autoBattle = false;
 
     {
@@ -282,14 +282,6 @@ public class Character extends Unit {
         this.currentHealth = this.getMaxHealth();
     }
 
-    public Armor getArmor() {
-        return armor;
-    }
-
-    public void setArmor(Armor armor) {
-        this.armor = armor;
-    }
-
     @Override
     public String getName() {
         return username;
@@ -301,20 +293,8 @@ public class Character extends Unit {
         Utils.endGame();
     }
 
-    public Weapon getWeapon() {
-        return weapon;
-    }
-
-    public void setWeapon(Weapon weapon) {
-        this.weapon = weapon;
-    }
-
     public void printItemsList() {
         System.out.print(inventory.getNumeratedList());
-    }
-
-    public Inventory getInventory() {
-        return inventory;
     }
 
     public boolean isDead() {
@@ -328,10 +308,6 @@ public class Character extends Unit {
         if (item == armor) {
             armor = null;
         }
-    }
-
-    public Collection<Quest> getActiveQuests() {
-        return activeQuests;
     }
 
     public Quest getQuestById(String questIdentifier) {
@@ -356,8 +332,8 @@ public class Character extends Unit {
         }).findAny().orElse(null);
     }
 
-    public boolean isEquipped(Item item) {
-        return weapon == item || armor == item;
+    public boolean isNotEquipped(Item item) {
+        return weapon != item && armor != item;
     }
 
     public void addCharacterMenu(Menu menu) {
@@ -440,10 +416,6 @@ public class Character extends Unit {
         }
     }
 
-    public Map<Stat, Integer> getStats() {
-        return stats;
-    }
-
     public int getStat(Stat stat) {
         return stats.get(stat);
     }
@@ -477,14 +449,6 @@ public class Character extends Unit {
         return false;
     }
 
-    public Specialization getSpecialization() {
-        return specialization;
-    }
-
-    public void setSpecialization(Specialization specialization) {
-        this.specialization = specialization;
-    }
-
     public static void chooseSpecialization() {
         Menu menu = new Menu("Меню выбора Специализации");
         Specializations[] specializations = Specializations.values();
@@ -498,26 +462,6 @@ public class Character extends Unit {
     public void goBack() {
         System.out.println("Вы отступили!");
         Character.getInstance().setCurrentPosition(positionsHistory.get(positionsHistory.size() - 1));
-    }
-
-    public int getCurrentExp() {
-        return currentExp;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public List<Position> getPositionsHistory() {
-        return positionsHistory;
-    }
-
-    public Position getCurrentPosition() {
-        return currentPosition;
-    }
-
-    public void setCurrentPosition(Position currentPosition) {
-        this.currentPosition = currentPosition;
     }
 }
 
