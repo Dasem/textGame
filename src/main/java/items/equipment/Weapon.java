@@ -37,7 +37,7 @@ public class Weapon extends Equipment {
 
     @Override
     protected void addEquipMenuItem(Menu menu) {
-        if (!Character.getInstance().isEquipped(this)) {
+        if (Character.getInstance().isNotEquipped(this)) {
             menu.addItem("Использовать это оружие", () -> {
                 Character.getInstance().equip(this);
                 System.out.println("Вы взяли '" + this.getName() + "', его максимальный урон: " + this.getWeaponDamage());

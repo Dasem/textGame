@@ -1,19 +1,9 @@
 package utils.random;
 
+@lombok.AllArgsConstructor
 public class ObjectAndProbability<T> {
-    T object;
-    int probability;
 
-    public ObjectAndProbability(T object, int probability) {
-        this.object = object;
-        this.probability = probability;
-    }
+    @lombok.Getter T object;
+    @lombok.Getter int probability;
 
-    public T getObject() {
-        return object;
-    }
-
-    public int getProbability() {
-        return probability;
-    }
 }

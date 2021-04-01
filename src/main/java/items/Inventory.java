@@ -3,13 +3,10 @@ package items;
 import java.util.*;
 
 public class Inventory {
-    List<Item> items = new ArrayList<>();
 
-    private int money = 100;
+    @lombok.Getter List<Item> items = new ArrayList<>();
 
-    public List<Item> getItems() {
-        return items;
-    }
+    @lombok.Getter private int money = 100;
 
     public void addItem(Item item) {
         this.items.add(item);
@@ -31,13 +28,8 @@ public class Inventory {
         }
         return stringBuilder.toString();
     }
-    public int getMoney() {
-        return money;
-    }
+
     public void setMoney(int money){
-        this.money=money;
-        if (this.money < 0 ){
-            this.money = 0;
-        }
+        this.money = Math.max(money, 0);
     }
 }

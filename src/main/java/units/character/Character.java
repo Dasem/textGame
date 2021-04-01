@@ -240,7 +240,7 @@ public class Character extends Unit {
                     goBack();
                 } else {
                     result.set(new BattleActionResult(Lists.newArrayList(), "Вам не удалось избежать боя",
-                            this, Lists.newArrayList(), false));
+                            this, Lists.newArrayList()));
                 }
             });
 

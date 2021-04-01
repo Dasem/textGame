@@ -1,12 +1,12 @@
 package menu;
 
 public class MenuItem {
-    private final Menu forMenu;
-    private String name;
+    @lombok.Getter private final Menu forMenu;
+    @lombok.Getter private String name;
     private Holder<String> calculatedName;
     private final Choosable choosable;
-    private MenuItemType menuItemType = MenuItemType.CUSTOM;
-    private Object callbackObject;
+    @lombok.Getter private MenuItemType menuItemType = MenuItemType.CUSTOM;
+    @lombok.Getter private Object callbackObject;
 
     public void show(int itemNumber) {
         if (name == null) {
@@ -35,14 +35,6 @@ public class MenuItem {
         this.forMenu = forMenu;
     }
 
-    public Object getCallbackObject() {
-        return callbackObject;
-    }
-
-    public MenuItemType getMenuItemType() {
-        return menuItemType;
-    }
-
     public boolean typeIs(MenuItemType menuItemType) {
         return this.menuItemType == menuItemType;
     }
@@ -51,15 +43,7 @@ public class MenuItem {
         return typeIs(MenuItemType.BACK);
     }
 
-    public String getName() {
-        return name;
-    }
-
     public void doChoose() {
         choosable.doChoose();
-    }
-
-    public Menu getForMenu() {
-        return forMenu;
     }
 }

@@ -11,7 +11,7 @@ public class Menu {
     private final String title;
     private final List<MenuItem> menuItems = new ArrayList<>();
     private final List<MenuItem> additionalMenuItems = new ArrayList<>();
-    private MenuItem chosenMenuItem = null;
+    @lombok.Getter private MenuItem chosenMenuItem = null;
 
     Set<MenuSetting> menuSettings;
 
@@ -99,9 +99,4 @@ public class Menu {
         menuItems.add(menuItem);
         return menuItem;
     }
-
-    public MenuItem getChosenMenuItem() {
-        return chosenMenuItem;
-    }
-
 }
