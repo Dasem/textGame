@@ -7,12 +7,12 @@ import mechanic.quest.task.*;
 import java.util.*;
 
 public class Quest {
-    String questIdentifier; // Идентификатор, по которому будет сдаваться квест при диалогах, напр. "questWithNpcName"
-    List<Task> tasks;
+    @lombok.Getter String questIdentifier; // Идентификатор, по которому будет сдаваться квест при диалогах, напр. "questWithNpcName"
+    @lombok.Getter List<Task> tasks;
     Reward reward;
     Actionable questCompleteAction;
-    boolean done = false;
-    String description;
+    @lombok.Getter boolean done = false;
+    @lombok.Getter String description;
 
     public Quest(String questIdentifier,String description, Reward reward, Actionable questCompleteAction, Task ... tasks) {
         this.questIdentifier = questIdentifier;
@@ -21,10 +21,6 @@ public class Quest {
         this.reward = reward;
         this.questCompleteAction = questCompleteAction;
         this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
 
@@ -49,17 +45,5 @@ public class Quest {
             }
         }
         return true;
-    }
-
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public String getQuestIdentifier() {
-        return questIdentifier;
-    }
-
-    public boolean isDone() {
-        return done;
     }
 }

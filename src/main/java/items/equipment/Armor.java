@@ -5,11 +5,8 @@ import units.character.Character;
 
 public class Armor extends Equipment {
 
+    @lombok.Getter
     private final ArmorType armorType;
-
-    public ArmorType getArmorType() {
-        return armorType;
-    }
 
     public Armor(ArmorType armorType) {
         this.armorType = armorType;
@@ -35,7 +32,7 @@ public class Armor extends Equipment {
 
     @Override
     protected void addEquipMenuItem(Menu menu) {
-        if (!Character.getInstance().isEquipped(this)) {
+        if (Character.getInstance().isNotEquipped(this)) {
             menu.addItem("Надеть эту броню", () -> {
                 Character.getInstance().equip(this);
                 System.out.println("Вы надеваете доспех. Ваш класс доспеха теперь равен: " + this.getArmorClass());

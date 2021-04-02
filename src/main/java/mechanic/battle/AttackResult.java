@@ -1,31 +1,11 @@
 package mechanic.battle;
 
+@lombok.RequiredArgsConstructor
 public class AttackResult {
-    private final boolean isKill;
-    private final String attackText;
-    private final Battler attacker;
-    private final Battler defender;
 
-    public AttackResult(boolean isKill, String attackText, Battler attacker, Battler defender) {
-        this.isKill = isKill;
-        this.attackText = attackText;
-        this.attacker = attacker;
-        this.defender = defender;
-    }
+    @lombok.Getter private final boolean isKill;
+    @lombok.Getter private final String attackText;
+    @lombok.Getter private final Battler attacker;
+    @lombok.Getter private final Battler defender;
 
-    public Battler getAttacker() {
-        return attacker;
-    }
-
-    public Battler getDefender() {
-        return defender;
-    }
-
-    public boolean isKill() {
-        return isKill;
-    }
-
-    public String getAttackText() {
-        return attackText;
-    }
 }

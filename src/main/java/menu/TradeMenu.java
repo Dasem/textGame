@@ -7,22 +7,7 @@ public class TradeMenu extends Menu{
         super(title, menuSettings);
     }
 
-    private boolean success;
-    private Item tradedItem;
+    @lombok.Getter @lombok.Setter private boolean success;
+    @lombok.Getter @lombok.Setter private Item tradedItem;
 
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
-    public Item getTradedItem() {
-        return tradedItem;
-    }
-
-    public void setTradedItem(Item tradedItem) {
-        this.tradedItem = tradedItem;
-    }
 }

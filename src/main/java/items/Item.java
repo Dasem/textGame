@@ -4,7 +4,8 @@ import menu.*;
 import units.character.Character;
 
 public abstract class Item {
-    protected int cost;
+
+    @lombok.Getter protected int cost;
 
     protected void addDropItemMenuItem(Menu menu) {
         menu.addItem("Выбросить", () -> {
@@ -64,8 +65,4 @@ public abstract class Item {
 
 
     public abstract String getName();
-
-    public int getCost() {
-        return cost;
-    }
 }

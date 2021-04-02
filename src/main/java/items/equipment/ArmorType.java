@@ -55,14 +55,11 @@ public enum ArmorType {
     };
 
 
+    @lombok.Getter
     private final String title;
 
     ArmorType(String title) {
         this.title = title;
-    }
-
-    public String getTitle() {
-        return title;
     }
 
     abstract public int getArmorClass();

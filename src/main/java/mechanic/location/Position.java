@@ -2,17 +2,12 @@ package mechanic.location;
 
 import java.util.*;
 
+@lombok.AllArgsConstructor
 public class Position {
     // TODO: обернуть в геттеры и сеттеры
     public int currentRow;
     public int currentColumn;
     public Location location;
-
-    public Position(int currentRow, int currentColumn, Location location) {
-        this.currentRow = currentRow;
-        this.currentColumn = currentColumn;
-        this.location = location;
-    }
 
     public void goInDirection(PathDirection direction, char[][] location){
         if (checkValidDirection(direction, location)) {

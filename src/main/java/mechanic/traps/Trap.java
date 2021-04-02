@@ -8,13 +8,10 @@ import units.character.Character;
 import units.character.Stat;
 import utils.Utils;
 
+@lombok.RequiredArgsConstructor
 public class Trap {
 
     private final TrapType trapType;
-
-    public Trap(TrapType trapType) {
-        this.trapType = trapType;
-    }
 
     public Menu generateTrapMenu() {
         Menu trapMenu = new Menu("Впереди ловушка. Что будешь делать?", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
