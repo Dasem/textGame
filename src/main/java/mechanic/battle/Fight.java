@@ -1,7 +1,9 @@
 package mechanic.battle;
 
 import com.google.common.collect.*;
+import items.Item;
 import org.apache.commons.lang3.*;
+import units.Lootable;
 import units.character.Character;
 
 import java.util.*;
@@ -28,6 +30,7 @@ public class Fight {
 
     public void battle() {
         fillInitiativeLine();
+        Collection<Item> lootableItems = new ArrayList<>();
         boolean fightEnd = false;
         while (!fightEnd) {
             for (Battler battler : initiativeLine) {
@@ -45,8 +48,11 @@ public class Fight {
                     if (BattleUtils.extractAliveOpponents(Character.getInstance(), initiativeLine).isEmpty()) {
                         for (Battler deadBattler : battleActionResult.getDeadBattlers()) {
                             Character.getInstance().gainExp(deadBattler.mobExp());
+                            if(deadBattler instanceof Lootable)
+                            lootableItems.addAll(((Lootable) deadBattler).getLoot());
                         }
                         fightEnd = true;
+                        Character.getInstance().loot(lootableItems);
                         break;
                     }
                 }
