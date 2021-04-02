@@ -1,15 +1,19 @@
 package mechanic.location;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import mechanic.*;
 
-@lombok.RequiredArgsConstructor
-@lombok.AllArgsConstructor
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class Event {
     private final int row;
     private final int column;
     protected final Actionable action;
-    @lombok.Getter private boolean singleTime = true;
+    @Getter
+    private boolean singleTime = true;
 
     public boolean checkPosition(Position position) {
         return position.currentRow==row && position.currentColumn==column;

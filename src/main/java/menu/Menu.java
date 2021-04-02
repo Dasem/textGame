@@ -2,6 +2,7 @@ package menu;
 
 import com.google.common.collect.*;
 import items.*;
+import lombok.Getter;
 import units.character.Character;
 import utils.*;
 
@@ -11,7 +12,8 @@ public class Menu {
     private final String title;
     private final List<MenuItem> menuItems = new ArrayList<>();
     private final List<MenuItem> additionalMenuItems = new ArrayList<>();
-    @lombok.Getter private MenuItem chosenMenuItem = null;
+    @Getter
+    private MenuItem chosenMenuItem = null;
 
     Set<MenuSetting> menuSettings;
 

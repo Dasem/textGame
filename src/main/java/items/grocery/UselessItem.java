@@ -1,9 +1,10 @@
 package items.grocery;
 
 import items.*;
+import lombok.RequiredArgsConstructor;
 import menu.*;
 
-@lombok.RequiredArgsConstructor
+@RequiredArgsConstructor
 public class UselessItem extends Item {
 
     private final String itemName;

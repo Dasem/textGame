@@ -1,5 +1,6 @@
 package mechanic.traps;
 
+import lombok.RequiredArgsConstructor;
 import mechanic.location.Location;
 import mechanic.dice.*;
 import menu.Menu;
@@ -8,7 +9,7 @@ import units.character.Character;
 import units.character.Stat;
 import utils.Utils;
 
-@lombok.RequiredArgsConstructor
+@RequiredArgsConstructor
 public class Trap {
 
     private final TrapType trapType;

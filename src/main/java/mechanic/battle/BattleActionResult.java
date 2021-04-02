@@ -1,15 +1,24 @@
 package mechanic.battle;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 import java.util.*;
 
-@lombok.RequiredArgsConstructor
-@lombok.AllArgsConstructor
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class BattleActionResult {
 
-    @lombok.Getter private final List<Battler> deadBattlers;
-    @lombok.Getter private final String battleActionText;
-    @lombok.Getter private final Battler actor;
-    @lombok.Getter private final List<Battler> actualTargets;
-    @lombok.Getter private boolean emergencyFightEnd = false;
+    @Getter
+    private final List<Battler> deadBattlers;
+    @Getter
+    private final String battleActionText;
+    @Getter
+    private final Battler actor;
+    @Getter
+    private final List<Battler> actualTargets;
+    @Getter
+    private boolean emergencyFightEnd = false;
 
 }

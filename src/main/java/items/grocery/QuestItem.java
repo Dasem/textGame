@@ -1,13 +1,16 @@
 package items.grocery;
 
 import items.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import menu.*;
 
-@lombok.RequiredArgsConstructor
+@RequiredArgsConstructor
 public class QuestItem extends Item {
 
     private final String itemName;
-    @lombok.Getter private final int questId;
+    @Getter
+    private final int questId;
 
     @Override
     public String getName() {

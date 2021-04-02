@@ -1,9 +1,11 @@
 package units.character;
 
 import com.google.common.collect.*;
+import com.google.common.reflect.*;
 import items.*;
 import items.equipment.*;
 import items.grocery.*;
+import lombok.*;
 import mechanic.Actionable;
 import mechanic.battle.*;
 import mechanic.dice.Dice;
@@ -12,30 +14,55 @@ import mechanic.quest.*;
 import mechanic.quest.task.DialogTask;
 import mechanic.quest.task.Task;
 import menu.*;
+import org.reflections.*;
 import service.*;
 import units.Fraction;
 import units.Unit;
 import utils.*;
 
+import java.lang.reflect.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.*;
 
 public class Character extends Unit {
 
-    @lombok.Getter @lombok.Setter private Specialization specialization;
-
     private final static int DEFAULT_ARMOR_CLASS = 10;
+
+    // Основная информация
     private String username;
-    @lombok.Getter @lombok.Setter private Armor armor;
-    @lombok.Getter @lombok.Setter private Weapon weapon;
-    @lombok.Getter private final Inventory inventory = new Inventory();
-    @lombok.Getter private final Collection<Quest> activeQuests = new ArrayList<>();
-    @lombok.Getter private final Map<Stat, Integer> stats = new HashMap<>();
-    @lombok.Getter private int level = 1;
-    @lombok.Getter private int currentExp;
-    @lombok.Getter @lombok.Setter private Position currentPosition;
-    @lombok.Getter private final List<Position> positionsHistory = new ArrayList<>();
+    @Getter
+    @Setter
+    private Armor armor;
+    @Getter
+    @Setter
+    private Weapon weapon;
+    @Getter
+    private final Inventory inventory = new Inventory();
+
+    // Квесты
+    @Getter
+    private final Collection<Quest> activeQuests = new ArrayList<>();
+
+    // Состояние персонажа
+    @Getter
+    private final Map<Stat, Integer> stats = new HashMap<>();
+    @Getter
+    @Setter
+    private Specialization specialization;
+    @Getter
+    private int level = 1;
+    @Getter
+    private int currentExp;
+
+    // Перемещение
+    @Getter
+    @Setter
+    private Position currentPosition;
+    @Getter
+    private final List<Position> positionsHistory = new ArrayList<>();
+
+    // Бой
     private boolean autoBattle = false;
 
     {
@@ -234,7 +261,7 @@ public class Character extends Unit {
             });
 
             battleMenu.addAdditionalItem("Сбежать из боя", () -> {
-                if (Dice.D20.roll() > 6){
+                if (Dice.D20.roll() > 6) {
                     result.set(new BattleActionResult(Lists.newArrayList(), "Вы сбежали из боя",
                             this, Lists.newArrayList(), true));
                     goBack();
@@ -354,7 +381,7 @@ public class Character extends Unit {
             characterMenu.addItem("Информация о персонаже", () -> {
                 Character c = Character.getInstance();
                 System.out.println("Меня зовут " + c.getName());
-                System.out.println("Мой класс "+ c.getSpecialization().getName());
+                System.out.println("Мой класс " + c.getSpecialization().getName());
                 System.out.println(c.getCurrentHealth() + "/" + c.getMaxHealth() + " HP");
                 System.out.println((c.getInventory().getMoney() + " Золота"));
                 System.out.println(c.getArmorClass() + " Защиты");
@@ -451,9 +478,19 @@ public class Character extends Unit {
 
     public static void chooseSpecialization() {
         Menu menu = new Menu("Меню выбора Специализации");
-        Specializations[] specializations = Specializations.values();
-        for (Specializations special : specializations) {
-            menu.addItem(special.getName(), () -> Character.getInstance().setSpecialization(special.getSpecialization()));
+
+        List<Specialization> specs = new Reflections("units.character.specializations")
+                .getSubTypesOf(Specialization.class).stream()
+                .map(clazz -> {
+                    try {
+                        return clazz.getConstructor().newInstance();
+                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                        throw new RuntimeException("There is no constructor for Specialization.class");
+                    }
+                }).collect(Collectors.toList());
+
+        for (Specialization spec : specs) {
+            menu.addItem(spec.getName(), () -> Character.getInstance().setSpecialization(spec));
         }
         menu.showAndChoose();
 

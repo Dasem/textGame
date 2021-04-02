@@ -1,5 +1,6 @@
 package items.equipment;
 
+import lombok.Getter;
 import units.character.Character;
 import units.character.Stat;
 import items.equipment.Armor;
@@ -55,7 +56,7 @@ public enum ArmorType {
     };
 
 
-    @lombok.Getter
+    @Getter
     private final String title;
 
     ArmorType(String title) {

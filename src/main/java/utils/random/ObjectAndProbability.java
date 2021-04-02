@@ -1,9 +1,14 @@
 package utils.random;
 
-@lombok.AllArgsConstructor
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
 public class ObjectAndProbability<T> {
 
-    @lombok.Getter T object;
-    @lombok.Getter int probability;
+    @Getter
+    T object;
+    @Getter
+    int probability;
 
 }

@@ -1,10 +1,11 @@
 package units.npcs;
 
+import lombok.RequiredArgsConstructor;
 import mechanic.*;
 import mechanic.quest.*;
 import units.character.Character;
 
-@lombok.RequiredArgsConstructor
+@RequiredArgsConstructor
 public class QuestNPC extends NPC{
     private final String questId;
     private final String taskId;

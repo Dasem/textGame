@@ -1,11 +1,13 @@
 package items;
 
+import lombok.Getter;
 import menu.*;
 import units.character.Character;
 
 public abstract class Item {
 
-    @lombok.Getter protected int cost;
+    @Getter
+    protected int cost;
 
     protected void addDropItemMenuItem(Menu menu) {
         menu.addItem("Выбросить", () -> {

@@ -1,11 +1,12 @@
 package items.equipment;
 
+import lombok.Getter;
 import menu.*;
 import units.character.Character;
 
 public class Armor extends Equipment {
 
-    @lombok.Getter
+    @Getter
     private final ArmorType armorType;
 
     public Armor(ArmorType armorType) {

@@ -1,12 +1,16 @@
 package menu;
 
+import lombok.Getter;
+
 public class MenuItem {
-    @lombok.Getter private final Menu forMenu;
-    @lombok.Getter private String name;
+    @Getter
+    private final Menu forMenu;
+    @Getter
+    private String name;
     private Holder<String> calculatedName;
     private final Choosable choosable;
-    @lombok.Getter private MenuItemType menuItemType = MenuItemType.CUSTOM;
-    @lombok.Getter private Object callbackObject;
+    @Getter
+    private MenuItemType menuItemType = MenuItemType.CUSTOM;
 
     public void show(int itemNumber) {
         if (name == null) {

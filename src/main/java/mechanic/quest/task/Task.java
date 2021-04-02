@@ -1,12 +1,16 @@
 package mechanic.quest.task;
 
+import lombok.Getter;
+import lombok.Setter;
 import mechanic.Actionable;
 import mechanic.quest.*;
 
 public abstract class Task {
-    @lombok.Setter protected Quest quest; // обратная связь на квест к которому относится таска
+    @Setter
+    protected Quest quest; // обратная связь на квест к которому относится таска
     protected String description;
-    @lombok.Getter protected boolean complete = false;
+    @Getter
+    protected boolean complete = false;
     protected Actionable afterTask = () -> {};
 
     public void closeTask() {

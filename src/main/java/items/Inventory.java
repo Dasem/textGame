@@ -1,12 +1,16 @@
 package items;
 
+import lombok.Getter;
+
 import java.util.*;
 
 public class Inventory {
 
-    @lombok.Getter List<Item> items = new ArrayList<>();
+    @Getter
+    List<Item> items = new ArrayList<>();
 
-    @lombok.Getter private int money = 100;
+    @Getter
+    private int money = 100;
 
     public void addItem(Item item) {
         this.items.add(item);

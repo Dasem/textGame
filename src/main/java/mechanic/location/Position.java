@@ -1,8 +1,10 @@
 package mechanic.location;
 
+import lombok.AllArgsConstructor;
+
 import java.util.*;
 
-@lombok.AllArgsConstructor
+@AllArgsConstructor
 public class Position {
     // TODO: обернуть в геттеры и сеттеры
     public int currentRow;
