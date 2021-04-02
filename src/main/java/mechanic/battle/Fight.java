@@ -30,7 +30,7 @@ public class Fight {
 
     public void battle() {
         fillInitiativeLine();
-        Collection<Item> lootableItems = new ArrayList<>();
+        Collection<Item> lootFromFight = new ArrayList<>();
         boolean fightEnd = false;
         while (!fightEnd) {
             for (Battler battler : initiativeLine) {
@@ -49,10 +49,10 @@ public class Fight {
                         for (Battler deadBattler : battleActionResult.getDeadBattlers()) {
                             Character.getInstance().gainExp(deadBattler.mobExp());
                             if(deadBattler instanceof Lootable)
-                            lootableItems.addAll(((Lootable) deadBattler).getLoot());
+                            lootFromFight.addAll(((Lootable) deadBattler).getLoot());
                         }
                         fightEnd = true;
-                        Character.getInstance().loot(lootableItems);
+                        Character.getInstance().loot(lootFromFight);
                         break;
                     }
                 }

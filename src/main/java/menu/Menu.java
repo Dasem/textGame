@@ -36,7 +36,8 @@ public class Menu {
                     }
                 }
 
-                int menuChoose = Integer.parseInt(Utils.sc.nextLine());
+                String read = Utils.sc.nextLine();
+                int menuChoose = Integer.parseInt(read);
                 MenuItem menuItem;
                 if (menuChoose > menuItems.size()) {
                     menuItem = additionalMenuItems.get(menuChoose - menuItems.size() - 1);

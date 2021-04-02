@@ -31,11 +31,9 @@ public class Character extends Unit {
 
     // Основная информация
     private String username;
-    @Getter
-    @Setter
+    @Getter @Setter
     private Armor armor;
-    @Getter
-    @Setter
+    @Getter @Setter
     private Weapon weapon;
     @Getter
     private final Inventory inventory = new Inventory();
@@ -47,8 +45,7 @@ public class Character extends Unit {
     // Состояние персонажа
     @Getter
     private final Map<Stat, Integer> stats = new HashMap<>();
-    @Getter
-    @Setter
+    @Getter @Setter
     private Specialization specialization;
     @Getter
     private int level = 1;
@@ -56,8 +53,7 @@ public class Character extends Unit {
     private int currentExp;
 
     // Перемещение
-    @Getter
-    @Setter
+    @Getter @Setter
     private Position currentPosition;
     @Getter
     private final List<Position> positionsHistory = new ArrayList<>();
