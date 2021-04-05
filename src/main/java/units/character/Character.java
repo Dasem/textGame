@@ -2,6 +2,7 @@ package units.character;
 
 import com.google.common.collect.*;
 import com.google.common.reflect.*;
+import dnl.utils.text.table.TextTable;
 import items.*;
 import items.equipment.*;
 import items.grocery.*;
@@ -31,9 +32,11 @@ public class Character extends Unit {
 
     // Основная информация
     private String username;
-    @Getter @Setter
+    @Getter
+    @Setter
     private Armor armor;
-    @Getter @Setter
+    @Getter
+    @Setter
     private Weapon weapon;
     @Getter
     private final Inventory inventory = new Inventory();
@@ -45,7 +48,8 @@ public class Character extends Unit {
     // Состояние персонажа
     @Getter
     private final Map<Stat, Integer> stats = new HashMap<>();
-    @Getter @Setter
+    @Getter
+    @Setter
     private Specialization specialization;
     @Getter
     private int level = 1;
@@ -53,7 +57,8 @@ public class Character extends Unit {
     private int currentExp;
 
     // Перемещение
-    @Getter @Setter
+    @Getter
+    @Setter
     private Position currentPosition;
     @Getter
     private final List<Position> positionsHistory = new ArrayList<>();
@@ -388,9 +393,16 @@ public class Character extends Unit {
                 if (c.getWeapon() != null) {
                     System.out.println(c.getWeapon().getPrettyName());
                 } else System.out.println("Нет оружия");
+                String[] columnNames = {
+                        "Характеристика", "Значение", "Бонус Характеристики",
+                };
+                List<Object[]> list = new ArrayList<>();
                 for (Stat stat : Stat.values()) {
-                    System.out.println(stat.getName() + " " + getStat(stat));
+                    list.add(new Object[]{stat.getName(), String.valueOf(getStat(stat)), String.valueOf(factStat(stat))});
                 }
+                TextTable tt = new TextTable(columnNames, list.toArray(new Object[0][0]));
+                tt.setSort(0);
+                tt.printTable();
             });
             characterMenu.addItem("Снаряжение", () -> {
                 Menu equippedMenu = new Menu("Экипированное снаряжение:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
@@ -473,7 +485,7 @@ public class Character extends Unit {
     }
 
     public static void chooseSpecialization() {
-        Menu menu = new Menu("Меню выбора Специализации");
+        Menu menu = new Menu("Меню выбора Специализации", MenuSetting.HIDE_CHARACTER_MENU);
 
         List<Specialization> specs = new Reflections("units.character.specializations")
                 .getSubTypesOf(Specialization.class).stream()
