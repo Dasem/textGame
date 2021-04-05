@@ -473,7 +473,7 @@ public class Character extends Unit {
     }
 
     public static void chooseSpecialization() {
-        Menu menu = new Menu("Меню выбора Специализации");
+        Menu menu = new Menu("Меню выбора Специализации",MenuSetting.HIDE_CHARACTER_MENU);
 
         List<Specialization> specs = new Reflections("units.character.specializations")
                 .getSubTypesOf(Specialization.class).stream()
