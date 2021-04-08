@@ -55,6 +55,7 @@ public class Character extends Unit {
     private int level = 1;
     @Getter
     private int currentExp;
+    private int currentMasteryLvl;
 
     // Перемещение
     @Getter
@@ -507,6 +508,29 @@ public class Character extends Unit {
     public void goBack() {
         System.out.println("Вы отступили!");
         Character.getInstance().setCurrentPosition(positionsHistory.get(positionsHistory.size() - 1));
+    }
+
+    public int getCurrentMasteryLvl(){
+        if (level<5){
+            currentMasteryLvl=2;
+        }else{
+            if(level<9){
+                currentMasteryLvl=3;
+            }else{
+                if (level<13){
+                    currentMasteryLvl=4;
+                }else {
+                    if (level<17){
+                        currentMasteryLvl=5;
+                    }else {
+                        if (level<21){
+                            currentMasteryLvl=6;
+                        }
+                    }
+                }
+            }
+        }
+        return currentMasteryLvl;
     }
 }
 
