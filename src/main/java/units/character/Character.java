@@ -1,29 +1,26 @@
 package units.character;
 
 import com.google.common.collect.*;
-import com.google.common.reflect.*;
-import dnl.utils.text.table.TextTable;
+import dnl.utils.text.table.*;
 import items.*;
 import items.equipment.*;
 import items.grocery.*;
 import lombok.*;
-import mechanic.Actionable;
+import mechanic.*;
 import mechanic.battle.*;
-import mechanic.dice.Dice;
+import mechanic.dice.*;
 import mechanic.location.*;
 import mechanic.quest.*;
-import mechanic.quest.task.DialogTask;
-import mechanic.quest.task.Task;
+import mechanic.quest.task.*;
 import menu.*;
 import org.reflections.*;
 import service.*;
-import units.Fraction;
-import units.Unit;
+import units.*;
 import utils.*;
 
 import java.lang.reflect.*;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.*;
 import java.util.stream.*;
 
 public class Character extends Unit {
@@ -511,27 +508,27 @@ public class Character extends Unit {
 
     public boolean checkSavingThrow(Stat stat, int difficulty) {
         int sumOfStat = getInstance().factStat(stat) + Dice.D20.roll();
-        if (specialization.getSavingThrow().contains(stat)){
-            sumOfStat+=2; //todo Кто делает бонус мастерства сюда добавить вместо 2
+        if (specialization.getSavingThrow().contains(stat)) {
+            sumOfStat += getCurrentMasteryLvl(); //todo Кто делает бонус мастерства сюда добавить вместо 2
         }
         return sumOfStat >= difficulty;
     }
 
-    public int getCurrentMasteryLvl(){
-        if (level<5){
-            currentMasteryLvl=2;
-        }else{
-            if(level<9){
-                currentMasteryLvl=3;
-            }else{
-                if (level<13){
-                    currentMasteryLvl=4;
-                }else {
-                    if (level<17){
-                        currentMasteryLvl=5;
-                    }else {
-                        if (level<21){
-                            currentMasteryLvl=6;
+    public int getCurrentMasteryLvl() {
+        if (level < 5) {
+            currentMasteryLvl = 2;
+        } else {
+            if (level < 9) {
+                currentMasteryLvl = 3;
+            } else {
+                if (level < 13) {
+                    currentMasteryLvl = 4;
+                } else {
+                    if (level < 17) {
+                        currentMasteryLvl = 5;
+                    } else {
+                        if (level < 21) {
+                            currentMasteryLvl = 6;
                         }
                     }
                 }
