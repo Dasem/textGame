@@ -1,15 +1,14 @@
-import com.google.common.collect.Lists;
+import com.google.common.collect.*;
 import items.equipment.*;
 import mechanic.location.*;
-import mechanic.quest.Quest;
-import mechanic.quest.Reward;
-import mechanic.quest.task.DialogTask;
+import mechanic.quest.*;
+import mechanic.quest.task.*;
 import org.junit.jupiter.api.*;
 import units.character.Character;
-import units.npcs.QuestNPC;
+import units.npcs.*;
 
 import java.io.*;
-import java.util.Collection;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,6 +31,7 @@ class MyFirstJUnitJupiterTests {
     }
 
     @Test
+    @Disabled
     void locationMovingTop() {
         //mock scanner
         String input = "1";
@@ -40,16 +40,15 @@ class MyFirstJUnitJupiterTests {
 
         //define start position
         Location testLocation = new Location("testLocation");
-        testLocation.addActions(new EscapeEvent(2, 3, () -> {
-        }));
+        testLocation.addActions(new EscapeEvent(2, 3, ()->{}));
 
-        testLocation.enterLocation(3, 3);
+        testLocation.enterLocation(3,3);
 
         Position currentPosition = Character.getInstance().getCurrentPosition();
 
         //check
-        assertEquals(2, currentPosition.currentRow);
-        assertEquals(3, currentPosition.currentColumn);
+        assertEquals( 2, currentPosition.currentRow);
+        assertEquals( 3, currentPosition.currentColumn);
     }
 
     @Test
