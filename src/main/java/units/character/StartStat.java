@@ -92,27 +92,12 @@ public class StartStat {
 
     }
 
-    public static int min(int a, int b, int c, int d) {
-        return Math.min(a, Math.min(b, Math.min(c, d)));
-        /* альтернативный вариант, если страшно засрать стек вызовов:
-        int min = a;
-        if (b < min)
-            min = b;
-        if (c < min)
-            min = c;
-        if (d < min)
-            min = d;
-        return min;
-        */
-    }
-    /* альтернативный вариант для любого количества чисел:
-    public static int min(int ... nums) {
+    public static int min(int ... digits) {
         int min = 0;
-        for (int num : nums) {
+        for (int num : digits) {
             if (num < min)
                 min = num;
         }
         return min;
     }
-    */
 }
