@@ -17,7 +17,6 @@ import mechanic.quest.task.Task;
 import menu.*;
 import org.reflections.*;
 import service.*;
-import sun.jvm.hotspot.oops.Instance;
 import units.Fraction;
 import units.Unit;
 import utils.*;
@@ -55,6 +54,7 @@ public class Character extends Unit {
     private int level = 1;
     @Getter
     private int currentExp;
+    private int currentMasteryLvl;
 
     // Перемещение
     @Getter
@@ -517,6 +517,27 @@ public class Character extends Unit {
         return sumOfStat >= difficulty;
     }
 
-
+    public int getCurrentMasteryLvl(){
+        if (level<5){
+            currentMasteryLvl=2;
+        }else{
+            if(level<9){
+                currentMasteryLvl=3;
+            }else{
+                if (level<13){
+                    currentMasteryLvl=4;
+                }else {
+                    if (level<17){
+                        currentMasteryLvl=5;
+                    }else {
+                        if (level<21){
+                            currentMasteryLvl=6;
+                        }
+                    }
+                }
+            }
+        }
+        return currentMasteryLvl;
+    }
 }
 
