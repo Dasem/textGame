@@ -17,7 +17,6 @@ import mechanic.quest.task.Task;
 import menu.*;
 import org.reflections.*;
 import service.*;
-import sun.jvm.hotspot.oops.Instance;
 import units.Fraction;
 import units.Unit;
 import utils.*;
@@ -347,6 +346,28 @@ public class Character extends Unit {
         return null;
     }
 
+    public String getHPView() {
+        return Character.getInstance().getCurrentHealth() + "/" + Character.getInstance().getMaxHealth() + " HP";
+    }
+
+    public String getArmorView() {
+        if (getArmor() == null){
+        return "Нет брони / " + getArmorClass() + " Защиты";}
+        else {
+            return getArmor().getName() + " / "+ getArmor().getArmorClass() + " Защиты";
+        }
+    }
+
+    public String getWeaponView() {
+        if (getWeapon() == null) {
+        return "Безоружный / " + Dice.D4 + " Урона";}
+        else { return getWeapon().getName()+ " / "+getWeapon().getWeaponDamage() + " Атаки"; }
+    }
+
+    public String getLvlWithNeedExp() {
+        return Character.getInstance().getLevel() + "(" + getCurrentExp() + "/" + expForLevelUp();
+    }
+
     public String getHpBar() {
         return " (" + getCurrentHealth() + "/" + getMaxHealth() + ")";
     }
@@ -381,27 +402,34 @@ public class Character extends Unit {
             Menu characterMenu = new Menu("Персонаж:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
             characterMenu.addItem("Информация о персонаже", () -> {
                 Character c = Character.getInstance();
-                System.out.println("Меня зовут " + c.getName());
-                System.out.println("Мой класс " + c.getSpecialization().getName());
-                System.out.println(c.getCurrentHealth() + "/" + c.getMaxHealth() + " HP");
-                System.out.println((c.getInventory().getMoney() + " Золота"));
-                System.out.println(c.getArmorClass() + " Защиты");
-                System.out.println(c.currentExp + "/" + expForLevelUp() + " опыта.");
-                if (c.getArmor() != null) {
-                    System.out.println(c.getArmor().getPrettyName());
-                } else System.out.println("Нет брони");
-                if (c.getWeapon() != null) {
-                    System.out.println(c.getWeapon().getPrettyName());
-                } else System.out.println("Нет оружия");
-                String[] columnNames = {
+
+
+                String[] columnNames1 = {
+                        "Имя", "Класс", "Уровень", "Здоровье", "Золото"
+                };
+                List<Object[]> list1 = new ArrayList<>();
+                list1.add(new Object[]{c.getName(), c.specialization.getName(), c.getLvlWithNeedExp(),c.getHPView(),c.getInventory().getMoney()});
+                TextTable tt1 = new TextTable(columnNames1, list1.toArray(new Object[0][0]));
+                tt1.printTable();
+
+                String[] columnNames3 = {
+                        "Броня", "Оружие"
+                };
+                List<Object[]> list2 = new ArrayList<>();
+                list2.add(new Object[]{getArmorView(),getWeaponView()});
+                TextTable tt3 = new TextTable(columnNames3, list2.toArray(new Object[0][0]));
+                tt3.printTable();
+
+
+
+                String[] columnNames2 = {
                         "Характеристика", "Значение", "Бонус Характеристики",
                 };
                 List<Object[]> list = new ArrayList<>();
                 for (Stat stat : Stat.values()) {
                     list.add(new Object[]{stat.getName(), String.valueOf(getStat(stat)), String.valueOf(factStat(stat))});
                 }
-                TextTable tt = new TextTable(columnNames, list.toArray(new Object[0][0]));
-                tt.setSort(0);
+                TextTable tt = new TextTable(columnNames2, list.toArray(new Object[0][0]));
                 tt.printTable();
             });
             characterMenu.addItem("Снаряжение", () -> {
@@ -511,8 +539,8 @@ public class Character extends Unit {
 
     public boolean checkSavingThrow(Stat stat, int difficulty) {
         int sumOfStat = getInstance().factStat(stat) + Dice.D20.roll();
-        if (specialization.getSavingThrow().contains(stat)){
-            sumOfStat+=2; //todo Кто делает бонус мастерства сюда добавить вместо 2
+        if (specialization.getSavingThrow().contains(stat)) {
+            sumOfStat += 2; //todo Кто делает бонус мастерства сюда добавить вместо 2
         }
         return sumOfStat >= difficulty;
     }
