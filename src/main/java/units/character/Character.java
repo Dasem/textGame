@@ -17,6 +17,7 @@ import mechanic.quest.task.Task;
 import menu.*;
 import org.reflections.*;
 import service.*;
+import sun.jvm.hotspot.oops.Instance;
 import units.Fraction;
 import units.Unit;
 import utils.*;
@@ -27,7 +28,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.*;
 
 public class Character extends Unit {
-
     private final static int DEFAULT_ARMOR_CLASS = 10;
 
     // Основная информация
@@ -508,5 +508,15 @@ public class Character extends Unit {
         System.out.println("Вы отступили!");
         Character.getInstance().setCurrentPosition(positionsHistory.get(positionsHistory.size() - 1));
     }
+
+    public boolean checkSavingThrow(Stat stat, int difficulty) {
+        int sumOfStat = getInstance().factStat(stat) + Dice.D20.roll();
+        if (specialization.getSavingThrow().contains(stat)){
+            sumOfStat+=2; //todo Кто делает бонус мастерства сюда добавить вместо 2
+        }
+        return sumOfStat >= difficulty;
+    }
+
+
 }
 
