@@ -6,14 +6,14 @@ public enum AccuracyLevel {
 
     CRITICAL_HIT("Критический удар") {
         @Override
-        public int  getTotalDamage(Battler battler) {
-            return battler.getOnHitDamage() + battler.getOnHitDamage();
+        public int getTotalDamage(Battler battler) {
+            return Math.max(battler.getOnHitDamage() + battler.getOnHitDamage(),0);
         }
     },
     NORMAL_HIT("Попадание") {
         @Override
         public int getTotalDamage(Battler battler) {
-            return battler.getOnHitDamage();
+            return Math.max(battler.getOnHitDamage(), 0);
         }
     },
     MISS("Промах") {
@@ -34,13 +34,6 @@ public enum AccuracyLevel {
     }
 
     abstract public int getTotalDamage(Battler battler);
-
-
-
-
-
-
-
 
 
 }

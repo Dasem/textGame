@@ -1,29 +1,33 @@
 package units.character;
 
 import com.google.common.collect.*;
-import dnl.utils.text.table.*;
+import com.google.common.reflect.*;
+import dnl.utils.text.table.TextTable;
 import items.*;
 import items.equipment.*;
 import items.grocery.*;
 import lombok.*;
-import mechanic.*;
+import mechanic.Actionable;
 import mechanic.battle.*;
-import mechanic.dice.*;
+import mechanic.dice.Dice;
 import mechanic.location.*;
 import mechanic.quest.*;
-import mechanic.quest.task.*;
+import mechanic.quest.task.DialogTask;
+import mechanic.quest.task.Task;
 import menu.*;
 import org.reflections.*;
 import service.*;
-import units.*;
+import units.Fraction;
+import units.Unit;
 import utils.*;
 
 import java.lang.reflect.*;
 import java.util.*;
-import java.util.concurrent.atomic.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.*;
 
 public class Character extends Unit {
+
     private final static int DEFAULT_ARMOR_CLASS = 10;
 
     // Основная информация
@@ -51,7 +55,7 @@ public class Character extends Unit {
     private int level = 1;
     @Getter
     private int currentExp;
-    private int currentMasteryLvl; //todo: ненужное поле, можно ретурнить в геттере значение
+    private int currentMasteryLvl;
 
     // Перемещение
     @Getter
@@ -344,28 +348,6 @@ public class Character extends Unit {
         return null;
     }
 
-    public String getHPView() {
-        return Character.getInstance().getCurrentHealth() + "/" + Character.getInstance().getMaxHealth() + " HP";
-    }
-
-    public String getArmorView() {
-        if (getArmor() == null){
-        return "Нет брони / " + getArmorClass() + " Защиты";}
-        else {
-            return getArmor().getName() + " / "+ getArmor().getArmorClass() + " Защиты";
-        }
-    }
-
-    public String getWeaponView() {
-        if (getWeapon() == null) {
-        return "Безоружный / " + Dice.D4 + " Урона";}
-        else { return getWeapon().getName()+ " / "+getWeapon().getWeaponDamage() + " Атаки"; }
-    }
-
-    public String getLvlWithNeedExp() {
-        return Character.getInstance().getLevel() + "(" + getCurrentExp() + "/" + expForLevelUp();
-    }
-
     public String getHpBar() {
         return " (" + getCurrentHealth() + "/" + getMaxHealth() + ")";
     }
@@ -400,34 +382,27 @@ public class Character extends Unit {
             Menu characterMenu = new Menu("Персонаж:", MenuSetting.HIDE_CHARACTER_MENU, MenuSetting.ADD_BACK_BUTTON);
             characterMenu.addItem("Информация о персонаже", () -> {
                 Character c = Character.getInstance();
-
-
-                String[] columnNames1 = {
-                        "Имя", "Класс", "Уровень", "Здоровье", "Золото"
-                };
-                List<Object[]> list1 = new ArrayList<>();
-                list1.add(new Object[]{c.getName(), c.specialization.getName(), c.getLvlWithNeedExp(),c.getHPView(),c.getInventory().getMoney()});
-                TextTable tt1 = new TextTable(columnNames1, list1.toArray(new Object[0][0]));
-                tt1.printTable();
-
-                String[] columnNames3 = {
-                        "Броня", "Оружие"
-                };
-                List<Object[]> list2 = new ArrayList<>();
-                list2.add(new Object[]{getArmorView(),getWeaponView()});
-                TextTable tt3 = new TextTable(columnNames3, list2.toArray(new Object[0][0]));
-                tt3.printTable();
-
-
-
-                String[] columnNames2 = {
+                System.out.println("Меня зовут " + c.getName());
+                System.out.println("Мой класс " + c.getSpecialization().getName());
+                System.out.println(c.getCurrentHealth() + "/" + c.getMaxHealth() + " HP");
+                System.out.println((c.getInventory().getMoney() + " Золота"));
+                System.out.println(c.getArmorClass() + " Защиты");
+                System.out.println(c.currentExp + "/" + expForLevelUp() + " опыта.");
+                if (c.getArmor() != null) {
+                    System.out.println(c.getArmor().getPrettyName());
+                } else System.out.println("Нет брони");
+                if (c.getWeapon() != null) {
+                    System.out.println(c.getWeapon().getPrettyName());
+                } else System.out.println("Нет оружия");
+                String[] columnNames = {
                         "Характеристика", "Значение", "Бонус Характеристики",
                 };
                 List<Object[]> list = new ArrayList<>();
                 for (Stat stat : Stat.values()) {
                     list.add(new Object[]{stat.getName(), String.valueOf(getStat(stat)), String.valueOf(factStat(stat))});
                 }
-                TextTable tt = new TextTable(columnNames2, list.toArray(new Object[0][0]));
+                TextTable tt = new TextTable(columnNames, list.toArray(new Object[0][0]));
+                tt.setSort(0);
                 tt.printTable();
             });
             characterMenu.addItem("Снаряжение", () -> {
@@ -535,30 +510,21 @@ public class Character extends Unit {
         Character.getInstance().setCurrentPosition(positionsHistory.get(positionsHistory.size() - 1));
     }
 
-    public boolean checkSavingThrow(Stat stat, int difficulty) {
-        int sumOfStat = getInstance().factStat(stat) + Dice.D20.roll();
-        if (specialization.getSavingThrow().contains(stat)) {
-            sumOfStat += getCurrentMasteryLvl();
-        }
-        return sumOfStat >= difficulty;
-    }
-
-    public int getCurrentMasteryLvl() {
-        // return (level - 1) / 4 + 2; todo: ну прост
-        if (level < 5) {
-            currentMasteryLvl = 2;
-        } else {
-            if (level < 9) {
-                currentMasteryLvl = 3;
-            } else {
-                if (level < 13) {
-                    currentMasteryLvl = 4;
-                } else {
-                    if (level < 17) {
-                        currentMasteryLvl = 5;
-                    } else {
-                        if (level < 21) {
-                            currentMasteryLvl = 6;
+    public int getCurrentMasteryLvl(){
+        if (level<5){
+            currentMasteryLvl=2;
+        }else{
+            if(level<9){
+                currentMasteryLvl=3;
+            }else{
+                if (level<13){
+                    currentMasteryLvl=4;
+                }else {
+                    if (level<17){
+                        currentMasteryLvl=5;
+                    }else {
+                        if (level<21){
+                            currentMasteryLvl=6;
                         }
                     }
                 }
